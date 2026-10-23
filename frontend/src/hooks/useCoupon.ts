@@ -65,12 +65,12 @@ export const useCoupon = () => {
     const normalizedInput = normalizeCouponCode(code);
     
     // Verificar cupom genérico (BONUS)
-    const couponCode = import.meta.env.VITE_COUPON_CODE;
-    const discountValue = import.meta.env.VITE_COUPON_DISCOUNT_VALUE;
+    const couponCode = process.env.NEXT_PUBLIC_COUPON_CODE;
+    const discountValue = process.env.NEXT_PUBLIC_COUPON_DISCOUNT_VALUE;
     
     // Verificar cupom de lançamento
-    const lancamentoCode = import.meta.env.VITE_COUPON_LANCAMENTO_CODE;
-    const lancamentoDiscountValue = import.meta.env.VITE_COUPON_LANCAMENTO_DISCOUNT_VALUE;
+    const lancamentoCode = process.env.NEXT_PUBLIC_COUPON_LANCAMENTO_CODE;
+    const lancamentoDiscountValue = process.env.NEXT_PUBLIC_COUPON_LANCAMENTO_DISCOUNT_VALUE;
     
     let validCoupon: string | null = null;
     let fixedDiscount: number | null = null;

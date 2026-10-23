@@ -1,6 +1,6 @@
 // src/components/AnalyticsGate.tsx
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/router";
 
 /** Lê consentimento de forma segura: primeiro localStorage, depois cookie. */
 function hasConsentFromStorage(): boolean {
@@ -79,7 +79,7 @@ export default function AnalyticsGate({
   measurementId,
 }: AnalyticsGateProps) {
   const gaId =
-    measurementId ?? ((import.meta.env.VITE_GA4_ID as string | undefined) ?? "");
+    measurementId ?? (process.env.NEXT_PUBLIC_GA4_ID ?? "");
 
   const location = useLocation();
   const loadedRef = useRef(false);

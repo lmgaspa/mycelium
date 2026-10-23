@@ -11,6 +11,7 @@ const ButtonCountCart: React.FC<ButtonCountCartProps> = ({ quantity, onDecrease,
   return (
     <div className="flex items-center gap-2">
       <button
+        type="button"
         className="px-4 py-2 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 transition disabled:opacity-50"
         onClick={onDecrease}
         disabled={!allowZero && quantity <= 1}
@@ -19,6 +20,7 @@ const ButtonCountCart: React.FC<ButtonCountCartProps> = ({ quantity, onDecrease,
       </button>
       <span className="text-lg min-w-[2rem] text-center">{quantity}</span>
       <button
+        type="button"
         className="px-4 py-2 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 transition"
         onClick={onIncrease}
       >

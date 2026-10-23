@@ -17,7 +17,7 @@ abstract class PixEmailBase(
     protected val mailSender: JavaMailSender,
     protected val bookService: BookService,
     @Value("\${email.author}") val authorEmail: String,
-    @Value("\${application.brand.name:Renata Poeta - E-Commerce}") protected val brandName: String,
+    @Value("\${application.brand.name:Mycelium}") protected val brandName: String,
     @Value("\${mail.from:}") protected val configuredFrom: String,
     @Value("\${mail.logo.url:https://www.andescoresoftware.com.br/AndesCore.jpg}") protected val logoUrl: String
 ) {

@@ -24,7 +24,7 @@ class PayoutCardFailedEmailSender(
     jdbc: NamedParameterJdbcTemplate,
         payoutProps: EfiCardPayoutProps,
     @Value("\${email.author}") authorEmail: String,
-    @Value("\${application.brand.name:Renata Poeta - E-Commerce}") brandName: String,
+    @Value("\${application.brand.name:Mycelium}") brandName: String,
     @Value("\${mail.from:}") configuredFrom: String,
     @Value("\${mail.logo.url:https://www.andescoresoftware.com.br/AndesCore.jpg}") logoUrl: String,
     @Value("\${application.timezone:America/Bahia}") appTz: String,

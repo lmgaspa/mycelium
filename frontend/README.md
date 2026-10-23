@@ -1,54 +1,34 @@
-# React + TypeScript + Vite
+# Mycelium frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The storefront now runs on Next.js App Router. The previous React/Vite pages live in
+`src/legacy-pages` and are exposed through explicit Next routes under `src/app/(store)`.
+The authentication pages are native Next routes under `src/app`.
+Tailwind CSS v4 is configured in `src/styles.css` and `postcss.config.mjs`.
+`components.json` configures shadcn/ui; add more components with
+`npx shadcn@latest add <component>`. Interface icons use `lucide-react`.
 
-Currently, two official plugins are available:
+## Local setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Use Node 22 and run `npm ci`.
+2. Copy `.env.example` to `.env.local` and set `MYCELIUM_BACKEND_URL` to the Java backend URL.
+3. Run `npm run dev` and open `http://localhost:3000`.
 
-## Expanding the ESLint configuration
+The Next server rewrites `/api/v1/*` to the Java backend, so the browser uses one origin
+for authentication cookies and commerce requests. In production, set
+`MYCELIUM_BACKEND_URL` to the internal backend URL. Set
+`NEXT_PUBLIC_GOOGLE_CLIENT_ID` to the OAuth Web client ID and use the same ID in
+`GOOGLE_CLIENT_ID` on the backend. Configure the frontend origin in Google Cloud.
+The Next config accepts the existing `VITE_*` storefront values as fallbacks during
+migration, including the Efí payee code and sandbox flag. New deployments should use
+the `NEXT_PUBLIC_*` names from `.env.example`.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The locale selector supports Brazilian Portuguese, English and Spanish on the
+home, contact and authentication screens. Registration stores the selected locale
+in the Java account, and authentication emails use that locale. Existing checkout
+screens still contain legacy Portuguese copy and product data.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Commands
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- `npm run dev`: start Next in development
+- `npm run build`: type-check and build production assets
+- `npm start`: start the production build

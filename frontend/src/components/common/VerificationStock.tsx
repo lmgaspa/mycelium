@@ -18,6 +18,7 @@ const VerificationStock: React.FC<VerificationStockProps> = ({
 
   return (
     <button
+      type="button"
       disabled
       className={`${sizeClasses[size]} rounded-md shadow-md transition bg-gray-400 text-white cursor-not-allowed ${className}`}
     >

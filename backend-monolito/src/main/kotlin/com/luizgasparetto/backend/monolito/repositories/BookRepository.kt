@@ -22,15 +22,6 @@ interface BookRepository : JpaRepository<Book, String> {
         """
         SELECT b FROM Book b
         JOIN FETCH b.authorRef a
-        WHERE a.id = :authorId
-        """
-    )
-    fun findAllByAuthorIdWithAuthor(@Param("authorId") authorId: Long): List<Book>
-
-    @Query(
-        """
-        SELECT b FROM Book b
-        JOIN FETCH b.authorRef a
         WHERE lower(a.email) = :emailLower
         """
     )

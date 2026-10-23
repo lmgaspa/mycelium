@@ -36,21 +36,20 @@ export interface TokenizeResult {
 
 /* ===================== ENV bindings (match your .env) ===================== */
 
-const ENV = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
 
 
 // Environment configuration
-export const EFI_ACCOUNT = (ENV.VITE_EFI_PAYEE_CODE ?? "").trim();
+export const EFI_ACCOUNT = (process.env.NEXT_PUBLIC_EFI_PAYEE_CODE ?? "").trim();
 
 if (!EFI_ACCOUNT) {
-  throw new Error("VITE_EFI_PAYEE_CODE não configurado. Configure a variável de ambiente.");
+  throw new Error("NEXT_PUBLIC_EFI_PAYEE_CODE não configurado. Configure a variável de ambiente.");
 }
 
 // TypeScript assertion: EFI_ACCOUNT is guaranteed to be string after the check above
 const EFI_ACCOUNT_ASSERTED: string = EFI_ACCOUNT;
 
 export const EFI_ENV: EfiEnv =
-  String(ENV.VITE_EFI_SANDBOX ?? "false").toLowerCase() === "true"
+  String(process.env.NEXT_PUBLIC_EFI_SANDBOX ?? "false").toLowerCase() === "true"
     ? "sandbox"
     : "production";
 

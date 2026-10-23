@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router";
 import type { Book } from "../../data/books";
 import { useStockByIds } from "../../hooks/useStockByIds";
 import BookPrice from "../common/BookPrice";

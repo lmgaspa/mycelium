@@ -1,5 +1,5 @@
 // =======================================================
-// build.gradle.kts — Ecommerce AG Books (Spring Boot + Kotlin + Flyway)
+// build.gradle.kts — Mycelium (Spring Boot + Kotlin + Flyway)
 // Compatível com PostgreSQL 18 e Flyway 11.17.0
 // Baseline/Legacy/Live escolhidos por FLYWAY_MODE (baseline|legacy|live)
 // =======================================================
@@ -44,6 +44,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.security:spring-security-crypto")
+    implementation("com.google.api-client:google-api-client:2.6.0")
     implementation("org.springframework.boot:spring-boot-starter-aop")
 
     // Kotlin
@@ -255,5 +257,5 @@ flyway {
 
 // ====== BootJar com nome previsível ======
 tasks.named<BootJar>("bootJar") {
-    archiveBaseName.set("ec-renata-backend")
+    archiveBaseName.set("mycelium-backend")
 }

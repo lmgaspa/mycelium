@@ -20,7 +20,7 @@ export default function CookieConsent() {
         value === "true" ? "true" : "false"
       );
     } catch (err) {
-      if (import.meta.env.DEV) {
+      if (process.env.NODE_ENV !== "production") {
         console.warn(
           "CookieConsent: não foi possível usar localStorage.",
           err
@@ -120,6 +120,7 @@ export default function CookieConsent() {
 
       <div className="flex gap-3 sm:shrink-0">
         <button
+          type="button"
           onClick={acceptCookies}
           className="px-5 py-2 rounded-md shadow-md text-background font-semibold bg-primary hover:bg-secondary transition"
         >
@@ -127,6 +128,7 @@ export default function CookieConsent() {
         </button>
 
         <button
+          type="button"
           onClick={declineCookies}
           className="px-5 py-2 rounded-md border border-border bg-surface-muted text-text-secondary hover:bg-surface transition"
         >

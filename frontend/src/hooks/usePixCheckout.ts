@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router";
 import type { CartItem } from "../context/CartTypes";
 import type { CheckoutFormData } from "../types/CheckoutTypes";
 import { cookieStorage } from "../utils/cookieUtils";

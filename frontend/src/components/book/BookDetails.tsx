@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router";
 import type { Book } from "../../data/booksWithRelated";
 import { books as allBooks } from "../../data/booksWithRelated";
 import BookDescription from "./BookDescription";
@@ -120,6 +120,7 @@ const BookDetails = ({
                 <VerificationStock />
               ) : isAvailable ? (
                 <button
+                  type="button"
                   onClick={handleAddToCart}
                   className="px-6 py-2 rounded-md shadow-md transition bg-green-600 text-white hover:bg-green-700"
                 >

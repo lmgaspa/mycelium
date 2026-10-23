@@ -1,4 +1,4 @@
-const RAW = import.meta.env.VITE_API_BASE as string | undefined;
+const RAW = process.env.NEXT_PUBLIC_API_BASE;
 const BASE_URL = RAW ? RAW.replace(/\/+$/, "") : "";
 
 // Prefixo global para todas as APIs

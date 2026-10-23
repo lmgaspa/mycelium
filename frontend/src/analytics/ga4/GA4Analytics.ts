@@ -81,7 +81,7 @@ export class GA4Analytics implements AnalyticsPort {
     });
   }
 
-  // 🔽 aqui passamos a carregar também payment_type/author_id no purchase
+  // 🔽 aqui passamos a carregar também payment_type no purchase
   purchase(params: {
     transaction_id: string;
     value: number;
@@ -90,7 +90,6 @@ export class GA4Analytics implements AnalyticsPort {
     tax?: number;
     items: AnalyticsItem[];
     payment_type?: string;
-    author_id?: number;
   }): void {
     this.send("purchase", {
       transaction_id: params.transaction_id,
@@ -100,7 +99,6 @@ export class GA4Analytics implements AnalyticsPort {
       tax: Number(params.tax ?? 0),
       items: params.items,
       payment_type: params.payment_type,
-      author_id: params.author_id,
     });
   }
 

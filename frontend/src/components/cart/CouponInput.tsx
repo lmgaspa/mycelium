@@ -35,6 +35,7 @@ const CouponInput: React.FC<CouponInputProps> = ({
         disabled={isValidating}
       />
       <button 
+        type="button"
         onClick={handleApply} 
         disabled={isValidating}
         className="px-6 py-2 bg-primary text-background rounded-md shadow-md transition hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"

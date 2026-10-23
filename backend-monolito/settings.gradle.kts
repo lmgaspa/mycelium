@@ -5,4 +5,4 @@
 		gradlePluginPortal()
 	}
 }
-rootProject.name = "backend-monolito"
+rootProject.name = "mycelium"

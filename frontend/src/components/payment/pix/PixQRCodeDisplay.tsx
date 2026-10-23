@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router";
 
 interface PixQRCodeDisplayProps {
   qrCodeImg: string;
@@ -38,6 +38,7 @@ export const PixQRCodeDisplay = ({
                   className="flex-1 border rounded px-2 py-1 text-xs"
                 />
                 <button
+                  type="button"
                   onClick={() => navigator.clipboard.writeText(pixCopiaECola)}
                   className="bg-black text-white px-3 py-1 rounded text-sm"
                 >
@@ -60,6 +61,7 @@ export const PixQRCodeDisplay = ({
             pedido para tentar novamente.
           </p>
           <button
+            type="button"
             className="mt-3 bg-black text-white px-4 py-2 rounded"
             onClick={() => navigate("/checkout")}
           >

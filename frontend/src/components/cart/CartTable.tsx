@@ -55,6 +55,7 @@ const CartTable: React.FC<CartTableProps> = ({
                 </td>
                 <td className="p-4">
                   <button
+                    type="button"
                     className="text-error hover:text-red-400 transition"
                     onClick={() => onRemoveItem(item.id)}
                   >
@@ -106,6 +107,7 @@ const CartTable: React.FC<CartTableProps> = ({
             </div>
 
             <button
+              type="button"
               className="text-error mt-2 underline text-sm self-end"
               onClick={() => onRemoveItem(item.id)}
             >

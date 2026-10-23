@@ -43,11 +43,11 @@ data class Book(
 
     /**
      * Novo ponteiro para o autor real (FK authors.id).
-     * O banco já tem a coluna author_id e a FK fk_books_author, então não gera migração nova.
+     * A coluna author_ref_id referencia authors.id.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-        name = "author_id",
+        name = "author_ref_id",
         referencedColumnName = "id",
         foreignKey = ForeignKey(name = "fk_books_author")
     )

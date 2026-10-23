@@ -12,7 +12,7 @@ class OpenApiConfig {
     fun customOpenAPI(): OpenAPI =
         OpenAPI().info(
             Info()
-                .title("Renata Poeta – Ecommerce API")
+                .title("Mycelium API")
                 .version("v1")
                 .description("Endpoints do checkout Pix, cartão de crédito, webhook e catálogo")
         )
