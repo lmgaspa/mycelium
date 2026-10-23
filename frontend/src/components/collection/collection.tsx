@@ -1,11 +1,11 @@
 "use client";
 
+import { useCopy } from "@/i18n/useCopy";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLocale, type Locale } from "@/app/auth/locale";
-import styles from "./collection.module.css";
+import { cn } from "@/lib/utils";
 
 const slides = [
   { image: "floresmagicascolecao.webp", name: "Flores Mágicas" },
@@ -17,51 +17,8 @@ const slides = [
   { image: "finalizadorcolecao.webp", name: "Finalizador" },
 ] as const;
 
-const copy: Record<Locale, {
-  eyebrow: string;
-  heading: string;
-  intro: string;
-  carousel: string;
-  previous: string;
-  next: string;
-  goTo: (name: string) => string;
-  imageAlt: (name: string) => string;
-}> = {
-  pt: {
-    eyebrow: "MYCELIUM · COLEÇÃO",
-    heading: "Conheça nossa coleção",
-    intro: "Explore cada linha Mycelium e encontre a próxima etapa do seu cultivo.",
-    carousel: "Banners da coleção Mycelium",
-    previous: "Banner anterior",
-    next: "Próximo banner",
-    goTo: (name) => `Ver banner ${name}`,
-    imageAlt: (name) => `Produtos Mycelium da linha ${name}`,
-  },
-  en: {
-    eyebrow: "MYCELIUM · COLLECTION",
-    heading: "Explore our collection",
-    intro: "Explore every Mycelium line and find the next step for your growing journey.",
-    carousel: "Mycelium collection banners",
-    previous: "Previous banner",
-    next: "Next banner",
-    goTo: (name) => `View ${name} banner`,
-    imageAlt: (name) => `Mycelium ${name} products`,
-  },
-  es: {
-    eyebrow: "MYCELIUM · COLECCIÓN",
-    heading: "Descubre nuestra colección",
-    intro: "Explora cada línea Mycelium y encuentra la próxima etapa de tu cultivo.",
-    carousel: "Banners de la colección Mycelium",
-    previous: "Banner anterior",
-    next: "Banner siguiente",
-    goTo: (name) => `Ver banner ${name}`,
-    imageAlt: (name) => `Productos Mycelium de la línea ${name}`,
-  },
-};
-
 export default function Collection({ embedded = false }: { embedded?: boolean }) {
-  const locale = useLocale();
-  const t = copy[locale];
+  const t = useCopy("Collection");
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -88,17 +45,20 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
     return () => window.clearInterval(timer);
   }, [active, paused, reducedMotion, pageVisible]);
 
+  const arrow = "absolute top-1/2 z-[2] size-[clamp(38px,4vw,50px)] -translate-y-1/2 rounded-full border border-white/80 bg-white/[.94] text-brand-plum shadow-[0_6px_24px_rgba(20,8,35,.25)] hover:bg-brand-leaf hover:text-[#210a41] focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-brand-leaf";
+  const dot = "h-7 w-[23px] gap-0 rounded-none p-0 text-inherit hover:bg-white/10 focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-brand-leaf";
+
   return (
-    <div id={embedded ? "colecao" : undefined} className={`${styles.page} ${embedded ? styles.embedded : ""}`}>
-      <div className={styles.shell}>
-        <div className={styles.intro}>
-          <span className={styles.eyebrow}>{t.eyebrow}</span>
-          {embedded ? <h2>{t.heading}</h2> : <h1>{t.heading}</h1>}
-          <p>{t.intro}</p>
+    <div id={embedded ? "colecao" : undefined} className={cn("min-h-screen bg-[radial-gradient(circle_at_84%_5%,rgba(137,84,202,.34),transparent_34%),linear-gradient(145deg,#2b1346_0%,#180d29_75%)] pt-[clamp(44px,6vw,84px)] pb-[clamp(70px,8vw,110px)] text-[#f8f4ff]", embedded && "min-h-0")}>
+      <div className="mx-auto w-[min(1180px,calc(100%_-_48px))] max-[600px]:w-[calc(100%_-_28px)]">
+        <div className="mb-[clamp(28px,4vw,48px)] max-w-[720px]">
+          <span className="mb-[14px] inline-block text-[12px] font-black tracking-[.17em] text-brand-leaf">{t.eyebrow}</span>
+          {embedded ? <h2 className="mt-0 mb-[15px] text-[clamp(36px,5vw,64px)] font-black leading-[1.08] tracking-[-.045em]">{t.heading}</h2> : <h1 className="mt-0 mb-[15px] text-[clamp(36px,5vw,64px)] font-black leading-[1.08] tracking-[-.045em]">{t.heading}</h1>}
+          <p className="m-0 max-w-[590px] text-[clamp(15px,1.5vw,18px)] leading-[1.65] text-[#d8cce5]">{t.intro}</p>
         </div>
 
         <section
-          className={styles.carousel}
+          className="overflow-hidden rounded-[clamp(16px,2.5vw,28px)] border border-white/[.16] bg-[#251936] shadow-[0_28px_70px_rgba(8,3,17,.35)]"
           aria-label={t.carousel}
           aria-roledescription="carousel"
           onMouseEnter={() => setPaused(true)}
@@ -108,17 +68,17 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
             if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
           }}
         >
-          <div className={styles.stage}>
+          <div className="relative aspect-[3/2] overflow-hidden bg-[#251936]">
             {slides.map((slide, index) => (
               <Image
                 key={slide.image}
                 src={`/images/collecao/${slide.image}`}
-                alt={t.imageAlt(slide.name)}
+                alt={t.imageAlt.replace("{name}", slide.name)}
                 fill
                 sizes="(max-width: 760px) 100vw, 1180px"
                 priority={index === 0}
                 loading="eager"
-                className={`${styles.slide} ${index === active ? styles.active : ""}`}
+                className={cn("pointer-events-none object-contain opacity-0 transition-opacity duration-700 ease-in-out motion-reduce:transition-none", index === active && "opacity-100")}
                 aria-hidden={index !== active}
               />
             ))}
@@ -126,7 +86,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
               type="button"
               variant="secondary"
               size="icon-lg"
-              className={`${styles.arrow} ${styles.previous}`}
+              className={`${arrow} left-[clamp(12px,2vw,26px)]`}
               aria-label={t.previous}
               onClick={() => setActive((current) => (current - 1 + slides.length) % slides.length)}
             >
@@ -136,7 +96,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
               type="button"
               variant="secondary"
               size="icon-lg"
-              className={`${styles.arrow} ${styles.next}`}
+              className={`${arrow} right-[clamp(12px,2vw,26px)]`}
               aria-label={t.next}
               onClick={() => setActive((current) => (current + 1) % slides.length)}
             >
@@ -144,24 +104,24 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
             </Button>
           </div>
 
-          <div className={styles.details}>
-            <div className={styles.caption}>
-              <span className={styles.counter}>{String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
-              <h2>{slides[active].name}</h2>
+          <div className="flex min-h-[94px] items-center justify-between gap-5 px-[clamp(20px,3vw,34px)] py-[19px] max-[600px]:flex-col max-[600px]:items-start max-[600px]:gap-[10px] max-[600px]:px-[18px] max-[600px]:pt-4 max-[600px]:pb-[18px]">
+            <div className="flex items-baseline gap-[18px] max-[600px]:gap-3">
+              <span className="whitespace-nowrap text-[12px] font-extrabold text-brand-leaf">{String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
+              <h2 className="m-0 text-[clamp(20px,2.2vw,28px)] font-extrabold tracking-[-.025em]">{slides[active].name}</h2>
             </div>
-            <div className={styles.dots} aria-label={t.carousel}>
+            <div className="flex items-center gap-[2px] max-[600px]:self-center" aria-label={t.carousel}>
               {slides.map((slide, index) => (
                 <Button
                   key={slide.image}
                   type="button"
                   variant="ghost"
                   size="icon-xs"
-                  className={`${styles.dotButton} ${index === active ? styles.selected : ""}`}
-                  aria-label={t.goTo(slide.name)}
+                  className={dot}
+                  aria-label={t.goTo.replace("{name}", slide.name)}
                   aria-current={index === active ? "true" : undefined}
                   onClick={() => setActive(index)}
                 >
-                  <span />
+                  <span className={cn("h-[7px] w-[7px] rounded-full bg-[#8c7c9d] transition-[width,background] duration-[250ms] ease-in motion-reduce:transition-none", index === active && "w-4 rounded-[9px] bg-brand-leaf")} />
                 </Button>
               ))}
             </div>

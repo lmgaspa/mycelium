@@ -14,6 +14,14 @@
   --color-error: oklch(0.65 0.18 25);
   --color-success: oklch(0.72 0.12 150);
 
+  /* Mycelium brand tokens */
+  --color-brand-plum: #351260;
+  --color-brand-plum-deep: #210a41;
+  --color-brand-purple: #7840d8;
+  --color-brand-leaf: #c9ec94;
+  --color-brand-ink: #26163a;
+  --color-brand-muted: #685d72;
+
   --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

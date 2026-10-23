@@ -1,30 +1,32 @@
+"use client";
+
 // src/pages/CardPaymentPage.tsx - REFATORADO
 import { useEffect, useMemo, useState, useContext } from "react";
 import { useNavigate } from "@/lib/router";
 
-import { tokenize, verifyBrandFromNumber, isScriptBlocked, type CardBrand } from "../services/efiCard";
-import { cookieStorage } from "../utils/cookieUtils";
-import { analytics, mapCartItems } from "../analytics";
-import { useCoupon } from "../hooks/useCoupon";
-import { apiPost } from "../api/http";
+import { tokenize, verifyBrandFromNumber, isScriptBlocked, type CardBrand } from "@/services/efiCard";
+import { cookieStorage } from "@/utils/cookieUtils";
+import { analytics, mapCartItems } from "@/analytics";
+import { useCoupon } from "@/hooks/useCoupon";
+import { apiPost } from "@/api/http";
 
 // Custom Hooks
-import { useCardFormatting, type CardData } from "../hooks/useCardFormatting";
-import { useCardValidation } from "../hooks/useCardValidation";
-import { useInstallments } from "../hooks/useInstallments";
-import { usePaymentTimer } from "../hooks/usePaymentTimer";
+import { useCardFormatting, type CardData } from "@/hooks/useCardFormatting";
+import { useCardValidation } from "@/hooks/useCardValidation";
+import { useInstallments } from "@/hooks/useInstallments";
+import { usePaymentTimer } from "@/hooks/usePaymentTimer";
 
 // Components
-import { CardForm } from "../components/payment/card/CardForm";
-import { InstallmentSelector } from "../components/payment/card/InstallmentSelector";
-import { CardPaymentWarnings } from "../components/payment/card/CardPaymentWarnings";
-import { CouponDisplay } from "../components/payment/card/CouponDisplay";
+import { CardForm } from "@/components/payment/card/CardForm";
+import { InstallmentSelector } from "@/components/payment/card/InstallmentSelector";
+import { CardPaymentWarnings } from "@/components/payment/card/CardPaymentWarnings";
+import { CouponDisplay } from "@/components/payment/card/CouponDisplay";
 
-import type { CartItem } from "../context/CartTypes";
-import type { CheckoutFormData } from "../types/CheckoutTypes";
-import { CartContext } from "../context/CartContext";
-import { OrderSummary } from "../components/OrderSummary";
-import ReviewPurchaseButton from "../components/common/ReviewPurchaseButton";
+import type { CartItem } from "@/context/CartTypes";
+import type { CheckoutFormData } from "@/types/CheckoutTypes";
+import { CartContext } from "@/context/CartContext";
+import { OrderSummary } from "@/components/OrderSummary";
+import ReviewPurchaseButton from "@/components/common/ReviewPurchaseButton";
 
 interface CardCheckoutResponse {
   success: boolean;
@@ -229,7 +231,7 @@ export default function CardPaymentPage() {
           })
         );
 
-        navigate(`/pedido-confirmado?orderId=${data.orderId}&payment=card&paid=true`);
+        navigate(`/order-confirmed?orderId=${data.orderId}&payment=card&paid=true`);
         return;
       }
 
@@ -244,7 +246,7 @@ export default function CardPaymentPage() {
 
       if (data.orderId && isPending) {
         setPaymentSuccess(true); // Prevent redirect on unmount
-        navigate(`/pedido-confirmado?orderId=${data.orderId}&payment=card&paid=false`);
+        navigate(`/order-confirmed?orderId=${data.orderId}&payment=card&paid=false`);
         return;
       }
 

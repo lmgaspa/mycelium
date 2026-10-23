@@ -1,75 +1,37 @@
 "use client";
 
+import { useCopy } from "@/i18n/useCopy";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { useLocale, type Locale } from "@/app/auth/locale";
-import { products, type Product } from "@/data/products";
-import styles from "./products.module.css";
-
-const copy: Record<Locale, {
-  eyebrow: string;
-  title: string;
-  intro: string;
-  phase: Record<Product["phase"], string>;
-  details: string;
-  imageAlt: (name: string) => string;
-}> = {
-  pt: {
-    eyebrow: "MYCELIUM · PRODUTOS",
-    title: "Produtos para cada etapa do cultivo.",
-    intro: "Conheça a linha Mycelium. Explore as embalagens e informações que aparecem nos rótulos.",
-    phase: { root: "Raiz", growth: "Crescimento", flowering: "Floração", finishing: "Finalização", adjustment: "Correção de pH" },
-    details: "Ver detalhes",
-    imageAlt: (name) => `Embalagem Mycelium ${name}`,
-  },
-  en: {
-    eyebrow: "MYCELIUM · PRODUCTS",
-    title: "Products for every growing stage.",
-    intro: "Explore the Mycelium line and the information shown on each product label.",
-    phase: { root: "Root", growth: "Growth", flowering: "Flowering", finishing: "Finishing", adjustment: "pH adjustment" },
-    details: "View details",
-    imageAlt: (name) => `Mycelium ${name} bottle`,
-  },
-  es: {
-    eyebrow: "MYCELIUM · PRODUCTOS",
-    title: "Productos para cada etapa del cultivo.",
-    intro: "Conoce la línea Mycelium y la información que aparece en las etiquetas.",
-    phase: { root: "Raíz", growth: "Crecimiento", flowering: "Floración", finishing: "Finalización", adjustment: "Ajuste de pH" },
-    details: "Ver detalles",
-    imageAlt: (name) => `Envase Mycelium ${name}`,
-  },
-};
+import PageBanner from "@/components/common/PageBanner";
+import ProductActions from "@/components/products/ProductActions";
+import { products } from "@/data/products";
 
 export default function Products() {
-  const t = copy[useLocale()];
+  const t = useCopy("Products");
 
   return (
-    <div className={styles.page}>
-      <header className={styles.hero}>
-        <div className={styles.shell}>
-          <span className={styles.eyebrow}>{t.eyebrow}</span>
-          <h1>{t.title}</h1>
-          <p>{t.intro}</p>
-        </div>
-      </header>
+    <div className="bg-[#faf8fc] text-brand-ink">
+      <PageBanner eyebrow={t.eyebrow} title={t.title} description={t.intro} />
 
-      <section className={styles.catalog} aria-label={t.eyebrow}>
-        <div className={`${styles.shell} ${styles.grid}`}>
+      <section className="pt-[clamp(55px,6vw,84px)] pb-[clamp(80px,8vw,112px)] max-[640px]:pt-[38px]" aria-label={t.eyebrow}>
+        <div className="mx-auto grid w-[min(1180px,calc(100%_-_48px))] grid-cols-3 gap-[clamp(18px,2.5vw,30px)] max-[900px]:grid-cols-2 max-[640px]:w-[calc(100%_-_32px)] max-[640px]:grid-cols-1">
           {products.map((product) => (
-            <Link href={`/products/${product.slug}`} className={styles.card} key={product.slug}>
-              <div className={styles.imageWrap}>
-                <Image src={product.image} alt={t.imageAlt(product.name)} fill sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" className={styles.image} />
-              </div>
-              <div className={styles.cardBody}>
-                <span className={styles.phase}>{t.phase[product.phase]}</span>
-                <h2>{product.name}</h2>
-                <div className={styles.cardBottom}>
+            <article className="flex flex-col overflow-hidden rounded-[22px] border border-[#e8e1ef] bg-white text-brand-ink shadow-[0_10px_28px_rgba(43,15,72,.06)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:border-[#b797dd] hover:shadow-[0_19px_42px_rgba(43,15,72,.14)] focus-within:border-[#b797dd] focus-within:shadow-[0_19px_42px_rgba(43,15,72,.14)] motion-reduce:transition-none" key={product.slug}>
+              <Link href={`/products/${product.slug}`} className="relative mx-4 mt-4 block aspect-[4/4.8] overflow-hidden rounded-[14px] bg-white focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-brand-purple max-[640px]:aspect-[4/4.4]">
+                <Image src={product.image} alt={t.imageAlt.replace("{name}", product.name)} fill sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw" className="object-contain" />
+              </Link>
+              <div className="flex flex-1 flex-col px-6 pt-[18px] pb-[23px]">
+                <span className="self-start rounded-full bg-[#eee6f7] px-[10px] py-[6px] text-[11px] font-extrabold uppercase tracking-[.04em] text-[#64369c]">{t.phase[product.phase]}</span>
+                <h2 className="mt-[13px] mb-[18px] text-[clamp(21px,2vw,27px)] leading-[1.18] tracking-[-.025em] [font-weight:850]"><Link href={`/products/${product.slug}`} className="text-inherit no-underline hover:text-brand-purple focus-visible:rounded-sm focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-brand-purple">{product.name}</Link></h2>
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-[10px] border-t border-[#eee8f2] pt-[15px] text-[13px] font-bold text-brand-muted">
                   <span>{product.formula ? `${product.formula} · ` : ""}{product.volume}</span>
-                  <span className={styles.cardAction}>{t.details} <ArrowUpRight aria-hidden="true" /></span>
+                  <Link href={`/products/${product.slug}`} className="inline-flex items-center gap-1 font-extrabold text-[#5b298e] no-underline hover:underline [&_svg]:size-[17px]">{t.details} <ArrowUpRight aria-hidden="true" /></Link>
                 </div>
+                <ProductActions productSlug={product.slug} compact className="mt-4 border-t border-[#eee8f2] pt-4" />
               </div>
-            </Link>
+            </article>
           ))}
         </div>
       </section>

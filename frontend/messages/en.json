@@ -1,0 +1,189 @@
+{
+  "Auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "forgot": "Forgot your password?",
+    "reset": "Reset password",
+    "verify": "Confirm email",
+    "changePassword": "Change password",
+    "changeEmail": "Change email",
+    "confirmEmailChange": "Confirm new email",
+    "settings": "My account",
+    "email": "Email",
+    "name": "Name",
+    "password": "Password",
+    "newPassword": "New password",
+    "currentPassword": "Current password",
+    "newEmail": "New email",
+    "continueGoogle": "Continue with Google",
+    "send": "Send",
+    "backLogin": "Back to sign in",
+    "alreadyAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "genericError": "Could not complete the request. Please try again.",
+    "invalidLogin": "Invalid email or password.",
+    "checkEmail": "Check your email to continue.",
+    "resetSent": "If the account exists, we'll send a password reset link.",
+    "changed": "Change complete. Sign in again.",
+    "verified": "Email confirmed. You can sign in now.",
+    "confirm": "Confirm",
+    "logout": "Sign out",
+    "accountIntro": "Manage your Mycelium account details and security.",
+    "googleUnavailable": "Google sign in will be available once the Client ID is configured.",
+    "separator": "or"
+  },
+  "AuthStory": {
+    "eyebrow": "GROW WITH MYCELIUM",
+    "title": "An experience that grows with you.",
+    "body": "Sign in to follow your choices and manage your details with confidence.",
+    "note": "Your account, your choices, in your language."
+  },
+  "Navbar": {
+    "home": "Home",
+    "products": "Products",
+    "collection": "Collection",
+    "grow": "Growing",
+    "contact": "Contact",
+    "login": "Sign in",
+    "register": "Register",
+    "account": "My account",
+    "logout": "Sign out",
+    "cart": "Cart",
+    "language": "Select language",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "mobileNav": "Mobile navigation",
+    "homeAria": "Mycelium — home"
+  },
+  "Footer": {
+    "body": "Solutions to support balance in your grow.",
+    "explore": "Explore",
+    "home": "Home",
+    "products": "Products",
+    "grow": "Growing",
+    "service": "Support",
+    "contact": "Contact",
+    "motto": "Grow with more balance.",
+    "homeAria": "Mycelium — home"
+  },
+  "Home": {
+    "eyebrow": "MYCELIUM · CULTIVATION SOLUTIONS",
+    "hero": "Flores Mágicas for a blooming grow.",
+    "intro": "Discover Mycelium's Flores Mágicas biomineral soil line, available in different sizes for your growing routine.",
+    "discover": "Explore Flores Mágicas",
+    "contact": "Contact us",
+    "strip1": "Biomineral soil line",
+    "strip3": "Four sizes",
+    "productLabel": "OUR PRODUCT",
+    "productTitle": "A line for flowering.",
+    "productIntro": "Discover Flores Mágicas and its different sizes.",
+    "productBody": "A 0-15-15 biomineral soil line in bottles for different growing needs.",
+    "productBullet1": "0-15-15 formula",
+    "productBullet2": "With micro and clay, as shown on the label",
+    "productBullet3": "100 ml, 250 ml, 500 ml and 1 litre",
+    "more": "Learn more",
+    "contactLabel": "LET'S TALK",
+    "contactTitle": "Want to know more about Mycelium?",
+    "contactBody": "Talk to us about our products and find the right option for your grow.",
+    "contactAction": "Get in touch",
+    "heroImageAlt": "Four bottles from the Mycelium Flores Mágicas line",
+    "highlightsAria": "Mycelium highlights",
+    "productImageAlt": "Mycelium Flores Mágicas bottles",
+    "biomineralBadge": "BIOMINERAL SOIL LINE"
+  },
+  "Support": {
+    "eyebrow": "MYCELIUM / CONTACT",
+    "title": "Let's talk about your grow",
+    "body": "We're preparing our contact channels. Soon you'll be able to speak directly with the Mycelium team here.",
+    "while": "IN THE MEANTIME",
+    "product": "Explore Flores Mágicas",
+    "productBody": "Explore Mycelium's biomineral soil line and the sizes available for your grow.",
+    "action": "View product",
+    "imageAlt": "Bottles from the Mycelium Flores Mágicas line"
+  },
+  "Cultivo": {
+    "label": "GROW WITH CONFIDENCE",
+    "title": "Every stage is part of your grow.",
+    "body": "Flores Mágicas is part of Mycelium's line for flowering. Explore the available sizes and choose one for your routine.",
+    "action": "Ask us",
+    "card": "Balance matters at every stage.",
+    "benefits": [
+      {
+        "title": "Flowering",
+        "body": "A line made for the flowering stage."
+      },
+      {
+        "title": "Biomineral soil",
+        "body": "Explore the ingredients listed on the label."
+      },
+      {
+        "title": "Choose a size",
+        "body": "Available in 100 ml, 250 ml, 500 ml and 1 litre."
+      }
+    ]
+  },
+  "Collection": {
+    "eyebrow": "MYCELIUM · COLLECTION",
+    "heading": "Explore our collection",
+    "intro": "Explore every Mycelium line and find the next step for your growing journey.",
+    "carousel": "Mycelium collection banners",
+    "previous": "Previous banner",
+    "next": "Next banner",
+    "goTo": "View {name} banner",
+    "imageAlt": "Mycelium {name} products"
+  },
+  "Products": {
+    "eyebrow": "MYCELIUM · PRODUCTS",
+    "title": "Products for every growing stage.",
+    "intro": "Explore the Mycelium line and the information shown on each product label.",
+    "phase": {
+      "root": "Root",
+      "growth": "Growth",
+      "flowering": "Flowering",
+      "finishing": "Finishing",
+      "adjustment": "pH adjustment"
+    },
+    "details": "View details",
+    "imageAlt": "Mycelium {name} bottle"
+  },
+  "ProductDetail": {
+    "back": "All products",
+    "family": "Mycelium line",
+    "phase": {
+      "root": "Root",
+      "growth": "Growth",
+      "flowering": "Flowering",
+      "finishing": "Finishing",
+      "adjustment": "pH adjustment"
+    },
+    "formula": "Formula on label",
+    "volume": "Package size",
+    "labelInfo": "Information shown on the pictured package.",
+    "imageAlt": "Mycelium {name} bottle"
+  },
+  "CookieConsent": {
+    "title": "Cookies:",
+    "body": "We use cookies in accordance with Brazil's LGPD and the EU's GDPR. You can accept or decline.",
+    "decline": "Decline",
+    "accept": "Accept"
+  },
+  "Cart": {
+    "title": "Shopping cart",
+    "empty": "Your cart is empty. Explore Mycelium products and find the next item for your grow.",
+    "explore": "View products"
+  },
+  "Quantity": {
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "ProductActions": {
+    "add": "Add to cart",
+    "addShort": "Add",
+    "pending": "Pricing and online purchase coming soon.",
+    "checkingStock": "Checking stock...",
+    "soldOut": "This product is sold out! If you have questions, get in touch with us.",
+    "contact": "Contact us"
+  }
+}

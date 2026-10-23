@@ -1,15 +1,17 @@
+"use client";
+
 // src/pages/CheckoutPage.tsx
 import { useState, useEffect, useMemo, useCallback, useRef, useContext } from "react";
 import { useNavigate } from "@/lib/router";
-import { useCoupon } from "../hooks/useCoupon";
-import { formatCep, formatCpf, formatCelular } from "../utils/masks";
-import CheckoutForm from "./CheckoutForm";
-import type { CartItem } from "../context/CartTypes";
-import { calcularFreteComBaseEmCarrinho } from "../utils/freteUtils";
-import { getStockByIds } from "../api/stock";
-import { cookieStorage } from "../utils/cookieUtils";
-import { analytics, mapCartItems } from "../analytics";
-import { CartContext } from "../context/CartContext";
+import { useCoupon } from "@/hooks/useCoupon";
+import { formatCep, formatCpf, formatCelular } from "@/utils/masks";
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import type { CartItem } from "@/context/CartTypes";
+import { calcularFreteComBaseEmCarrinho } from "@/utils/freteUtils";
+import { getStockByIds } from "@/api/stock";
+import { cookieStorage } from "@/utils/cookieUtils";
+import { analytics, mapCartItems } from "@/analytics";
+import { CartContext } from "@/context/CartContext";
 
 type FormState = {
   firstName: string;

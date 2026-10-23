@@ -1,9 +1,11 @@
+"use client";
+
 // src/pages/BookPage.tsx
 import { useMemo } from "react";
 import { useParams } from "@/lib/router";
-import { books } from "../data/booksWithRelated"; // <-- aqui muda
-import BookDetails from "../components/book/BookDetails";
-import { useStockByIds } from "../hooks/useStockByIds";
+import { books } from "@/data/booksWithRelated"; // <-- aqui muda
+import BookDetails from "@/components/book/BookDetails";
+import { useStockByIds } from "@/hooks/useStockByIds";
 
 export default function BookPage() {
   const { id } = useParams<{ id: string }>();

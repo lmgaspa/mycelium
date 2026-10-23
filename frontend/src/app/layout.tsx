@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import LocaleProvider from "@/i18n/LocaleProvider";
+import CookieConsent from "@/components/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
 import "../styles.css";
-import "../legacy-pages/HomePage.css";
 
 export const metadata: Metadata = {
   title: "Mycelium",
@@ -9,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  return <html lang="pt-BR" data-scroll-behavior="smooth"><body>{children}</body></html>;
+  return <html lang="pt-BR" data-scroll-behavior="smooth" className="scroll-smooth"><body><LocaleProvider><ScrollToTop />{children}<CookieConsent /></LocaleProvider></body></html>;
 }

@@ -2,18 +2,18 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
-import CardPaymentPage from '../CardPaymentPage';
-import { CartContext } from '../../context/CartContext';
-import * as efiCard from '../../services/efiCard';
-import * as http from '../../api/http';
-import * as cookieUtils from '../../utils/cookieUtils';
+import CardPaymentPage from '@/app/(store)/payment/card/client';
+import { CartContext } from '@/context/CartContext';
+import * as efiCard from '@/services/efiCard';
+import * as http from '@/api/http';
+import * as cookieUtils from '@/utils/cookieUtils';
 
 const BrowserRouter = ({ children }: { children: ReactNode }) => <>{children}</>;
 
 // Mock modules
-vi.mock('../../services/efiCard');
-vi.mock('../../api/http');
-vi.mock('../../analytics', () => ({
+vi.mock('@/services/efiCard');
+vi.mock('@/api/http');
+vi.mock('@/analytics', () => ({
     analytics: {
         addPaymentInfo: vi.fn(),
     },
@@ -256,7 +256,7 @@ describe('CardPaymentPage', () => {
             await waitFor(() => {
                 expect(mockCartContext.clearCart).toHaveBeenCalled();
                 expect(mockNavigate).toHaveBeenCalledWith(
-                    expect.stringContaining('/pedido-confirmado')
+                    expect.stringContaining('/order-confirmed')
                 );
             });
         });
@@ -457,7 +457,7 @@ describe('CardPaymentPage', () => {
 
             await waitFor(() => {
                 expect(mockNavigate).toHaveBeenCalledWith(
-                    expect.stringContaining('/pedido-confirmado')
+                    expect.stringContaining('/order-confirmed')
                 );
             });
 

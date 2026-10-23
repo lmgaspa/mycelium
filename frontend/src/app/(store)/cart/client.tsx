@@ -1,14 +1,21 @@
+"use client";
+
 import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "@/lib/router";
-import CartTable from "../components/cart/CartTable";
-import CouponInput from "../components/cart/CouponInput";
-import CartSummary from "../components/cart/CartSummary";
-import { getStockByIds } from "../api/stock";
-import { useCoupon } from "../hooks/useCoupon";
-import { CartContext } from "../context/CartContext";
-import type { CartItem } from "../context/CartTypes";
+import CartTable from "@/components/cart/CartTable";
+import CouponInput from "@/components/cart/CouponInput";
+import CartSummary from "@/components/cart/CartSummary";
+import { getStockByIds } from "@/api/stock";
+import { useCoupon } from "@/hooks/useCoupon";
+import { CartContext } from "@/context/CartContext";
+import type { CartItem } from "@/context/CartTypes";
+import Link from "next/link";
+import { ArrowRight, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCopy } from "@/i18n/useCopy";
 
 const CartPage = () => {
+  const t = useCopy("Cart");
   const cartContext = useContext(CartContext);
   const [stockById, setStockById] = useState<Record<string, number>>({});
   const navigate = useNavigate();
@@ -123,10 +130,16 @@ const CartPage = () => {
   };
 
   return (
-    <div className="container mx-auto mt-0 pt-2 mb-8 px-4 bg-background rounded-md shadow-lg p-6 sm:p-8">
-      <h1 className="text-4xl font-bold mb-8 text-text-primary">Carrinho de Compras</h1>
+    <div className={cartItems.length === 0 ? "mx-auto mb-8 w-[min(760px,calc(100%_-_32px))] rounded-2xl bg-background px-5 py-6 shadow-md sm:px-7" : "container mx-auto mt-0 pt-2 mb-8 px-4 bg-background rounded-md shadow-lg p-6 sm:p-8"}>
+      <h1 className={cartItems.length === 0 ? "mb-5 text-3xl font-bold text-text-primary" : "mb-8 text-4xl font-bold text-text-primary"}>{t.title}</h1>
       {cartItems.length === 0 ? (
-        <p className="text-text-secondary">Seu carrinho está vazio.</p>
+        <div className="mx-auto flex max-w-lg flex-col items-center rounded-2xl border border-[#e5d9f1] bg-[#f8f4fc] px-5 py-6 text-center shadow-sm">
+          <span className="mb-3 grid size-12 place-items-center rounded-xl bg-[#e9ddf6] text-brand-plum"><ShoppingBag aria-hidden="true" className="size-6" /></span>
+          <p className="mb-4 max-w-md text-sm leading-relaxed text-brand-muted">{t.empty}</p>
+          <Button asChild className="min-h-11 cursor-pointer rounded-full bg-brand-plum px-6 font-bold text-white hover:bg-brand-purple">
+            <Link href="/products">{t.explore}<ArrowRight aria-hidden="true" /></Link>
+          </Button>
+        </div>
       ) : (
         <>
           <CartTable items={cartItems} onQuantityChange={updateQuantity} onRemoveItem={removeItem} />
@@ -161,9 +174,9 @@ const CartPage = () => {
           </button>
         </>
       )}
-      <div className="text-right text-xl font-bold mt-4">
+      {cartItems.length > 0 && <div className="text-right text-xl font-bold mt-4">
         Total: R$ {(subtotal - getDiscountAmount(subtotal)).toFixed(2).replace(".", ",")}
-      </div>
+      </div>}
     </div>
   );
 };

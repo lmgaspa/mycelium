@@ -127,7 +127,7 @@ export const usePixSSE = ({
           ? [checkoutForm.firstName, checkoutForm.lastName].filter(Boolean).join(" ").trim()
           : "";
         navigate(
-          `/pedido-confirmado?orderId=${id}${
+          `/order-confirmed?orderId=${id}${
             fullName ? `&name=${encodeURIComponent(fullName)}` : ""
           }&payment=pix&paid=true`
         );

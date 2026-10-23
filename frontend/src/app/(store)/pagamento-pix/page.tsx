@@ -1,4 +1,5 @@
-"use client";
-import dynamic from "next/dynamic";
-const PixPaymentPage = dynamic(() => import("../../../legacy-pages/PixPaymentPage"), { ssr: false });
-export default function Page() { return <PixPaymentPage />; }
+import { redirect } from "next/navigation";
+
+export default function Page() {
+  redirect("/payment/pix");
+}

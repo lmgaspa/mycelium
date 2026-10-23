@@ -1,9 +1,11 @@
+"use client";
+
 // src/pages/PedidoConfirmado.tsx
 import { useMemo, useEffect, useContext } from "react";
 import { useSearchParams, Link } from "@/lib/router";
-import { CartContext } from "../context/CartContext";
-import { analytics } from "../analytics";
-import type { AnalyticsPort } from "../analytics/AnalyticsPort";
+import { CartContext } from "@/context/CartContext";
+import { analytics } from "@/analytics";
+import type { AnalyticsPort } from "@/analytics/AnalyticsPort";
 import Cookies from "js-cookie";
 
 // Usa a própria porta como fonte da verdade do tipo (OCP friendly)
@@ -12,7 +14,7 @@ type PurchaseParams = Parameters<AnalyticsPort["purchase"]>[0];
 const CART_COOKIE_NAME = "cart";
 const GA_KEY = "ga_purchase_payload";
 
-export default function PedidoConfirmado() {
+export default function OrderConfirmedPage() {
   const [params] = useSearchParams();
 
   const orderId = useMemo(() => params.get("orderId"), [params]);

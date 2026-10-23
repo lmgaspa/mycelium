@@ -1,5 +1,10 @@
-"use client";
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
-const PedidoConfirmado = dynamic(() => import("../../../legacy-pages/PedidoConfirmado"), { ssr: false });
-export default function Page() { return <Suspense fallback={null}><PedidoConfirmado /></Suspense>; }
+import { redirect } from "next/navigation";
+
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(await searchParams)) {
+    if (Array.isArray(value)) value.forEach((item) => params.append(key, item));
+    else if (value !== undefined) params.set(key, value);
+  }
+  redirect(`/order-confirmed${params.size ? `?${params}` : ""}`);
+}

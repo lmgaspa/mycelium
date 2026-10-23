@@ -1,21 +1,23 @@
+"use client";
+
 // src/pages/PixPaymentPage.tsx - REFATORADO
 import { useEffect, useMemo, useState, useContext } from "react";
-import type { CartItem } from "../context/CartTypes";
-import { formatPrice } from "../utils/formatPrice";
-import { cookieStorage } from "../utils/cookieUtils";
-import { useCoupon } from "../hooks/useCoupon";
-import { CartContext } from "../context/CartContext";
+import type { CartItem } from "@/context/CartTypes";
+import { formatPrice } from "@/utils/formatPrice";
+import { cookieStorage } from "@/utils/cookieUtils";
+import { useCoupon } from "@/hooks/useCoupon";
+import { CartContext } from "@/context/CartContext";
 
 // Custom Hooks
-import { usePixCheckout } from "../hooks/usePixCheckout";
-import { usePixSSE } from "../hooks/usePixSSE";
-import { usePixTimer } from "../hooks/usePixTimer";
+import { usePixCheckout } from "@/hooks/usePixCheckout";
+import { usePixSSE } from "@/hooks/usePixSSE";
+import { usePixTimer } from "@/hooks/usePixTimer";
 
 // Components
-import { OrderSummary } from "../components/OrderSummary";
-import ReviewPurchaseButton from "../components/common/ReviewPurchaseButton";
-import { PixQRCodeDisplay } from "../components/payment/pix/PixQRCodeDisplay";
-import { PixPaymentWarnings } from "../components/payment/pix/PixPaymentWarnings";
+import { OrderSummary } from "@/components/OrderSummary";
+import ReviewPurchaseButton from "@/components/common/ReviewPurchaseButton";
+import { PixQRCodeDisplay } from "@/components/payment/pix/PixQRCodeDisplay";
+import { PixPaymentWarnings } from "@/components/payment/pix/PixPaymentWarnings";
 
 export default function PixPaymentPage() {
   const { getDiscountAmount, couponCode, clearCoupon, isValid: isCouponValid } = useCoupon();

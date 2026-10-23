@@ -1,33 +1,30 @@
-import React from 'react';
+"use client";
 
-interface ButtonCountCartProps {
+import { Minus, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useCopy } from "@/i18n/useCopy";
+
+type ButtonCountCartProps = {
   quantity: number;
   onDecrease: () => void;
   onIncrease: () => void;
   allowZero?: boolean;
-}
-
-const ButtonCountCart: React.FC<ButtonCountCartProps> = ({ quantity, onDecrease, onIncrease, allowZero = false }) => {
-  return (
-    <div className="flex items-center gap-2">
-      <button
-        type="button"
-        className="px-4 py-2 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 transition disabled:opacity-50"
-        onClick={onDecrease}
-        disabled={!allowZero && quantity <= 1}
-      >
-        -
-      </button>
-      <span className="text-lg min-w-[2rem] text-center">{quantity}</span>
-      <button
-        type="button"
-        className="px-4 py-2 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 transition"
-        onClick={onIncrease}
-      >
-        +
-      </button>
-    </div>
-  );
+  maxQuantity?: number;
 };
 
-export default ButtonCountCart;
+export default function ButtonCountCart({ quantity, onDecrease, onIncrease, allowZero = false, maxQuantity }: ButtonCountCartProps) {
+  const t = useCopy("Quantity");
+  const buttonClass = "size-9 cursor-pointer rounded-full border-[#d9c6e7] bg-white text-brand-plum hover:bg-[#f1e9f9] hover:text-brand-plum disabled:cursor-not-allowed";
+
+  return (
+    <div className="inline-flex items-center gap-2" role="group" aria-label={t.quantity}>
+      <Button type="button" variant="outline" size="icon" className={buttonClass} onClick={onDecrease} disabled={quantity <= (allowZero ? 0 : 1)} aria-label={t.decrease}>
+        <Minus aria-hidden="true" />
+      </Button>
+      <span className="min-w-7 text-center text-base font-bold tabular-nums text-brand-ink" aria-live="polite">{quantity}</span>
+      <Button type="button" variant="outline" size="icon" className={buttonClass} onClick={onIncrease} disabled={maxQuantity !== undefined && quantity >= maxQuantity} aria-label={t.increase}>
+        <Plus aria-hidden="true" />
+      </Button>
+    </div>
+  );
+}

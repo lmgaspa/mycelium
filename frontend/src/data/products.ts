@@ -15,7 +15,8 @@ export const products: Product[] = [
   { slug: "floracao-parte-b", name: "Floração Parte B", image: "/images/products/floracaoparteb.webp", phase: "flowering", formula: "0-1-0.5", volume: "1 L" },
   { slug: "flores-magicas", name: "Flores Mágicas", image: "/images/products/flormagica.webp", phase: "flowering", formula: "0-15-15", volume: "500 ml" },
   { slug: "finalizador", name: "Finalizador", image: "/images/products/finalizador.webp", phase: "finishing", formula: "1-5-3", volume: "1 L" },
-  { slug: "ph-down", name: "pH Down", image: "/images/products/phdown.webp", phase: "adjustment", volume: "1 L" },
+  { slug: "ph-down", name: "Corretor de pH Down", image: "/images/products/phdown.webp", phase: "adjustment", volume: "1 L" },
+  { slug: "ph-up", name: "Corretor de pH Up", image: "/images/products/corretorph.webp", phase: "adjustment", volume: "1 L" },
 ];
 
 export function getProduct(slug: string) {
