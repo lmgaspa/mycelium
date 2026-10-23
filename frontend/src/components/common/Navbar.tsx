@@ -10,9 +10,9 @@ import {
 import { localeTags, readLocale, saveLocale, type Locale } from "@/app/auth/locale";
 
 const copy = {
-  pt: { home: "Início", products: "Produtos", grow: "Cultivo", contact: "Contato", login: "Entrar", register: "Registrar", account: "Minha conta", logout: "Sair", cart: "Carrinho", language: "Selecionar idioma", menu: "Abrir menu" },
-  en: { home: "Home", products: "Products", grow: "Growing", contact: "Contact", login: "Sign in", register: "Register", account: "My account", logout: "Sign out", cart: "Cart", language: "Select language", menu: "Open menu" },
-  es: { home: "Inicio", products: "Productos", grow: "Cultivo", contact: "Contacto", login: "Entrar", register: "Registrar", account: "Mi cuenta", logout: "Salir", cart: "Carrito", language: "Seleccionar idioma", menu: "Abrir menú" },
+  pt: { home: "Início", products: "Produtos", collection: "Coleção", grow: "Cultivo", contact: "Contato", login: "Entrar", register: "Registrar", account: "Minha conta", logout: "Sair", cart: "Carrinho", language: "Selecionar idioma", menu: "Abrir menu" },
+  en: { home: "Home", products: "Products", collection: "Collection", grow: "Growing", contact: "Contact", login: "Sign in", register: "Register", account: "My account", logout: "Sign out", cart: "Cart", language: "Select language", menu: "Open menu" },
+  es: { home: "Inicio", products: "Productos", collection: "Colección", grow: "Cultivo", contact: "Contacto", login: "Entrar", register: "Registrar", account: "Mi cuenta", logout: "Salir", cart: "Carrito", language: "Seleccionar idioma", menu: "Abrir menú" },
 } as const;
 
 const languages: { code: Locale; flag: string; label: string }[] = [
@@ -106,7 +106,7 @@ export default function Navbar({ variant = "store" }: { variant?: "store" | "aut
         <Link href="/" className="myc-brand" aria-label="Mycelium — início"><img src="/images/logomycelium.webp" alt="Mycelium" /></Link>
         {variant === "store" ? (
           <nav className="myc-nav" aria-label="Navegação principal">
-            <Link href="/">{t.home}</Link><Link href="/#produto">{t.products}</Link><Link href="/#cultivo">{t.grow}</Link><Link href="/support">{t.contact}</Link>
+            <Link href="/">{t.home}</Link><Link href="/products">{t.products}</Link><Link href="/collection">{t.collection}</Link><Link href="/#cultivo">{t.grow}</Link><Link href="/support">{t.contact}</Link>
           </nav>
         ) : <div className="myc-header-spacer" />}
         <div className="myc-header-tools">
@@ -124,7 +124,8 @@ export default function Navbar({ variant = "store" }: { variant?: "store" | "aut
         {variant === "store" ? (
           <nav aria-label="Navegação móvel" className="myc-mobile-nav">
             <Link href="/" onClick={() => setMenuOpen(false)}>{t.home}</Link>
-            <Link href="/#produto" onClick={() => setMenuOpen(false)}>{t.products}</Link>
+            <Link href="/products" onClick={() => setMenuOpen(false)}>{t.products}</Link>
+            <Link href="/collection" onClick={() => setMenuOpen(false)}>{t.collection}</Link>
             <Link href="/#cultivo" onClick={() => setMenuOpen(false)}>{t.grow}</Link>
             <Link href="/support" onClick={() => setMenuOpen(false)}>{t.contact}</Link>
           </nav>

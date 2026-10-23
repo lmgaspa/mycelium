@@ -21,7 +21,7 @@ function SupportPage() {
           <span className="myc-kicker">{t.while}</span>
           <h2>{t.product}</h2>
           <p>{t.productBody}</p>
-          <a className="myc-button myc-button-dark" href="/#produto">{t.action}</a>
+          <a className="myc-button myc-button-dark" href="/products/flores-magicas">{t.action}</a>
         </div>
         <img src="/images/floresmagicas.webp" alt="Frascos da linha Mycelium Flores Mágicas" />
       </section>

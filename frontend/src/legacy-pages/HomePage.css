@@ -14,8 +14,8 @@ body { margin: 0; }
 .myc-header { background: #210f3b; color: #fff; position: relative; z-index: 30; border-bottom: 1px solid rgba(255,255,255,.08); }
 .myc-header-auth { background: rgba(27, 13, 49, .82); backdrop-filter: blur(18px); }
 .myc-header-inner { min-height: 76px; display: flex; align-items: center; gap: clamp(18px, 3vw, 42px); }
-.myc-brand { display: inline-flex; align-items: center; background: #fff; border-radius: 12px; padding: 6px 11px; flex: 0 0 auto; box-shadow: 0 7px 20px rgba(0,0,0,.12); }
-.myc-brand img { width: 154px; height: 40px; object-fit: contain; }
+.myc-brand { display: inline-flex; align-items: center; flex: 0 0 auto; }
+.myc-brand img { width: 154px; height: 40px; object-fit: contain; filter: brightness(0) saturate(100%) invert(90%) sepia(16%) saturate(626%) hue-rotate(35deg); }
 .myc-header-spacer { flex: 1; }
 .myc-nav { display: flex; gap: clamp(15px, 2.4vw, 33px); align-items: center; justify-content: center; flex: 1; }
 .myc-nav a { color: #f5efff; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .055em; text-decoration: none; transition: color .2s; white-space: nowrap; }
@@ -123,7 +123,7 @@ body { margin: 0; }
 .myc-footer { background: var(--myc-plum-deep); color: #f5efff; padding: 54px 0 22px; }
 .myc-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.15fr; gap: 42px; }
 .myc-footer-grid > div { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
-.myc-footer-brand img { width: 195px; height: 50px; object-fit: contain; background: #fff; border-radius: 10px; padding: 5px 9px; }
+.myc-footer-brand img { width: 195px; height: 50px; object-fit: contain; filter: brightness(0) saturate(100%) invert(90%) sepia(16%) saturate(626%) hue-rotate(35deg); }
 .myc-footer-brand p { max-width: 270px; }
 .myc-footer h2 { margin: 0 0 8px; font-size: 14px; font-weight: 900; }
 .myc-footer a { color: #f5efff; font-size: 13px; text-decoration: none; }
@@ -170,7 +170,6 @@ body { margin: 0; }
 @media (max-width: 520px) {
   .myc-shell { width: min(100% - 32px, 1180px); }
   .myc-header-inner { gap: 8px; }
-  .myc-brand { padding: 4px 7px; border-radius: 9px; }
   .myc-brand img { width: clamp(96px, 29vw, 124px); height: 30px; }
   .myc-header-tools { gap: 5px; }
   .myc-icon-button { min-width: 34px; height: 34px; padding: 0 6px; border-radius: 8px; }

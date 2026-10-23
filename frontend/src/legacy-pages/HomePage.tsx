@@ -1,6 +1,7 @@
 import { Link } from "@/lib/router";
 import { ArrowRight, Droplets, FlaskConical, Leaf, Sprout } from "lucide-react";
 import { useLocale } from "../app/auth/locale";
+import Collection from "../components/collection/collection";
 import "./HomePage.css";
 
 const copy = {
@@ -66,7 +67,7 @@ function HomePage() {
             <h1 id="hero-title">{t.hero}</h1>
             <p>{t.intro}</p>
             <div className="myc-hero-actions">
-              <a className="myc-button myc-button-light" href="#produto">{t.discover} <ArrowRight aria-hidden="true" /></a>
+              <Link className="myc-button myc-button-light" to="/products/flores-magicas">{t.discover} <ArrowRight aria-hidden="true" /></Link>
               <Link className="myc-text-link" to="/support">{t.contact}</Link>
             </div>
           </div>
@@ -87,6 +88,8 @@ function HomePage() {
         </div>
       </div>
 
+      <Collection embedded />
+
       <section id="produto" className="myc-section myc-product-section" aria-labelledby="product-title">
         <div className="myc-shell">
           <div className="myc-section-heading">
@@ -104,7 +107,7 @@ function HomePage() {
               <h3>Flores Mágicas</h3>
               <p>{t.productBody}</p>
               <ul><li>{t.productBullet1}</li><li>{t.productBullet2}</li><li>{t.productBullet3}</li></ul>
-              <Link className="myc-button myc-button-outline" to="/support">{t.more} <ArrowRight aria-hidden="true" /></Link>
+              <Link className="myc-button myc-button-outline" to="/products/flores-magicas">{t.more} <ArrowRight aria-hidden="true" /></Link>
             </div>
           </div>
         </div>

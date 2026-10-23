@@ -12,7 +12,7 @@ function Footer() {
     <footer className="myc-footer">
       <div className="myc-shell myc-footer-grid">
         <div className="myc-footer-brand"><Link to="/" aria-label="Mycelium — início"><img src="/images/logomycelium.webp" alt="Mycelium" /></Link><p>{t.body}</p></div>
-        <div><h2>{t.explore}</h2><Link to="/">{t.home}</Link><a href="/#produto">{t.products}</a><a href="/#cultivo">{t.grow}</a></div>
+        <div><h2>{t.explore}</h2><Link to="/">{t.home}</Link><Link to="/products">{t.products}</Link><a href="/#cultivo">{t.grow}</a></div>
         <div><h2>{t.service}</h2><Link to="/support">{t.contact}</Link></div>
         <div className="myc-footer-note"><h2>Mycelium</h2><p>{t.motto}</p></div>
       </div>

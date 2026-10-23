@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { apiGet, apiPost } from "../api/http";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
+import { Cookie } from "lucide-react";
 
 type ConsentView = {
   analytics: boolean;
@@ -38,16 +41,12 @@ export default function CookieConsent() {
     document.cookie = `cookie_consent=${value}; max-age=31536000; path=/; ${extra}`;
   };
 
-  // Verificar consentimento no backend ao carregar
   useEffect(() => {
     const checkConsent = async () => {
       try {
         const response = await apiGet<ConsentView>("/privacy/consent");
-
         if (response) {
-          // Regra: consideramos "consentido" se ao menos um tipo está ON
           const accepted = response.analytics || response.marketing;
-
           setCookie(accepted ? "true" : "false");
           notifyGate(accepted ? "true" : "false");
           setVisible(false);
@@ -56,11 +55,9 @@ export default function CookieConsent() {
       } catch {
         // Se API falhar, cai pro cookie local
       }
-
       const consent = document.cookie.includes("cookie_consent=true");
       if (!consent) setVisible(true);
     };
-
     checkConsent();
   }, []);
 
@@ -68,75 +65,61 @@ export default function CookieConsent() {
     setCookie("true");
     notifyGate("true");
     setVisible(false);
-
     try {
-      await apiPost("/privacy/consent", {
-        analytics: true,
-        marketing: true, // se quiser marketing separado, depois você muda aqui
-        version: 1,
-      });
-    } catch {
-      // Silencioso – UX já está ok para o usuário
-    }
+      await apiPost("/privacy/consent", { analytics: true, marketing: true, version: 1 });
+    } catch { /* Silencioso */ }
   };
 
   const declineCookies = async () => {
     setCookie("false");
     notifyGate("false");
     setVisible(false);
-
     try {
-      await apiPost("/privacy/consent", {
-        analytics: false,
-        marketing: false,
-        version: 1,
-      });
-    } catch {
-      // Silencioso
-    }
+      await apiPost("/privacy/consent", { analytics: false, marketing: false, version: 1 });
+    } catch { /* Silencioso */ }
   };
 
   if (!visible) return null;
 
   return createPortal(
     <div
-      className="
-        fixed bottom-0 left-0 w-full
-        bg-[var(--color-background2)] border-t border-border
-        text-text-primary p-4 sm:p-5 
-        flex flex-col sm:flex-row sm:items-center justify-between
-      "
-      role="dialog"
+      className="fixed bottom-3 left-0 right-0 z-[9999] flex justify-center px-4 pointer-events-none"
       aria-live="polite"
     >
-      <p className="text-sm leading-relaxed sm:max-w-[70%]">
-        Usamos cookies para melhorar sua experiência e analisar as métricas do
-        site. Você pode aceitar ou recusar conforme a{" "}
-        <span className="font-semibold">
-          LGPD - Lei Geral de Proteção de Dados Pessoais
-        </span>
-        .
-      </p>
+      <Card className="w-full max-w-3xl pointer-events-auto shadow-xl border border-border bg-card gap-0">
+        <CardContent className="py-2 px-4">
+          <div className="flex items-center gap-3">
+            <Cookie className="shrink-0 text-primary" size={20} aria-hidden />
 
-      <div className="flex gap-3 sm:shrink-0">
-        <button
-          type="button"
-          onClick={acceptCookies}
-          className="px-5 py-2 rounded-md shadow-md text-background font-semibold bg-primary hover:bg-secondary transition"
-        >
-          Aceitar
-        </button>
+            <p className="flex-1 min-w-0 text-sm text-muted-foreground">
+              <span className="font-semibold text-card-foreground">Cookies: </span>
+              Usamos cookies conforme a{" "}
+              <span className="font-medium text-card-foreground">LGPD</span>.
+              Você pode aceitar ou recusar.
+            </p>
 
-        <button
-          type="button"
-          onClick={declineCookies}
-          className="px-5 py-2 rounded-md border border-border bg-surface-muted text-text-secondary hover:bg-surface transition"
-        >
-          Recusar
-        </button>
-      </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={declineCookies}
+              >
+                Recusar
+              </Button>
+              <Button
+                type="button"
+                variant="default"
+                size="sm"
+                onClick={acceptCookies}
+              >
+                Aceitar
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>,
     document.body
   );
 }
-  
