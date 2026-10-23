@@ -62,8 +62,8 @@ describe('CardPaymentPage', () => {
 
     beforeEach(() => {
         // Set environment variables
-        vi.stubEnv('VITE_EFI_PAYEE_CODE', 'TEST_PAYEE_CODE');
-        vi.stubEnv('VITE_EFI_SANDBOX', 'true');
+        vi.stubEnv('NEXT_PUBLIC_EFI_PAYEE_CODE', 'TEST_PAYEE_CODE');
+        vi.stubEnv('NEXT_PUBLIC_EFI_SANDBOX', 'false');
 
         // Mock cookie storage
         vi.spyOn(cookieUtils.cookieStorage, 'get').mockImplementation((key) => {
@@ -79,6 +79,21 @@ describe('CardPaymentPage', () => {
         vi.mocked(efiCard.tokenize).mockResolvedValue({
             payment_token: 'mock_token_123',
             card_mask: '411111******1111',
+        });
+
+        // Mock da consulta de parcelas da EFI
+        vi.mocked(efiCard.getInstallments).mockResolvedValue({
+            rate: 0,
+            name: 'visa',
+            installments: [
+                {
+                    installment: 1,
+                    value: 11500,
+                    has_interest: false,
+                    currency: 'BRL',
+                    interest_percentage: 0,
+                },
+            ],
         });
 
         // Clear all mocks
@@ -125,7 +140,7 @@ describe('CardPaymentPage', () => {
             expect(screen.getByText('R$ 15,00')).toBeInTheDocument();
 
             // Total: 100 + 15 = 115
-            expect(screen.getByText(/total/i)).toBeInTheDocument();
+            expect(screen.getByText(/^Total:$/i)).toBeInTheDocument();
             expect(screen.getByText('R$ 115,00')).toBeInTheDocument();
         });
 
@@ -389,16 +404,20 @@ describe('CardPaymentPage', () => {
             await user.type(screen.getByPlaceholderText(/aaaa/i), '2025');
             await user.type(screen.getByPlaceholderText(/cvv/i), '123');
 
-            const payButton = screen.getByRole('button', { name: /pagar com cartão/i });
+            const payButton = screen.getByRole('button', {
+                name: /pagar com cartão/i
+            });
+
             await user.click(payButton);
 
-            // Timer warning should appear
-            await waitFor(
-                () => {
-                    expect(screen.getByText(/tempo restante/i)).toBeInTheDocument();
-                },
-                { timeout: 10000 }
-            );
+            // Aguarda o aviso de segurança do temporizador
+            expect(
+                await screen.findByText(
+                    /por questões de segurança, o cartão foi invalidado!/i,
+                    {},
+                    { timeout: 3000 }
+                )
+            ).toBeInTheDocument();
         });
     });
 

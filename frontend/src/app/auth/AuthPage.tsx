@@ -122,68 +122,68 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
     <div className="auth-page">
       <Navbar variant="auth" />
       <div className="auth-stage">
-      <aside className="auth-story">
-        <span className="auth-story-icon"><Sparkles aria-hidden="true" /></span>
-        <p className="auth-story-eyebrow">{story.eyebrow}</p>
-        <h2>{story.title}</h2>
-        <p>{story.body}</p>
-        <div className="auth-story-note"><ShieldCheck aria-hidden="true" />{story.note}</div>
-      </aside>
-      <main className="auth-panel">
-        <span className="auth-eyebrow"><Sparkles aria-hidden="true" /> MYCELIUM / CONTA</span>
-        <h1>{heading}</h1>
-        {mode === "checkEmail" ? <p>{t.checkEmail}</p> : null}
-        {mode === "settings" ? (
-          <>
-            <p>{t.accountIntro}</p>
-            {profile ? <p className="auth-profile">{profile.displayName} · {profile.email}</p> : null}
-            <div className="auth-settings-links"><a href="/settings/change-password"><KeyRound aria-hidden="true" />{t.changePassword}<ArrowRight aria-hidden="true" /></a><a href="/settings/change-email"><Mail aria-hidden="true" />{t.changeEmail}<ArrowRight aria-hidden="true" /></a></div>
-            <Button type="button" variant="outline" className="auth-secondary" onClick={async () => { await request("logout", {}, locale); window.location.assign("/"); }}><LogOut aria-hidden="true" />{t.logout}</Button>
-          </>
-        ) : (
-          <form onSubmit={submit}>
-            {mode === "register" ? <label>{t.name}<Input autoComplete="name" required minLength={2} maxLength={120} value={name} onChange={e => setName(e.target.value)} /></label> : null}
-            {mode === "login" || mode === "register" || mode === "forgot" || mode === "checkEmail" ? <label>{t.email}<Input type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} /></label> : null}
-            {mode === "changeEmail" ? <label>{t.newEmail}<Input type="email" autoComplete="email" required value={newEmail} onChange={e => setNewEmail(e.target.value)} /></label> : null}
-            {mode === "login" || mode === "register" || mode === "changePassword" ? <label>{mode === "changePassword" ? t.currentPassword : t.password}<Input type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} required minLength={mode === "login" ? 1 : 12} value={password} onChange={e => setPassword(e.target.value)} /></label> : null}
-            {mode === "reset" || mode === "changePassword" ? <label>{t.newPassword}<Input type="password" autoComplete="new-password" required minLength={12} value={newPassword} onChange={e => setNewPassword(e.target.value)} /></label> : null}
-            {error ? <p className="auth-error" role="alert">{error}</p> : null}
-            {feedback ? <p className="auth-success" role="status">{feedback}</p> : null}
-            <Button className="auth-submit" type="submit" disabled={busy}>{busy ? "…" : mode === "verify" || mode === "confirmEmailChange" ? t.confirm : mode === "login" ? t.login : mode === "register" ? t.register : t.send}<ArrowRight aria-hidden="true" /></Button>
-          </form>
-        )}
-        {(mode === "login" || mode === "register") ? (
-          <div className="auth-google">
-            <div className="auth-google-divider"><span>{locale === "pt" ? "ou" : locale === "es" ? "o" : "or"}</span></div>
-            <div className="auth-google-slot" ref={googleSlotRef}>
-              {googleClientId ? (
-                <GoogleOAuthProvider key={locale} clientId={googleClientId} locale={googleLocales[locale]}>
-                  <GoogleLogin
-                    text="continue_with"
-                    theme="outline"
-                    size="large"
-                    shape="rectangular"
-                    logo_alignment="left"
-                    width={googleWidth}
-                    onSuccess={({ credential }) => credential && void googleSignIn(credential)}
-                    onError={() => setError(t.genericError)}
-                  />
-                </GoogleOAuthProvider>
-              ) : (
-                <Button type="button" variant="outline" className="auth-google-fallback" disabled title={t.googleUnavailable}>
-                  <GoogleMark /><span>{t.continueGoogle}</span>
-                </Button>
-              )}
+        <aside className="auth-story">
+          <span className="auth-story-icon"><Sparkles aria-hidden="true" /></span>
+          <p className="auth-story-eyebrow">{story.eyebrow}</p>
+          <h2>{story.title}</h2>
+          <p>{story.body}</p>
+          <div className="auth-story-note"><ShieldCheck aria-hidden="true" />{story.note}</div>
+        </aside>
+        <main className="auth-panel">
+          <span className="auth-eyebrow"><Sparkles aria-hidden="true" /> MYCELIUM / CONTA</span>
+          <h1>{heading}</h1>
+          {mode === "checkEmail" ? <p>{t.checkEmail}</p> : null}
+          {mode === "settings" ? (
+            <>
+              <p>{t.accountIntro}</p>
+              {profile ? <p className="auth-profile">{profile.displayName} · {profile.email}</p> : null}
+              <div className="auth-settings-links"><a href="/settings/change-password"><KeyRound aria-hidden="true" />{t.changePassword}<ArrowRight aria-hidden="true" /></a><a href="/settings/change-email"><Mail aria-hidden="true" />{t.changeEmail}<ArrowRight aria-hidden="true" /></a></div>
+              <Button type="button" variant="outline" className="auth-secondary" onClick={async () => { await request("logout", {}, locale); window.location.assign("/"); }}><LogOut aria-hidden="true" />{t.logout}</Button>
+            </>
+          ) : (
+            <form onSubmit={submit}>
+              {mode === "register" ? <label>{t.name}<Input autoComplete="name" required minLength={2} maxLength={120} value={name} onChange={e => setName(e.target.value)} /></label> : null}
+              {mode === "login" || mode === "register" || mode === "forgot" || mode === "checkEmail" ? <label>{t.email}<Input type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} /></label> : null}
+              {mode === "changeEmail" ? <label>{t.newEmail}<Input type="email" autoComplete="email" required value={newEmail} onChange={e => setNewEmail(e.target.value)} /></label> : null}
+              {mode === "login" || mode === "register" || mode === "changePassword" ? <label>{mode === "changePassword" ? t.currentPassword : t.password}<Input type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} required minLength={mode === "login" ? 1 : 12} value={password} onChange={e => setPassword(e.target.value)} /></label> : null}
+              {mode === "reset" || mode === "changePassword" ? <label>{t.newPassword}<Input type="password" autoComplete="new-password" required minLength={12} value={newPassword} onChange={e => setNewPassword(e.target.value)} /></label> : null}
+              {error ? <p className="auth-error" role="alert">{error}</p> : null}
+              {feedback ? <p className="auth-success" role="status">{feedback}</p> : null}
+              <Button className="auth-submit" type="submit" disabled={busy}>{busy ? "…" : mode === "verify" || mode === "confirmEmailChange" ? t.confirm : mode === "login" ? t.login : mode === "register" ? t.register : t.send}<ArrowRight aria-hidden="true" /></Button>
+            </form>
+          )}
+          {(mode === "login" || mode === "register") ? (
+            <div className="auth-google">
+              <div className="auth-google-divider"><span>{locale === "pt" ? "ou" : locale === "es" ? "o" : "or"}</span></div>
+              <div className="auth-google-slot" ref={googleSlotRef}>
+                {googleClientId ? (
+                  <GoogleOAuthProvider key={locale} clientId={googleClientId} locale={googleLocales[locale]}>
+                    <GoogleLogin
+                      text="continue_with"
+                      theme="outline"
+                      size="large"
+                      shape="rectangular"
+                      logo_alignment="left"
+                      width={googleWidth}
+                      onSuccess={({ credential }) => credential && void googleSignIn(credential)}
+                      onError={() => setError(t.genericError)}
+                    />
+                  </GoogleOAuthProvider>
+                ) : (
+                  <Button type="button" variant="outline" className="auth-google-fallback" disabled title={t.googleUnavailable}>
+                    <GoogleMark /><span>{t.continueGoogle}</span>
+                  </Button>
+                )}
+              </div>
+              {!googleClientId ? <p className="auth-google-unavailable">{t.googleUnavailable}</p> : null}
             </div>
-            {!googleClientId ? <p className="auth-google-unavailable">{t.googleUnavailable}</p> : null}
+          ) : null}
+          <div className="auth-links">
+            {mode === "login" ? <><a href="/forgot-password">{t.forgot}</a><span>{t.noAccount} <a href="/register">{t.register}</a></span></> : null}
+            {mode === "register" ? <span>{t.alreadyAccount} <a href="/login">{t.login}</a></span> : null}
+            {mode !== "login" && mode !== "register" && mode !== "settings" ? <a href="/login">{t.backLogin}</a> : null}
           </div>
-        ) : null}
-        <div className="auth-links">
-          {mode === "login" ? <><a href="/forgot-password">{t.forgot}</a><span>{t.noAccount} <a href="/register">{t.register}</a></span></> : null}
-          {mode === "register" ? <span>{t.alreadyAccount} <a href="/login">{t.login}</a></span> : null}
-          {mode !== "login" && mode !== "register" && mode !== "settings" ? <a href="/login">{t.backLogin}</a> : null}
-        </div>
-      </main>
+        </main>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ function buildUrl(path: string): string {
   // Monta a URL final: BASE_URL + /api/v1 + path
   const fullPath = `${API_VERSION}${normalizedPath}`;
   
-  // Se BASE_URL não existir (dev), usamos o path puro e deixamos o proxy do Vite cuidar
+  // Se BASE_URL não existir (dev), usamos o path puro e deixamos o proxy do Next cuidar
   return BASE_URL ? `${BASE_URL}${fullPath}` : fullPath;
 }
 

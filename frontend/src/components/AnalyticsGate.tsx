@@ -26,7 +26,7 @@ function hasConsentFromStorage(): boolean {
 /** Injeta GA4 idempotente (sem duplicar). */
 function loadGA4Once(measurementId: string): void {
   if (!measurementId) {
-    console.info("[AnalyticsGate] VITE_GA4_ID ausente; GA não será carregado.");
+    console.info("[AnalyticsGate] NEXT_PUBLIC_GA4_ID ausente; GA não será carregado.");
     return;
   }
   if (typeof window === "undefined" || typeof document === "undefined") return;
@@ -104,7 +104,7 @@ export default function AnalyticsGate({
     if (!consentOk || loadedRef.current) return;
     if (!gaId) {
       console.info(
-        "[AnalyticsGate] GA4 não carregado: gaId vazio (verifique VITE_GA4_ID)."
+        "[AnalyticsGate] GA4 não carregado: gaId vazio (verifique NEXT_PUBLIC_GA4_ID)."
       );
       return;
     }

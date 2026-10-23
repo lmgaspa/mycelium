@@ -18,7 +18,7 @@ for authentication cookies and commerce requests. In production, set
 `MYCELIUM_BACKEND_URL` to the internal backend URL. Set
 `NEXT_PUBLIC_GOOGLE_CLIENT_ID` to the OAuth Web client ID and use the same ID in
 `GOOGLE_CLIENT_ID` on the backend. Configure the frontend origin in Google Cloud.
-The Next config accepts the existing `VITE_*` storefront values as fallbacks during
+The Next config accepts the existing `NEXT_*` storefront values as fallbacks during
 migration, including the Efí payee code and sandbox flag. New deployments should use
 the `NEXT_PUBLIC_*` names from `.env.example`.
 
