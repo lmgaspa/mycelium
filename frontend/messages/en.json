@@ -133,6 +133,17 @@
     "goTo": "View {name} banner",
     "imageAlt": "Mycelium {name} products"
   },
+  "ProductNames": {
+    "raiz": "Root",
+    "crescimento-parte-a": "Growth Part A",
+    "crescimento-parte-b": "Growth Part B",
+    "floracao-parte-a": "Flowering Part A",
+    "floracao-parte-b": "Flowering Part B",
+    "flores-magicas": "Magic Flowers",
+    "finalizador": "Finisher",
+    "ph-down": "pH Down Corrector",
+    "ph-up": "pH Up Corrector"
+  },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUCTS",
     "title": "Products for every growing stage.",
@@ -160,6 +171,9 @@
     "formula": "Formula on label",
     "volume": "Package size",
     "labelInfo": "Information shown on the pictured package.",
+    "gallery": "Product images",
+    "catalogImage": "Collection image",
+    "productImage": "Product photo",
     "imageAlt": "Mycelium {name} bottle"
   },
   "CookieConsent": {
@@ -171,7 +185,10 @@
   "Cart": {
     "title": "Shopping cart",
     "empty": "Your cart is empty. Explore Mycelium products and find the next item for your grow.",
-    "explore": "View products"
+    "explore": "View products",
+    "priceOnRequest": "Price on request",
+    "totalVolume": "Total My Celium product volume",
+    "finishOrder": "Proceed to Checkout"
   },
   "Quantity": {
     "quantity": "Quantity",
@@ -181,9 +198,19 @@
   "ProductActions": {
     "add": "Add to cart",
     "addShort": "Add",
-    "pending": "Pricing and online purchase coming soon.",
-    "checkingStock": "Checking stock...",
-    "soldOut": "This product is sold out! If you have questions, get in touch with us.",
-    "contact": "Contact us"
+    "chooseSize": "Choose sizes and quantities",
+    "quantityFor": "Quantity of",
+    "increase": "Increase",
+    "decrease": "Decrease",
+    "totalVolume": "Total volume",
+    "unitOf": "unit of",
+    "unitsOf": "units of",
+    "reviewVolumes": "Review sizes",
+    "updateCart": "Update cart",
+    "close": "Close",
+    "addedTitle": "Product added",
+    "addedDescription": "The {product} packages were added to your cart.",
+    "keepShopping": "Shop more products",
+    "goToCart": "Review order"
   }
 }

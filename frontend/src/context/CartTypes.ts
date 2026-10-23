@@ -6,6 +6,7 @@ export interface CartItem {
   imageUrl: string;
   price: number;
   quantity: number;
+  kind?: "mycelium";
 }
 
 export interface CartContextType {

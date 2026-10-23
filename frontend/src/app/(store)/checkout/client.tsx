@@ -93,7 +93,7 @@ const CheckoutPage = () => {
     initializedRef.current = true;
 
     (async () => {
-      const ids = cartItems.map((c) => c.id);
+      const ids = cartItems.filter((item) => item.kind !== "mycelium").map((c) => c.id);
       const stockMap = await getStockByIds(ids);
       const stockDict = Object.fromEntries(
         ids.map((id) => [id, Math.max(0, stockMap[id]?.stock ?? 0)])
@@ -104,7 +104,7 @@ const CheckoutPage = () => {
       const fixed = cartItems
         .map((i) => ({
           ...i,
-          quantity: Math.min(i.quantity, Math.max(0, stockDict[i.id] ?? 0)),
+          quantity: i.kind === "mycelium" ? i.quantity : Math.min(i.quantity, Math.max(0, stockDict[i.id] ?? 0)),
         }))
         .filter((i) => i.quantity > 0);
 
@@ -247,9 +247,9 @@ const CheckoutPage = () => {
   }, [form, shipping]);
 
   const updateQuantity = useCallback((id: string, delta: number) => {
-    const max = stockById[id] ?? Infinity;
     const currentItem = cartItems.find((i) => i.id === id);
     if (!currentItem) return;
+    const max = currentItem.kind === "mycelium" ? Infinity : stockById[id] ?? Infinity;
 
     const next = currentItem.quantity + delta;
     if (next > max) {

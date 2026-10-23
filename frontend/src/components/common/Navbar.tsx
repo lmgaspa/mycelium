@@ -107,7 +107,7 @@ export default function Navbar() {
   return (
     <header className={cn("relative z-30 border-b border-white/[.08] text-white", brandGradient)}>
       <div className="mx-auto flex min-h-[76px] w-[min(1180px,calc(100%_-_48px))] items-center gap-[clamp(18px,3vw,42px)] max-[980px]:min-h-[70px] max-[520px]:w-[min(100%_-_32px,1180px)] max-[520px]:gap-2">
-        <Link href="/" className="inline-flex flex-[0_0_auto] items-center" aria-label={t.homeAria}><img src="/images/logomycelium.webp" alt="Mycelium" className="h-10 w-[154px] object-contain [filter:brightness(0)_saturate(100%)_invert(90%)_sepia(16%)_saturate(626%)_hue-rotate(35deg)] max-[800px]:h-[37px] max-[800px]:w-[145px] max-[520px]:h-[30px] max-[520px]:w-[clamp(96px,29vw,124px)]" /></Link>
+        <Link href="/" className="inline-flex flex-[0_0_auto] items-center" aria-label={t.homeAria}><img src="/images/logomycelium.webp" alt="My Celium" className="h-10 w-[154px] object-contain [filter:brightness(0)_saturate(100%)_invert(90%)_sepia(16%)_saturate(626%)_hue-rotate(35deg)] max-[800px]:h-[37px] max-[800px]:w-[145px] max-[520px]:h-[30px] max-[520px]:w-[clamp(96px,29vw,124px)]" /></Link>
         <nav className="flex flex-1 items-center justify-center gap-[clamp(15px,2.4vw,33px)] max-[980px]:hidden" aria-label={t.mainNav}>
           <Link className={navLink} href="/">{t.home}</Link><Link className={navLink} href="/products">{t.products}</Link><Link className={navLink} href="/collection">{t.collection}</Link><Link className={navLink} href="/growing">{t.grow}</Link><Link className={navLink} href="/support">{t.contact}</Link>
         </nav>

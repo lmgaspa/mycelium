@@ -6,7 +6,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import "../styles.css";
 
 export const metadata: Metadata = {
-  title: "Mycelium",
+  title: "My Celium",
   description: "Soluções para acompanhar o seu cultivo.",
 };
 

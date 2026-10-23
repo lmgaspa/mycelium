@@ -162,12 +162,9 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
                       theme="outline"
                       size="large"
                       shape="rectangular"
-                      logo_alignment="left"
+                      logo_alignment="center"
                       width={googleWidth}
-                      containerProps={{
-                        className:
-                          "overflow-hidden rounded-[11px] [&_div]:rounded-[11px]! [&_iframe]:rounded-[11px]! [&_.nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb]:justify-center! [&_.nsm7Bb-HzV7m-LgbsSe-BPrWId]:flex-none! [&_.nsm7Bb-HzV7m-LgbsSe-BPrWId]:text-left! [&_.nsm7Bb-HzV7m-LgbsSe-Bz112c]:mr-[8px]!",
-                      }}
+                      containerProps={{ className: "overflow-hidden rounded-[11px]" }}
                       onSuccess={({ credential }) => credential && void googleSignIn(credential)}
                       onError={() => setError(t.genericError)}
                     />

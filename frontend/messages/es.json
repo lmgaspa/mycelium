@@ -133,6 +133,17 @@
     "goTo": "Ver banner {name}",
     "imageAlt": "Productos Mycelium de la línea {name}"
   },
+  "ProductNames": {
+    "raiz": "Raíz",
+    "crescimento-parte-a": "Crecimiento Parte A",
+    "crescimento-parte-b": "Crecimiento Parte B",
+    "floracao-parte-a": "Floración Parte A",
+    "floracao-parte-b": "Floración Parte B",
+    "flores-magicas": "Flores Mágicas",
+    "finalizador": "Finalizador",
+    "ph-down": "Corrector de pH Down",
+    "ph-up": "Corrector de pH Up"
+  },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUCTOS",
     "title": "Productos para cada etapa del cultivo.",
@@ -160,6 +171,9 @@
     "formula": "Fórmula en la etiqueta",
     "volume": "Contenido del envase",
     "labelInfo": "Información según el envase ilustrado.",
+    "gallery": "Imágenes del producto",
+    "catalogImage": "Imagen de la colección",
+    "productImage": "Foto del producto",
     "imageAlt": "Envase Mycelium {name}"
   },
   "CookieConsent": {
@@ -171,7 +185,10 @@
   "Cart": {
     "title": "Carrito de compras",
     "empty": "Tu carrito está vacío. Explora los productos Mycelium y encuentra el próximo producto para tu cultivo.",
-    "explore": "Ver productos"
+    "explore": "Ver productos",
+    "priceOnRequest": "Precio a consultar",
+    "totalVolume": "Volumen total de productos My Celium",
+    "finishOrder": "Finalizar pedido"
   },
   "Quantity": {
     "quantity": "Cantidad",
@@ -181,9 +198,19 @@
   "ProductActions": {
     "add": "Añadir al carrito",
     "addShort": "Añadir",
-    "pending": "Precio y compra en línea próximamente.",
-    "checkingStock": "Consultando existencias...",
-    "soldOut": "¡Este producto está agotado! Si tienes dudas, ponte en contacto con nosotros.",
-    "contact": "Contacto"
+    "chooseSize": "Elige volúmenes y cantidades",
+    "quantityFor": "Cantidad de",
+    "increase": "Aumentar",
+    "decrease": "Disminuir",
+    "totalVolume": "Volumen total",
+    "unitOf": "unidad de",
+    "unitsOf": "unidades de",
+    "reviewVolumes": "Revisar volúmenes",
+    "updateCart": "Actualizar carrito",
+    "close": "Cerrar",
+    "addedTitle": "Producto añadido",
+    "addedDescription": "Los envases de {product} se añadieron al carrito.",
+    "keepShopping": "Comprar más productos",
+    "goToCart": "Revisar pedido"
   }
 }

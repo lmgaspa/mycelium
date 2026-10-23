@@ -8,17 +8,18 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const slides = [
-  { image: "floresmagicascolecao.webp", name: "Flores Mágicas" },
-  { image: "raizcolecao.webp", name: "Raiz" },
-  { image: "crescimentocolecaoa.webp", name: "Crescimento A" },
-  { image: "crescimentobcolecao.webp", name: "Crescimento B" },
-  { image: "floracaocolecaoa.webp", name: "Floração A" },
-  { image: "floracaocolecaob.webp", name: "Floração B" },
-  { image: "finalizadorcolecao.webp", name: "Finalizador" },
+  { image: "floresmagicascolecao.webp", slug: "flores-magicas" },
+  { image: "raizcolecao.webp", slug: "raiz" },
+  { image: "crescimentocolecaoa.webp", slug: "crescimento-parte-a" },
+  { image: "crescimentobcolecao.webp", slug: "crescimento-parte-b" },
+  { image: "floracaocolecaoa.webp", slug: "floracao-parte-a" },
+  { image: "floracaocolecaob.webp", slug: "floracao-parte-b" },
+  { image: "finalizadorcolecao.webp", slug: "finalizador" },
 ] as const;
 
 export default function Collection({ embedded = false }: { embedded?: boolean }) {
   const t = useCopy("Collection");
+  const names = useCopy("ProductNames");
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -73,7 +74,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
               <Image
                 key={slide.image}
                 src={`/images/collecao/${slide.image}`}
-                alt={t.imageAlt.replace("{name}", slide.name)}
+                alt={t.imageAlt.replace("{name}", names[slide.slug])}
                 fill
                 sizes="(max-width: 760px) 100vw, 1180px"
                 priority={index === 0}
@@ -107,7 +108,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
           <div className="flex min-h-[94px] items-center justify-between gap-5 px-[clamp(20px,3vw,34px)] py-[19px] max-[600px]:flex-col max-[600px]:items-start max-[600px]:gap-[10px] max-[600px]:px-[18px] max-[600px]:pt-4 max-[600px]:pb-[18px]">
             <div className="flex items-baseline gap-[18px] max-[600px]:gap-3">
               <span className="whitespace-nowrap text-[12px] font-extrabold text-brand-leaf">{String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
-              <h2 className="m-0 text-[clamp(20px,2.2vw,28px)] font-extrabold tracking-[-.025em]">{slides[active].name}</h2>
+              <h2 className="m-0 text-[clamp(20px,2.2vw,28px)] font-extrabold tracking-[-.025em]">{names[slides[active].slug]}</h2>
             </div>
             <div className="flex items-center gap-[2px] max-[600px]:self-center" aria-label={t.carousel}>
               {slides.map((slide, index) => (
@@ -117,7 +118,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
                   variant="ghost"
                   size="icon-xs"
                   className={dot}
-                  aria-label={t.goTo.replace("{name}", slide.name)}
+                  aria-label={t.goTo.replace("{name}", names[slide.slug])}
                   aria-current={index === active ? "true" : undefined}
                   onClick={() => setActive(index)}
                 >

@@ -1,53 +1,50 @@
-import { afterEach, expect, it, vi } from "vitest";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { expect, it, vi } from "vitest";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import ProductActions from "../ProductActions";
+import { CartContext } from "@/context/CartContext";
+import { products } from "@/data/products";
 import pt from "../../../../messages/pt.json";
 
-function renderActions(onAdd?: (quantity: number) => void) {
-  return render(
+const push = vi.fn();
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
+
+it("adds multiple package sizes and updates the volume as quantities change", () => {
+  const fetch = vi.spyOn(globalThis, "fetch");
+  const addToCart = vi.fn();
+  const updateQuantity = vi.fn();
+
+  render(
     <NextIntlClientProvider locale="pt" messages={pt}>
-      <ProductActions productSlug="raiz" onAdd={onAdd} />
+      <CartContext.Provider value={{ cartItems: [], totalPrice: 0, addToCart, removeFromCart: vi.fn(), clearCart: vi.fn(), updateQuantity }}>
+        <ProductActions product={products[0]} />
+      </CartContext.Provider>
     </NextIntlClientProvider>,
   );
-}
 
-afterEach(() => {
-  vi.unstubAllGlobals();
-  vi.useRealTimers();
-});
-
-it("hides quantity controls and shows contact when stock is zero", async () => {
-  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ stock: 0 }) }));
-  renderActions();
-
-  expect(await screen.findByText(/Esse produto está esgotado!/)).toBeInTheDocument();
-  expect(screen.queryByRole("group", { name: "Quantidade" })).not.toBeInTheDocument();
-  expect(screen.getByRole("link", { name: "Contato" })).toHaveAttribute("href", "/support");
-});
-
-it("stops increasing at the stock limit", async () => {
-  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ estoque: 2 }) }));
-  renderActions();
-
-  const increase = await screen.findByRole("button", { name: "Aumentar quantidade" });
-  fireEvent.click(increase);
-  expect(screen.getByText("2")).toBeInTheDocument();
-  expect(increase).toBeDisabled();
-  expect(screen.getByRole("button", { name: "Adicionar ao carrinho" })).toBeDisabled();
-});
-
-it("treats a request without a response after three seconds as unavailable", async () => {
-  vi.useFakeTimers();
-  vi.stubGlobal("fetch", vi.fn((_url, options: RequestInit) => new Promise((_resolve, reject) => {
-    options.signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
-  })));
-  renderActions();
-
-  await act(async () => {
-    await vi.advanceTimersByTimeAsync(3000);
-  });
-
-  expect(screen.getByText(/Esse produto está esgotado!/)).toBeInTheDocument();
-  expect(screen.queryByRole("group", { name: "Quantidade" })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Adicionar ao carrinho" }));
+  expect(screen.getByRole("dialog")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Aumentar 100 ml" }));
+  fireEvent.click(screen.getByRole("button", { name: "Aumentar 500 ml" }));
+  fireEvent.click(screen.getByRole("button", { name: "Aumentar 500 ml" }));
+  expect(screen.getByText("Volume total: 1.100 ml")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Diminuir 500 ml" }));
+  expect(screen.getByText("Volume total: 600 ml")).toBeInTheDocument();
+  fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Adicionar ao carrinho" }));
+  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:100", quantity: 1, kind: "mycelium" }));
+  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:500", quantity: 1, kind: "mycelium" }));
+  expect(screen.getByText("1 unidade de 500 ml")).toBeInTheDocument();
+  expect(fetch).not.toHaveBeenCalled();
+  expect(screen.getByText("Produto adicionado")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Revisar volumes" }));
+  expect(screen.getByText("Volume total: 600 ml")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Diminuir 500 ml" }));
+  fireEvent.click(screen.getByRole("button", { name: "Aumentar 100 ml" }));
+  fireEvent.click(screen.getByRole("button", { name: "Atualizar carrinho" }));
+  expect(updateQuantity).toHaveBeenCalledWith("mycelium:raiz:500", -1);
+  expect(addToCart).toHaveBeenLastCalledWith(expect.objectContaining({ id: "mycelium:raiz:100", quantity: 1 }));
+  expect(screen.getByText("2 unidades de 100 ml")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Finalizar pedido" }));
+  expect(push).toHaveBeenCalledWith("/cart");
+  fetch.mockRestore();
 });

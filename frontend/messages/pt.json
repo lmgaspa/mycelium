@@ -133,6 +133,17 @@
     "goTo": "Ver banner {name}",
     "imageAlt": "Produtos Mycelium da linha {name}"
   },
+  "ProductNames": {
+    "raiz": "Raiz",
+    "crescimento-parte-a": "Crescimento Parte A",
+    "crescimento-parte-b": "Crescimento Parte B",
+    "floracao-parte-a": "Floração Parte A",
+    "floracao-parte-b": "Floração Parte B",
+    "flores-magicas": "Flores Mágicas",
+    "finalizador": "Finalizador",
+    "ph-down": "Corretor de pH Down",
+    "ph-up": "Corretor de pH Up"
+  },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUTOS",
     "title": "Produtos para cada etapa do cultivo.",
@@ -160,6 +171,9 @@
     "formula": "Fórmula no rótulo",
     "volume": "Conteúdo da embalagem",
     "labelInfo": "Informações conforme a embalagem ilustrada.",
+    "gallery": "Imagens do produto",
+    "catalogImage": "Imagem da coleção",
+    "productImage": "Foto do produto",
     "imageAlt": "Embalagem Mycelium {name}"
   },
   "CookieConsent": {
@@ -171,7 +185,10 @@
   "Cart": {
     "title": "Carrinho de compras",
     "empty": "Seu carrinho está vazio. Explore os produtos Mycelium e encontre o próximo item para o seu cultivo.",
-    "explore": "Ver produtos"
+    "explore": "Ver produtos",
+    "priceOnRequest": "Preço sob consulta",
+    "totalVolume": "Volume total dos produtos My Celium",
+    "finishOrder": "Finalizar Pedido"
   },
   "Quantity": {
     "quantity": "Quantidade",
@@ -181,9 +198,19 @@
   "ProductActions": {
     "add": "Adicionar ao carrinho",
     "addShort": "Adicionar",
-    "pending": "Preço e compra online em breve.",
-    "checkingStock": "Verificando estoque...",
-    "soldOut": "Esse produto está esgotado! Em dúvida, entre em contato com a gente.",
-    "contact": "Contato"
+    "chooseSize": "Escolha os volumes e quantidades",
+    "quantityFor": "Quantidade de",
+    "increase": "Aumentar",
+    "decrease": "Diminuir",
+    "totalVolume": "Volume total",
+    "unitOf": "unidade de",
+    "unitsOf": "unidades de",
+    "reviewVolumes": "Revisar volumes",
+    "updateCart": "Atualizar carrinho",
+    "close": "Fechar",
+    "addedTitle": "Produto adicionado",
+    "addedDescription": "As embalagens de {product} foram adicionadas ao carrinho.",
+    "keepShopping": "Comprar mais produtos",
+    "goToCart": "Finalizar pedido"
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import type { CartItem } from '../../context/CartTypes';
 import ButtonCountCart from './ButtonCountCart';
 import { formatPrice } from '../../utils/formatPrice';
+import { useCopy } from '@/i18n/useCopy';
 
 interface CartTableProps {
   items: CartItem[];
@@ -14,13 +15,23 @@ const CartTable: React.FC<CartTableProps> = ({
   onQuantityChange,
   onRemoveItem,
 }) => {
+  const t = useCopy('Cart');
+  const names = useCopy('ProductNames');
+  const itemTitle = (item: CartItem) => {
+    if (item.kind !== 'mycelium') return item.title;
+    const [, slug, size] = item.id.split(':');
+    const name = names[slug as keyof typeof names];
+    const sizeMl = Number(size);
+    if (!name || !Number.isFinite(sizeMl) || sizeMl <= 0) return item.title;
+    return `${name} · ${sizeMl >= 1000 ? `${sizeMl / 1000} L` : `${sizeMl} ml`}`;
+  };
   return (
     <>
       {/* TABLE - Desktop only */}
       <div className="hidden sm:block overflow-x-auto mb-8">
         <table className="min-w-full text-left border-collapse">
           <thead>
-            <tr className="bg-primary text-text-primary">
+            <tr className="bg-[#eee6f7] font-bold text-brand-plum">
               <th className="p-4">Produto</th>
               <th className="p-4">Preço</th>
               <th className="p-4">Quantidade</th>
@@ -34,13 +45,13 @@ const CartTable: React.FC<CartTableProps> = ({
                 <td className="p-4 flex items-center gap-4">
                   <img
                     src={item.imageUrl}
-                    alt={`Imagem do produto ${item.title}`}
+                    alt={`Imagem do produto ${itemTitle(item)}`}
                     className="w-16 h-20 rounded-md shadow-md"
                   />
-                  <span className="text-text-primary">{item.title}</span>
+                  <span className="text-text-primary">{itemTitle(item)}</span>
                 </td>
                 <td className="p-4 text-text-primary">
-                  {formatPrice(item.price)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price)}
                 </td>
                 <td className="p-4">
                   <ButtonCountCart
@@ -51,7 +62,7 @@ const CartTable: React.FC<CartTableProps> = ({
                   />
                 </td>
                 <td className="p-4 text-text-primary">
-                  {formatPrice(item.price * item.quantity)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price * item.quantity)}
                 </td>
                 <td className="p-4">
                   <button
@@ -78,13 +89,13 @@ const CartTable: React.FC<CartTableProps> = ({
             <div className="flex items-center gap-4">
               <img
                 src={item.imageUrl}
-                alt={`Imagem do produto ${item.title}`}
+                alt={`Imagem do produto ${itemTitle(item)}`}
                 className="w-20 h-auto rounded-md shadow"
               />
               <div>
-                <p className="font-medium text-sm">{item.title}</p>
+                <p className="font-medium text-sm">{itemTitle(item)}</p>
                 <p className="text-primary font-semibold mt-1">
-                  {formatPrice(item.price)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price)}
                 </p>
               </div>
             </div>
@@ -102,7 +113,7 @@ const CartTable: React.FC<CartTableProps> = ({
             <div className="text-sm text-right">
               Subtotal:{' '}
               <span className="font-bold">
-                {formatPrice(item.price * item.quantity)}
+                {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price * item.quantity)}
               </span>
             </div>
 

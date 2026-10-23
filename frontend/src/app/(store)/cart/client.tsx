@@ -13,9 +13,11 @@ import Link from "next/link";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/i18n/useCopy";
+import { useLocale } from "next-intl";
 
 const CartPage = () => {
   const t = useCopy("Cart");
+  const locale = useLocale();
   const cartContext = useContext(CartContext);
   const [stockById, setStockById] = useState<Record<string, number>>({});
   const navigate = useNavigate();
@@ -34,6 +36,12 @@ const CartPage = () => {
 
   const { cartItems, updateQuantity: updateQuantityContext, removeFromCart, totalPrice } = cartContext;
   const subtotal = totalPrice;
+  const hasMyceliumProducts = cartItems.some((item) => item.kind === "mycelium");
+  const myceliumVolumeMl = cartItems.reduce((total, item) => {
+    if (item.kind !== "mycelium") return total;
+    const sizeMl = Number(item.id.split(":").at(-1));
+    return total + (Number.isFinite(sizeMl) && sizeMl > 0 ? sizeMl * item.quantity : 0);
+  }, 0);
 
   const initializedRef = useRef(false);
 
@@ -43,7 +51,7 @@ const CartPage = () => {
     initializedRef.current = true;
 
     (async () => {
-      const ids = cartItems.map((i) => i.id);
+      const ids = cartItems.filter((i) => i.kind !== "mycelium").map((i) => i.id);
       const stockMap = await getStockByIds(ids);
       const stockDict = Object.fromEntries(
         ids.map((id) => [id, Math.max(0, stockMap[id]?.stock ?? 0)])
@@ -53,6 +61,7 @@ const CartPage = () => {
       // Valida e ajusta quantidades baseado no estoque
       const fixed = cartItems
         .map((i) => {
+          if (i.kind === "mycelium") return i;
           const s = stockDict[i.id] ?? 0;
           const qty = Math.min(i.quantity, Math.max(0, s));
           return { ...i, quantity: qty };
@@ -84,7 +93,7 @@ const CartPage = () => {
   }, [cartItems, updateQuantityContext, removeFromCart]);
 
   const updateQuantity = (itemId: string, amount: number) => {
-    const max = stockById[itemId] ?? Infinity;
+    const max = cartItems.find((item) => item.id === itemId)?.kind === "mycelium" ? Infinity : stockById[itemId] ?? Infinity;
     const currentItem = cartItems.find((i) => i.id === itemId);
     if (!currentItem) return;
 
@@ -143,17 +152,18 @@ const CartPage = () => {
       ) : (
         <>
           <CartTable items={cartItems} onQuantityChange={updateQuantity} onRemoveItem={removeItem} />
+          {hasMyceliumProducts && <p className="mb-6 rounded-xl bg-[#f1e9f9] px-4 py-3 font-bold text-brand-plum" aria-live="polite">{t.totalVolume}: {new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(myceliumVolumeMl)} ml</p>}
 
           <div className="flex flex-col lg:flex-row gap-4 mb-8">
             <div className="w-full lg:w-1/2">
-              <CouponInput 
+              {!hasMyceliumProducts && <CouponInput 
                 value={inputValue} 
                 onChange={setInputValue} 
                 onApply={handleApplyCoupon}
                 isValidating={isValidating}
                 isValid={couponValid}
                 discount={getDiscountAmount(subtotal)}
-              />
+              />}
               {couponValid && (
                 <div className="text-green-600 text-sm mt-2">
                   ✓ Cupom {getDiscountAmount(subtotal) > 0 ? `${getDiscountAmount(subtotal).toFixed(2).replace(".", ",")}` : ''} aplicado
@@ -161,20 +171,20 @@ const CartPage = () => {
               )}
             </div>
             <div className="w-full lg:w-1/2">
-              <CartSummary subtotal={subtotal} discount={getDiscountAmount(subtotal)} onCheckout={handleCheckout} />
+              {hasMyceliumProducts ? <Button type="button" onClick={handleCheckout} className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 font-bold text-white hover:bg-[#57258e]">{t.finishOrder}</Button> : <CartSummary subtotal={subtotal} discount={getDiscountAmount(subtotal)} onCheckout={handleCheckout} />}
             </div>
           </div>
 
           <button
             type="button"
-            onClick={() => navigate("/books")}
-            className="w-full sm:w-auto px-6 py-2 bg-primary text-background rounded-md shadow-md transition hover:bg-secondary"
+            onClick={() => navigate("/products")}
+            className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 py-2 font-bold text-white shadow-md transition-colors hover:bg-[#57258e] sm:w-auto"
           >
             Continuar Comprando
           </button>
         </>
       )}
-      {cartItems.length > 0 && <div className="text-right text-xl font-bold mt-4">
+      {cartItems.length > 0 && !hasMyceliumProducts && <div className="text-right text-xl font-bold mt-4">
         Total: R$ {(subtotal - getDiscountAmount(subtotal)).toFixed(2).replace(".", ",")}
       </div>}
     </div>
