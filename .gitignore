@@ -4,6 +4,7 @@
 # Mantém apenas o README.md rastreado pelo Git
 !README.md
 
+#
 # Documentation (ignora pasta docs/)
 docs/
 
