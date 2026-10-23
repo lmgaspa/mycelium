@@ -12,6 +12,8 @@ import { getStockByIds } from "@/api/stock";
 import { cookieStorage } from "@/utils/cookieUtils";
 import { analytics, mapCartItems } from "@/analytics";
 import { CartContext } from "@/context/CartContext";
+import { useCopy } from "@/i18n/useCopy";
+import { useLocale } from "next-intl";
 
 type FormState = {
   firstName: string;
@@ -54,6 +56,8 @@ const DEFAULT_FORM: FormState = {
 };
 
 const CheckoutPage = () => {
+  const t = useCopy("Checkout");
+  const locale = useLocale();
   const navigate = useNavigate();
   const cartContext = useContext(CartContext);
   const { 
@@ -80,7 +84,7 @@ const CheckoutPage = () => {
   const { cartItems, updateQuantity: updateQuantityContext, removeFromCart, totalPrice } = cartContext;
   const totalItems = totalPrice;
 
-  const onNavigateBack = () => navigate("/books");
+  const onNavigateBack = () => navigate("/products");
 
   // GA4: controla se já disparamos o begin_checkout nesta visita.
   // Extensão de comportamento (analytics) sem alterar o fluxo principal (OCP).
@@ -127,10 +131,10 @@ const CheckoutPage = () => {
             removeFromCart(item.id);
           }
         });
-        alert("Atualizamos seu carrinho de acordo com o estoque atual.");
+        alert(t.stockAdjusted);
       }
     })();
-  }, [cartItems, updateQuantityContext, removeFromCart]);
+  }, [cartItems, updateQuantityContext, removeFromCart, t.stockAdjusted]);
 
   const cpfCepInfo = useMemo(() => {
     const cpf = form.cpf.replace(/\D/g, "");
@@ -253,7 +257,7 @@ const CheckoutPage = () => {
 
     const next = currentItem.quantity + delta;
     if (next > max) {
-      alert("Quantidade excede o estoque disponível.");
+      alert(t.stockExceeded);
       return;
     }
     if (next <= 0) {
@@ -261,7 +265,7 @@ const CheckoutPage = () => {
       return;
     }
     updateQuantityContext(id, delta);
-  }, [stockById, cartItems, updateQuantityContext, removeFromCart]);
+  }, [stockById, cartItems, updateQuantityContext, removeFromCart, t.stockExceeded]);
 
   const removeItem = useCallback((id: string) => {
     removeFromCart(id);
@@ -282,7 +286,7 @@ const CheckoutPage = () => {
       // Usar o valor retornado pela API, mas limitado a R$ 15
       const maxDiscount = 15.00;
       const actualDiscount = Math.min(result.discountAmount, maxDiscount);
-      alert(`Cupom aplicado com sucesso! Desconto de R$ ${actualDiscount.toFixed(2)}`);
+      alert(t.couponApplied.replace("{amount}", new Intl.NumberFormat(locale, { style: "currency", currency: "BRL" }).format(actualDiscount)));
     }
     return result;
   };

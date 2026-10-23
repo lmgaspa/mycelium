@@ -4,6 +4,7 @@ import React from "react";
 import { useNavigate } from "@/lib/router";
 import type { CartItem } from "@/context/CartTypes";
 import CheckoutFormView from "@/components/checkout/CheckoutFormView";
+import { useCopy } from "@/i18n/useCopy";
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -42,32 +43,39 @@ interface CheckoutFormProps {
 }
 
 const CheckoutForm: React.FC<CheckoutFormProps> = (props) => {
+  const t = useCopy("Checkout");
   const navigate = useNavigate();
+  const required: (keyof CheckoutFormProps["form"])[] = [
+    "firstName", "lastName", "cpf", "cep", "address", "number",
+    "district", "city", "state", "email", "phone",
+  ];
+  const cpfDigits = props.form.cpf.replace(/\D/g, "");
+  const cepDigits = props.form.cep.replace(/\D/g, "");
+  const phoneDigits = props.form.phone.replace(/\D/g, "");
+  const canSubmit = props.cartItems.length > 0
+    && required.every((key) => props.form[key].trim() !== "")
+    && cpfDigits.length === 11
+    && cepDigits.length === 8
+    && phoneDigits.length === 11
+    && phoneDigits[2] === "9"
+    && (props.form.payment === "pix" || props.form.payment === "card");
 
   const handleCheckout = () => {
     if (!props.cartItems.length) {
-      alert("Seu carrinho está vazio.");
+      alert(t.emptyCart);
       return;
     }
 
-    const required: (keyof CheckoutFormProps["form"])[] = [
-      "firstName","lastName","cpf","cep","address","number",
-      "district","city","state","email","phone",
-    ];
     const missing = required.find((k) => String(props.form[k] ?? "").trim() === "");
     if (missing) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
+      alert(t.requiredFields);
       return;
     }
 
-    const cpfDigits = props.form.cpf.replace(/\D/g, "");
-    const cepDigits = props.form.cep.replace(/\D/g, "");
-    const phoneDigits = props.form.phone.replace(/\D/g, "");
-
-    if (cpfDigits.length !== 11) { alert("CPF inválido."); return; }
-    if (cepDigits.length !== 8) { alert("CEP inválido."); return; }
+    if (cpfDigits.length !== 11) { alert(t.invalidCpf); return; }
+    if (cepDigits.length !== 8) { alert(t.invalidCep); return; }
     if (phoneDigits.length !== 11 || phoneDigits[2] !== "9") {
-      alert("Celular inválido. Use o formato (xx)9xxxx-xxxx."); return;
+      alert(t.invalidPhone); return;
     }
 
     if (props.form.payment === "pix") {
@@ -90,7 +98,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = (props) => {
       return;
     }
 
-    alert("Forma de pagamento inválida.");
+    alert(t.invalidPayment);
   };
 
   return (
@@ -109,6 +117,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = (props) => {
       updateQuantity={props.updateQuantity}
       removeItem={props.removeItem}
       handleCheckout={handleCheckout}
+      canSubmit={canSubmit}
       onNavigateBack={props.onNavigateBack}
     />
   );

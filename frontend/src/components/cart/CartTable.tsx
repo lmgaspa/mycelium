@@ -1,8 +1,8 @@
 import React from 'react';
 import type { CartItem } from '../../context/CartTypes';
 import ButtonCountCart from './ButtonCountCart';
-import { formatPrice } from '../../utils/formatPrice';
 import { useCopy } from '@/i18n/useCopy';
+import { useLocale } from 'next-intl';
 
 interface CartTableProps {
   items: CartItem[];
@@ -17,6 +17,8 @@ const CartTable: React.FC<CartTableProps> = ({
 }) => {
   const t = useCopy('Cart');
   const names = useCopy('ProductNames');
+  const locale = useLocale();
+  const money = (amount: number) => new Intl.NumberFormat(locale, { style: 'currency', currency: 'BRL' }).format(amount);
   const itemTitle = (item: CartItem) => {
     if (item.kind !== 'mycelium') return item.title;
     const [, slug, size] = item.id.split(':');
@@ -27,16 +29,16 @@ const CartTable: React.FC<CartTableProps> = ({
   };
   return (
     <>
-      {/* TABLE - Desktop only */}
-      <div className="hidden sm:block overflow-x-auto mb-8">
+      {/* TABLE - Wide screens only */}
+      <div className="mb-8 hidden overflow-x-auto min-[1100px]:block">
         <table className="min-w-full text-left border-collapse">
           <thead>
             <tr className="bg-[#eee6f7] font-bold text-brand-plum">
-              <th className="p-4">Produto</th>
-              <th className="p-4">Preço</th>
-              <th className="p-4">Quantidade</th>
-              <th className="p-4">Subtotal</th>
-              <th className="p-4">Ações</th>
+              <th className="p-4">{t.product}</th>
+              <th className="p-4">{t.price}</th>
+              <th className="p-4">{t.quantity}</th>
+              <th className="p-4">{t.subtotal}</th>
+              <th className="p-4">{t.actions}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,13 +47,13 @@ const CartTable: React.FC<CartTableProps> = ({
                 <td className="p-4 flex items-center gap-4">
                   <img
                     src={item.imageUrl}
-                    alt={`Imagem do produto ${itemTitle(item)}`}
+                    alt={t.productImageAlt.replace("{name}", itemTitle(item))}
                     className="w-16 h-20 rounded-md shadow-md"
                   />
                   <span className="text-text-primary">{itemTitle(item)}</span>
                 </td>
                 <td className="p-4 text-text-primary">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price)}
                 </td>
                 <td className="p-4">
                   <ButtonCountCart
@@ -62,7 +64,7 @@ const CartTable: React.FC<CartTableProps> = ({
                   />
                 </td>
                 <td className="p-4 text-text-primary">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price * item.quantity)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price * item.quantity)}
                 </td>
                 <td className="p-4">
                   <button
@@ -70,7 +72,7 @@ const CartTable: React.FC<CartTableProps> = ({
                     className="text-error hover:text-red-400 transition"
                     onClick={() => onRemoveItem(item.id)}
                   >
-                    Remover
+                    {t.remove}
                   </button>
                 </td>
               </tr>
@@ -79,29 +81,29 @@ const CartTable: React.FC<CartTableProps> = ({
         </table>
       </div>
 
-      {/* CARD - Mobile only */}
-      <div className="sm:hidden flex flex-col gap-4 mb-8">
+      {/* Cards on phones and tablets */}
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:mb-8 sm:grid-cols-2 sm:gap-4 min-[1100px]:hidden">
         {items.map((item) => (
           <div
             key={item.id}
-            className="bg-white rounded shadow-md p-4 flex flex-col gap-3"
+            className="flex min-w-0 flex-col gap-2 rounded-xl border border-[#e8ddf3] bg-white p-4 shadow-sm sm:gap-3"
           >
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-0 items-center gap-3">
               <img
                 src={item.imageUrl}
-                alt={`Imagem do produto ${itemTitle(item)}`}
-                className="w-20 h-auto rounded-md shadow"
+                alt={t.productImageAlt.replace("{name}", itemTitle(item))}
+                className="h-20 w-16 shrink-0 rounded-md bg-white object-contain shadow-sm"
               />
-              <div>
-                <p className="font-medium text-sm">{itemTitle(item)}</p>
+              <div className="min-w-0">
+                <p className="break-words text-sm font-semibold text-brand-ink">{itemTitle(item)}</p>
                 <p className="text-primary font-semibold mt-1">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price)}
+                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price)}
                 </p>
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-semibold">Quantidade:</span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-sm font-semibold">{t.quantity}:</span>
               <ButtonCountCart
                 quantity={item.quantity}
                 onDecrease={() => onQuantityChange(item.id, -1)}
@@ -110,19 +112,19 @@ const CartTable: React.FC<CartTableProps> = ({
               />
             </div>
 
-            <div className="text-sm text-right">
-              Subtotal:{' '}
+            <div className="break-words text-right text-sm">
+              {t.subtotal}:{' '}
               <span className="font-bold">
-                {item.kind === 'mycelium' ? t.priceOnRequest : formatPrice(item.price * item.quantity)}
+                {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price * item.quantity)}
               </span>
             </div>
 
             <button
               type="button"
-              className="text-error mt-2 underline text-sm self-end"
+              className="mt-2 self-end cursor-pointer text-sm text-[#9a1b18] underline"
               onClick={() => onRemoveItem(item.id)}
             >
-              Remover
+              {t.remove}
             </button>
           </div>
         ))}

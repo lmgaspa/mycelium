@@ -87,10 +87,10 @@ const CartPage = () => {
             removeFromCart(item.id);
           }
         });
-        alert("Atualizamos seu carrinho de acordo com o estoque atual.");
+        alert(t.stockAdjusted);
       }
     })();
-  }, [cartItems, updateQuantityContext, removeFromCart]);
+  }, [cartItems, updateQuantityContext, removeFromCart, t.stockAdjusted]);
 
   const updateQuantity = (itemId: string, amount: number) => {
     const max = cartItems.find((item) => item.id === itemId)?.kind === "mycelium" ? Infinity : stockById[itemId] ?? Infinity;
@@ -99,7 +99,7 @@ const CartPage = () => {
 
     const next = currentItem.quantity + amount;
     if (amount > 0 && next > max) {
-      alert("Quantidade solicitada excede o estoque disponível.");
+      alert(t.stockExceeded);
       return;
     }
     if (next <= 0) {
@@ -128,19 +128,19 @@ const CartPage = () => {
       // Usar o valor retornado pela API, mas limitado a R$ 15
       const maxDiscount = 15.00;
       const actualDiscount = Math.min(result.discountAmount, maxDiscount);
-      alert(`Cupom aplicado com sucesso! Desconto de R$ ${actualDiscount.toFixed(2)}`);
+      alert(t.couponApplied.replace("{amount}", new Intl.NumberFormat(locale, { style: "currency", currency: "BRL" }).format(actualDiscount)));
     }
     return result;
   };
 
   const handleCheckout = () => {
-    alert("Finalizando compra...");
+    alert(t.finalizing);
     navigate("/checkout");
   };
 
   return (
-    <div className={cartItems.length === 0 ? "mx-auto mb-8 w-[min(760px,calc(100%_-_32px))] rounded-2xl bg-background px-5 py-6 shadow-md sm:px-7" : "container mx-auto mt-0 pt-2 mb-8 px-4 bg-background rounded-md shadow-lg p-6 sm:p-8"}>
-      <h1 className={cartItems.length === 0 ? "mb-5 text-3xl font-bold text-text-primary" : "mb-8 text-4xl font-bold text-text-primary"}>{t.title}</h1>
+    <div className={cartItems.length === 0 ? "mx-auto mt-4 mb-5 w-[min(760px,calc(100%_-_32px))] rounded-[22px] border border-[#e8ddf3] bg-white px-5 py-5 shadow-[0_10px_28px_rgba(43,15,72,.06)] sm:mt-6 sm:mb-8 sm:px-7 sm:py-6" : "mx-auto mt-4 mb-5 w-[calc(100%_-_32px)] max-w-[1336px] rounded-[22px] border border-[#e8ddf3] bg-white px-4 py-5 shadow-[0_10px_28px_rgba(43,15,72,.06)] sm:mt-6 sm:mb-8 sm:w-[calc(100%_-_48px)] sm:px-6 sm:py-8 lg:w-[calc(100%_-_64px)] lg:px-8"}>
+      <h1 className={cartItems.length === 0 ? "mb-4 text-[clamp(26px,5vw,36px)] font-bold leading-tight text-brand-ink sm:mb-5" : "mb-5 text-[clamp(26px,5vw,36px)] font-bold leading-tight text-brand-ink sm:mb-8"}>{t.title}</h1>
       {cartItems.length === 0 ? (
         <div className="mx-auto flex max-w-lg flex-col items-center rounded-2xl border border-[#e5d9f1] bg-[#f8f4fc] px-5 py-6 text-center shadow-sm">
           <span className="mb-3 grid size-12 place-items-center rounded-xl bg-[#e9ddf6] text-brand-plum"><ShoppingBag aria-hidden="true" className="size-6" /></span>
@@ -152,25 +152,25 @@ const CartPage = () => {
       ) : (
         <>
           <CartTable items={cartItems} onQuantityChange={updateQuantity} onRemoveItem={removeItem} />
-          {hasMyceliumProducts && <p className="mb-6 rounded-xl bg-[#f1e9f9] px-4 py-3 font-bold text-brand-plum" aria-live="polite">{t.totalVolume}: {new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(myceliumVolumeMl)} ml</p>}
+          {hasMyceliumProducts && <p className="mb-4 rounded-xl bg-[#f1e9f9] px-4 py-3 font-bold text-brand-plum sm:mb-6" aria-live="polite">{t.totalVolume}: {new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(myceliumVolumeMl)} ml</p>}
 
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            <div className="w-full lg:w-1/2">
-              {!hasMyceliumProducts && <CouponInput 
+          <div className="mb-3 flex flex-col gap-4 sm:mb-8 lg:flex-row">
+            {!hasMyceliumProducts && <div className="w-full lg:w-1/2">
+              <CouponInput 
                 value={inputValue} 
                 onChange={setInputValue} 
                 onApply={handleApplyCoupon}
                 isValidating={isValidating}
                 isValid={couponValid}
                 discount={getDiscountAmount(subtotal)}
-              />}
+              />
               {couponValid && (
                 <div className="text-green-600 text-sm mt-2">
-                  ✓ Cupom {getDiscountAmount(subtotal) > 0 ? `${getDiscountAmount(subtotal).toFixed(2).replace(".", ",")}` : ''} aplicado
+                  ✓ {t.couponApplied.replace("{amount}", new Intl.NumberFormat(locale, { style: "currency", currency: "BRL" }).format(getDiscountAmount(subtotal)))}
                 </div>
               )}
-            </div>
-            <div className="w-full lg:w-1/2">
+            </div>}
+            <div className="w-full lg:ml-auto lg:w-1/2">
               {hasMyceliumProducts ? <Button type="button" onClick={handleCheckout} className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 font-bold text-white hover:bg-[#57258e]">{t.finishOrder}</Button> : <CartSummary subtotal={subtotal} discount={getDiscountAmount(subtotal)} onCheckout={handleCheckout} />}
             </div>
           </div>
@@ -178,14 +178,14 @@ const CartPage = () => {
           <button
             type="button"
             onClick={() => navigate("/products")}
-            className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 py-2 font-bold text-white shadow-md transition-colors hover:bg-[#57258e] sm:w-auto"
+            className="min-h-11 w-full cursor-pointer rounded-full border border-[#cdb7e7] bg-[#e9def6] px-6 py-2 font-bold text-brand-plum shadow-sm transition-colors hover:border-brand-purple hover:bg-[#d8c4ef] sm:w-auto"
           >
-            Continuar Comprando
+            {t.continueShopping}
           </button>
         </>
       )}
       {cartItems.length > 0 && !hasMyceliumProducts && <div className="text-right text-xl font-bold mt-4">
-        Total: R$ {(subtotal - getDiscountAmount(subtotal)).toFixed(2).replace(".", ",")}
+        {t.total}: {new Intl.NumberFormat(locale, { style: "currency", currency: "BRL" }).format(subtotal - getDiscountAmount(subtotal))}
       </div>}
     </div>
   );
