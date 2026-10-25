@@ -131,7 +131,19 @@
     "previous": "Previous banner",
     "next": "Next banner",
     "goTo": "View {name} banner",
-    "imageAlt": "Mycelium {name} products"
+    "imageAlt": "Mycelium {name} products",
+    "lineLabel": "BIOMINERAL SOIL LINE",
+    "explore": "Explore line",
+    "phaseDescription": "Explore the line for the {phase} stage.",
+    "phases": {
+      "root": "root",
+      "growth": "growth",
+      "flowering": "flowering",
+      "finishing": "finishing",
+      "adjustment": "pH adjustment"
+    },
+    "pause": "Pause carousel",
+    "play": "Play carousel"
   },
   "ProductNames": {
     "raiz": "Root",

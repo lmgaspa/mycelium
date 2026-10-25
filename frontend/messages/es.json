@@ -131,7 +131,19 @@
     "previous": "Banner anterior",
     "next": "Banner siguiente",
     "goTo": "Ver banner {name}",
-    "imageAlt": "Productos Mycelium de la línea {name}"
+    "imageAlt": "Productos Mycelium de la línea {name}",
+    "lineLabel": "LÍNEA DE SUELO BIOMINERAL",
+    "explore": "Explorar línea",
+    "phaseDescription": "Conoce la línea para la etapa de {phase}.",
+    "phases": {
+      "root": "raíz",
+      "growth": "crecimiento",
+      "flowering": "floración",
+      "finishing": "finalización",
+      "adjustment": "ajuste de pH"
+    },
+    "pause": "Pausar carrusel",
+    "play": "Reproducir carrusel"
   },
   "ProductNames": {
     "raiz": "Raíz",

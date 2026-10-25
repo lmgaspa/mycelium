@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import PageBanner from "@/components/common/PageBanner";
 import ProductActions from "@/components/products/ProductActions";
 import { products } from "@/data/products";
+import StorePageSection from "@/components/common/StorePageSection";
 
 export default function Products() {
   const t = useCopy("Products");
@@ -16,8 +17,7 @@ export default function Products() {
     <div className="bg-[#faf8fc] text-brand-ink">
       <PageBanner eyebrow={t.eyebrow} title={t.title} description={t.intro} />
 
-      <section className="pt-[clamp(55px,6vw,84px)] pb-[clamp(80px,8vw,112px)] max-[640px]:pt-[38px]" aria-label={t.eyebrow}>
-        <div className="mx-auto grid w-[min(1180px,calc(100%_-_48px))] grid-cols-3 gap-[clamp(18px,2.5vw,30px)] max-[900px]:grid-cols-2 max-[640px]:w-[calc(100%_-_32px)] max-[640px]:grid-cols-1">
+      <StorePageSection aria-label={t.eyebrow} contentClassName="grid grid-cols-3 gap-[clamp(18px,2.5vw,30px)] max-[900px]:grid-cols-2 max-[640px]:grid-cols-1">
           {products.map((product) => (
             <article className="flex flex-col overflow-hidden rounded-[22px] border border-[#e8e1ef] bg-white text-brand-ink shadow-[0_10px_28px_rgba(43,15,72,.06)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-1 hover:border-[#b797dd] hover:shadow-[0_19px_42px_rgba(43,15,72,.14)] focus-within:border-[#b797dd] focus-within:shadow-[0_19px_42px_rgba(43,15,72,.14)] motion-reduce:transition-none" key={product.slug}>
               <Link href={`/products/${product.slug}`} className="relative mx-4 mt-4 block aspect-[4/4.8] overflow-hidden rounded-[14px] bg-white focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-brand-purple max-[640px]:aspect-[4/4.4]">
@@ -34,8 +34,7 @@ export default function Products() {
               </div>
             </article>
           ))}
-        </div>
-      </section>
+      </StorePageSection>
     </div>
   );
 }

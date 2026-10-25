@@ -131,7 +131,19 @@
     "previous": "Banner anterior",
     "next": "Próximo banner",
     "goTo": "Ver banner {name}",
-    "imageAlt": "Produtos Mycelium da linha {name}"
+    "imageAlt": "Produtos Mycelium da linha {name}",
+    "lineLabel": "LINHA SOLO BIOMINERAL",
+    "explore": "Explorar linha",
+    "phaseDescription": "Conheça a linha para a etapa de {phase}.",
+    "phases": {
+      "root": "raiz",
+      "growth": "crescimento",
+      "flowering": "floração",
+      "finishing": "finalização",
+      "adjustment": "ajuste de pH"
+    },
+    "pause": "Pausar carrossel",
+    "play": "Reproduzir carrossel"
   },
   "ProductNames": {
     "raiz": "Raiz",

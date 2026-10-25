@@ -1,16 +1,24 @@
+import { storePageBannerSpacing, storePageShell } from "@/components/common/storePageStyles";
+import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
+
 type PageBannerProps = {
   eyebrow: string;
   title: string;
   description: string;
+  tone?: "brand" | "plum";
+  titleId?: string;
+  action?: ReactNode;
 };
 
-export default function PageBanner({ eyebrow, title, description }: PageBannerProps) {
+export default function PageBanner({ eyebrow, title, description, tone = "brand", titleId, action }: PageBannerProps) {
   return (
-    <header className="bg-[radial-gradient(circle_at_85%_20%,rgba(158,102,223,.5),transparent_34%),linear-gradient(120deg,#203c38,#361958_60%,#5b2f94)] py-[clamp(20px,2.5vw,28px)] text-white">
-      <div className="mx-auto w-[min(1180px,calc(100%_-_48px))] max-[640px]:w-[calc(100%_-_32px)]">
-        <span className="mb-1 inline-block text-[10px] font-black uppercase tracking-[.16em] text-[#d4f3a7]">{eyebrow}</span>
-        <h1 className="mt-0 mb-1.5 max-w-[1000px] text-[clamp(30px,3.2vw,40px)] font-black leading-[1.08] tracking-[-.045em]">{title}</h1>
-        <p className="m-0 max-w-[760px] text-[clamp(14px,1.3vw,16px)] leading-[1.45] text-[#eee7f7]">{description}</p>
+    <header className={cn(storePageBannerSpacing, "text-white", tone === "brand" ? "bg-[radial-gradient(circle_at_85%_20%,rgba(158,102,223,.5),transparent_34%),linear-gradient(120deg,#203c38,#361958_60%,#5b2f94)]" : "bg-[radial-gradient(circle_at_85%_20%,rgba(158,102,223,.38),transparent_34%),linear-gradient(120deg,#26133e,#351260_65%,#522b80)]")}>
+      <div className={storePageShell}>
+        <span className="mb-1.5 inline-block text-[11px] font-black uppercase tracking-[.17em] text-brand-leaf">{eyebrow}</span>
+        <h1 id={titleId} className="mt-0 mb-2 max-w-[1000px] text-[clamp(34px,3.4vw,48px)] font-black leading-[1.08] tracking-[-.045em]">{title}</h1>
+        <p className="m-0 max-w-[1080px] text-[clamp(15px,1.4vw,18px)] leading-[1.6] text-[#eee7f7]">{description}</p>
+        {action && <div className="mt-5">{action}</div>}
       </div>
     </header>
   );

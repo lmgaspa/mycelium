@@ -10,7 +10,7 @@ export default function StoreLayout({ children }: { children: ReactNode }) {
   return (
     <CartProvider>
       <Navbar />
-      <main className="min-h-screen bg-background">{children}</main>
+      <main className="bg-background">{children}</main>
       <Footer />
       <Suspense fallback={null}><AnalyticsGate /></Suspense>
     </CartProvider>

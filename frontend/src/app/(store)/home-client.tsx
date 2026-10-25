@@ -5,10 +5,11 @@ import { Link } from "@/lib/router";
 import { ArrowRight, Droplets, Leaf, Sprout } from "lucide-react";
 import Collection from "@/components/collection/collection";
 import Cultivo from "@/components/cultivo/Cultivo";
+import { storePageShell } from "@/components/common/storePageStyles";
 
 function HomePage() {
   const t = useCopy("Home");
-  const shell = "mx-auto w-[min(1180px,calc(100%_-_48px))] max-[520px]:w-[min(100%_-_32px,1180px)]";
+  const shell = storePageShell;
   const button = "inline-flex min-h-[46px] items-center justify-center gap-3 rounded-[24px] px-[23px] py-0 text-[13px] font-black uppercase tracking-[.035em] no-underline transition-[transform,box-shadow,background] hover:-translate-y-0.5 hover:shadow-[0_9px_22px_rgba(20,8,35,.18)]";
   const buttonLight = `${button} bg-white text-brand-plum hover:bg-[#e9f6d3]`;
   const buttonOutline = `${button} border border-white text-white hover:bg-white hover:text-brand-plum`;
