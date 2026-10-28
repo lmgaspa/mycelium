@@ -1,6 +1,7 @@
 package com.luizgasparetto.backend.monolito.services.book
 
 import com.luizgasparetto.backend.monolito.dto.book.BookDTO
+import com.luizgasparetto.backend.monolito.exceptions.ReservationConflictException
 import com.luizgasparetto.backend.monolito.models.book.Book
 import com.luizgasparetto.backend.monolito.repositories.BookRepository
 import org.springframework.stereotype.Service
@@ -38,7 +39,7 @@ class BookService(
     fun validateStock(id: String, amount: Int) {
         val book = getBookById(id)
         if (book.stock < amount) {
-            throw IllegalArgumentException("Estoque insuficiente para o livro '${book.title}'")
+            throw ReservationConflictException(id, "Estoque insuficiente para o livro '${book.title}'")
         }
     }
 
@@ -50,7 +51,7 @@ class BookService(
         val changed = bookRepository.tryReserve(bookId, qty)
         if (changed != 1) {
             val title = runCatching { getBookById(bookId).title }.getOrNull() ?: bookId
-            throw IllegalStateException("Indisponível: '$title'")
+            throw ReservationConflictException(bookId, "Indisponível: '$title'")
         }
     }
 
@@ -64,7 +65,7 @@ class BookService(
     fun updateStock(id: String, amount: Int) {
         val book = getBookById(id)
         if (book.stock < amount) {
-            throw IllegalArgumentException("Estoque insuficiente para o livro '${book.title}'")
+            throw ReservationConflictException(id, "Estoque insuficiente para o livro '${book.title}'")
         }
         book.stock = book.stock - amount
         bookRepository.save(book)

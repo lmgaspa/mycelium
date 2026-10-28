@@ -17,12 +17,12 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "2.0.21"
-    kotlin("plugin.spring") version "2.0.21"
-    kotlin("plugin.noarg") version "2.0.21"
-    kotlin("plugin.allopen") version "2.0.21"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.spring") version "2.2.21"
+    kotlin("plugin.noarg") version "2.2.21"
+    kotlin("plugin.allopen") version "2.2.21"
 
-    id("org.springframework.boot") version "3.4.10"
+    id("org.springframework.boot") version "4.1.2"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.flywaydb.flyway") version "11.17.0" // PG18-ready
 }
@@ -38,18 +38,19 @@ repositories { mavenCentral() }
 
 dependencies {
     // BOM do Spring Boot
-    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.4.10"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:4.1.2"))
 
     // Starters
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.springframework.security:spring-security-crypto")
     implementation("com.google.api-client:google-api-client:2.6.0")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
     // Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.boot:spring-boot-jackson2")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     // HTTP (gerenciados pelo BOM)
@@ -64,7 +65,7 @@ dependencies {
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 
     // OpenAPI
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0")
 
     // Lombok (opcional)
     compileOnly("org.projectlombok:lombok")
@@ -79,6 +80,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:42.7.7")
 
     // Flyway na APP (runtime) — independente do classpath do plugin
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-core:11.17.0")
     implementation("org.flywaydb:flyway-database-postgresql:11.17.0")
 

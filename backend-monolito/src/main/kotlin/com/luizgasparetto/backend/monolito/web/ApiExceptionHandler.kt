@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import org.springframework.web.server.ResponseStatusException
 
 @RestControllerAdvice
 class ApiExceptionHandler {
@@ -34,10 +35,10 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArg(ex: IllegalArgumentException): ResponseEntity<ApiError> {
-        log.info("Bad request / conflito de negócio: {}", ex.message)
+        log.info("Argumento inválido: {}", ex.message)
         return ResponseEntity
-            .status(HttpStatus.CONFLICT)
-            .body(ApiError(code = "OUT_OF_STOCK", message = ex.message ?: "Indisponível"))
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiError(code = "INVALID_ARGUMENT", message = ex.message ?: "Requisição inválida"))
     }
 
     /**
@@ -64,7 +65,6 @@ class ApiExceptionHandler {
     // Cliente encerrou a conexão / stream (SSE). Não tentar escrever body.
     @ExceptionHandler(
         org.springframework.web.context.request.async.AsyncRequestNotUsableException::class,
-        java.io.IOException::class,
         org.apache.catalina.connector.ClientAbortException::class
     )
     fun handleClientGone(@Suppress("UNUSED_PARAMETER") ex: Exception): ResponseEntity<Void> {
@@ -72,15 +72,19 @@ class ApiExceptionHandler {
         return ResponseEntity.noContent().build()
     }
 
+    @ExceptionHandler(ResponseStatusException::class)
+    fun handleResponseStatus(ex: ResponseStatusException): ResponseEntity<ApiError> =
+        ResponseEntity.status(ex.statusCode)
+            .body(ApiError(code = "HTTP_${ex.statusCode.value()}", message = ex.reason ?: "Request failed"))
+
     @ExceptionHandler(Exception::class)
     fun handleGeneric(ex: Exception, request: HttpServletRequest): ResponseEntity<Any> {
+        log.error("Erro não tratado", ex)
         val accept = (request.getHeader("Accept") ?: "").lowercase()
         if (accept.contains("text/event-stream")) {
-            log.info("Erro em endpoint SSE, retornando 204 sem body: {}", ex.javaClass.simpleName)
-            return ResponseEntity.noContent().build()
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
         }
 
-        log.error("Erro não tratado", ex)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiError(code = "INTERNAL_ERROR", message = "Erro ao processar o checkout. Tente novamente."))
