@@ -15,13 +15,17 @@ const currentProductPrice = (item: CartItem): CartItem => {
 };
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() =>
-    cookieStorage.get<CartItem[]>("cart", []).map(currentProductPrice)
-  );
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
 
   useEffect(() => {
-    cookieStorage.set("cart", cartItems);
-  }, [cartItems]);
+    setCartItems(cookieStorage.get<CartItem[]>("cart", []).map(currentProductPrice));
+    setCartLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (cartLoaded) cookieStorage.set("cart", cartItems);
+  }, [cartItems, cartLoaded]);
 
   const addToCart = (item: CartItem) => {
     setCartItems((prev) => {

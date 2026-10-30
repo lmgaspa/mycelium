@@ -51,16 +51,32 @@ it("adds multiple package sizes and updates the volume as quantities change", ()
   fetch.mockRestore();
 });
 
-it("opens the modal with the size selected on the product page", () => {
-  render(
+it("adds the selected size directly from the product page and shows persistent feedback", () => {
+  const addToCart = vi.fn();
+  const cart = { cartItems: [{ id: "mycelium:raiz:500", title: "Raiz · 500 ml", imageUrl: products[0].image, price: 0, quantity: 2, kind: "mycelium" as const }], totalPrice: 0, addToCart, removeFromCart: vi.fn(), clearCart: vi.fn(), updateQuantity: vi.fn() };
+  const { rerender } = render(
     <NextIntlClientProvider locale="pt" messages={pt}>
-      <CartContext.Provider value={{ cartItems: [], totalPrice: 0, addToCart: vi.fn(), removeFromCart: vi.fn(), clearCart: vi.fn(), updateQuantity: vi.fn() }}>
+      <CartContext.Provider value={cart}>
         <ProductActions product={products[0]} selectedSizeMl={500} />
       </CartContext.Provider>
     </NextIntlClientProvider>,
   );
 
+  expect(screen.getByText("No carrinho: 2")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Aumentar 500 ml" }));
   fireEvent.click(screen.getByRole("button", { name: "Adicionar ao carrinho" }));
-  expect(within(screen.getByRole("dialog")).getByRole("group", { name: "Quantidade de 500 ml" })).toHaveTextContent("1");
-  expect(screen.getByText("Volume total: 500 ml")).toBeInTheDocument();
+  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:500", quantity: 2 }));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(screen.getByRole("status")).toHaveTextContent("Adicionado ao carrinho: Raiz · 500 ml (quantidade: 2)");
+  expect(screen.getByRole("link", { name: "Ver carrinho" })).toHaveAttribute("href", "/cart");
+
+  rerender(
+    <NextIntlClientProvider locale="pt" messages={pt}>
+      <CartContext.Provider value={cart}>
+        <ProductActions product={products[0]} selectedSizeMl={1000} />
+      </CartContext.Provider>
+    </NextIntlClientProvider>,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Adicionar ao carrinho" }));
+  expect(addToCart).toHaveBeenLastCalledWith(expect.objectContaining({ id: "mycelium:raiz:1000", quantity: 1 }));
 });

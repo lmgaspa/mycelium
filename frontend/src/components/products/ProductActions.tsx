@@ -1,13 +1,14 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { ShoppingBag, X } from "lucide-react";
+import { Check, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useCopy } from "@/i18n/useCopy";
 import { useProductName } from "@/i18n/useProductName";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
 import { getProductPrice, type Product } from "@/data/products";
 import { formatMyceliumPrice } from "@/utils/formatPrice";
@@ -28,6 +29,8 @@ export default function ProductActions({ product, className, compact = false, se
   const [quantities, setQuantities] = useState<Record<number, number>>({});
   const [addedQuantities, setAddedQuantities] = useState<Record<number, number>>({});
   const [reviewingAdded, setReviewingAdded] = useState(false);
+  const [detailQuantities, setDetailQuantities] = useState<Record<number, number>>({});
+  const [lastAddition, setLastAddition] = useState<{ sizeMl: number; quantity: number } | null>(null);
   const cart = useContext(CartContext);
   const router = useRouter();
 
@@ -54,6 +57,51 @@ export default function ProductActions({ product, className, compact = false, se
 
   const closeDialog = () => { setReviewingAdded(false); setStep(null); };
   const reviewVolumes = () => { setQuantities({ ...addedQuantities }); setReviewingAdded(true); setStep("size"); };
+
+  if (selectedSizeMl !== undefined) {
+    const quantity = detailQuantities[selectedSizeMl] ?? 1;
+    const size = formatProductSize(selectedSizeMl);
+    const cartQuantity = cart?.cartItems.find((item) => item.id === `mycelium:${product.slug}:${selectedSizeMl}`)?.quantity ?? 0;
+    const changeDetailQuantity = (delta: number) => setDetailQuantities((current) => ({
+      ...current,
+      [selectedSizeMl]: Math.max(1, (current[selectedSizeMl] ?? 1) + delta),
+    }));
+    const addSelectedSize = () => {
+      if (!cart) return;
+      cart.addToCart({
+        id: `mycelium:${product.slug}:${selectedSizeMl}`,
+        title: `${productName} · ${size}`,
+        imageUrl: product.image,
+        price: getProductPrice(product, selectedSizeMl),
+        quantity,
+        kind: "mycelium",
+      });
+      setLastAddition({ sizeMl: selectedSizeMl, quantity });
+    };
+
+    return (
+      <div className={`${className ?? ""} @container`}>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-brand-lilac-border bg-white px-4 py-3 sm:px-5">
+          <div>
+            <p className="m-0 text-sm font-bold text-brand-plum">{t.quantityFor} {size}</p>
+            {cartQuantity > 0 && <p className="m-0 mt-1 text-xs font-semibold text-brand-muted" aria-live="polite">{t.inCart}: {cartQuantity}</p>}
+          </div>
+          <div className="flex items-center gap-2" role="group" aria-label={`${t.quantityFor} ${size}`}>
+            <Button type="button" variant="outline" size="icon" disabled={quantity <= 1} onClick={() => changeDetailQuantity(-1)} aria-label={`${t.decrease} ${size}`} className="size-10 cursor-pointer rounded-full border-brand-lilac-control text-brand-plum hover:border-brand-plum hover:bg-brand-lilac-soft hover:text-brand-plum disabled:cursor-not-allowed"><Minus aria-hidden="true" /></Button>
+            <span className="min-w-8 text-center font-bold tabular-nums text-brand-plum" aria-live="polite">{quantity}</span>
+            <Button type="button" variant="outline" size="icon" onClick={() => changeDetailQuantity(1)} aria-label={`${t.increase} ${size}`} className="size-10 cursor-pointer rounded-full border-brand-lilac-control text-brand-plum hover:border-brand-plum hover:bg-brand-lilac-soft hover:text-brand-plum"><Plus aria-hidden="true" /></Button>
+          </div>
+        </div>
+        <Button type="button" onClick={addSelectedSize} disabled={!cart} className="mt-3 min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-4 font-bold text-white hover:bg-brand-purple disabled:cursor-not-allowed disabled:bg-[#d8cce5] disabled:text-brand-muted"><ShoppingBag aria-hidden="true" />{t.add}</Button>
+        {lastAddition && (
+          <div role="status" className="mt-3 flex flex-col items-stretch gap-3 rounded-[18px] border border-brand-lilac-border bg-brand-lilac-soft px-4 py-3 text-sm text-brand-plum sm:px-5 @min-[520px]:flex-row @min-[520px]:items-center @min-[520px]:justify-between">
+            <span className="flex items-center gap-2 font-bold"><Check aria-hidden="true" className="size-5 shrink-0" />{t.addedInline.replace("{product}", productName).replace("{size}", formatProductSize(lastAddition.sizeMl)).replace("{quantity}", String(lastAddition.quantity))}</span>
+            <Button asChild variant="link" className="h-auto w-full justify-center p-0 text-center font-bold text-brand-plum underline underline-offset-4 hover:text-brand-purple @min-[520px]:w-auto"><Link href="/cart">{t.viewCart}</Link></Button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={className}>
