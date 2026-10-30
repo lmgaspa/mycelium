@@ -5,8 +5,8 @@
 !README.md
 
 #
-# Documentation (ignora pasta docs/)
-docs/
+# Documentação local da raiz (não versionada)
+/docs/
 
 # Logs e arquivos temporários
 *.log

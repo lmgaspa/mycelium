@@ -13,11 +13,12 @@ it("adds multiple package sizes and updates the volume as quantities change", ()
   const fetch = vi.spyOn(globalThis, "fetch");
   const addToCart = vi.fn();
   const updateQuantity = vi.fn();
+  const pricedProduct = { ...products[0], pricesBySizeMl: { ...products[0].pricesBySizeMl, 100: 12.5, 500: 27 } };
 
   render(
     <NextIntlClientProvider locale="pt" messages={pt}>
       <CartContext.Provider value={{ cartItems: [], totalPrice: 0, addToCart, removeFromCart: vi.fn(), clearCart: vi.fn(), updateQuantity }}>
-        <ProductActions product={products[0]} />
+        <ProductActions product={pricedProduct} />
       </CartContext.Provider>
     </NextIntlClientProvider>,
   );
@@ -30,9 +31,10 @@ it("adds multiple package sizes and updates the volume as quantities change", ()
   expect(screen.getByText("Volume total: 1.100 ml")).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Diminuir 500 ml" }));
   expect(screen.getByText("Volume total: 600 ml")).toBeInTheDocument();
+  expect(screen.getByText("Preço total: R$ 39,50")).toBeInTheDocument();
   fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Adicionar ao carrinho" }));
-  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:100", quantity: 1, kind: "mycelium" }));
-  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:500", quantity: 1, kind: "mycelium" }));
+  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:100", price: 12.5, quantity: 1, kind: "mycelium" }));
+  expect(addToCart).toHaveBeenCalledWith(expect.objectContaining({ id: "mycelium:raiz:500", price: 27, quantity: 1, kind: "mycelium" }));
   expect(screen.getByText("1 unidade de 500 ml")).toBeInTheDocument();
   expect(fetch).not.toHaveBeenCalled();
   expect(screen.getByText("Produto adicionado")).toBeInTheDocument();

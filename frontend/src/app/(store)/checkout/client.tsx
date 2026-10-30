@@ -8,8 +8,8 @@ import { formatCep, formatCpf, formatCelular } from "@/utils/masks";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import type { CartItem } from "@/context/CartTypes";
 import { calcularFreteComBaseEmCarrinho } from "@/utils/freteUtils";
-import { getStockByIds } from "@/api/stock";
 import { cookieStorage } from "@/utils/cookieUtils";
+import { calculateCheckoutTotals } from "@/utils/checkoutTotals";
 import { analytics, mapCartItems } from "@/analytics";
 import { CartContext } from "@/context/CartContext";
 import { useCopy } from "@/i18n/useCopy";
@@ -68,7 +68,6 @@ const CheckoutPage = () => {
     setInputValue,
     isValidating
   } = useCoupon();
-  const [stockById, setStockById] = useState<Record<string, number>>({});
   const [form, setForm] = useState<FormState>(() =>
     cookieStorage.get<FormState>("checkoutForm", DEFAULT_FORM)
   );
@@ -83,58 +82,13 @@ const CheckoutPage = () => {
 
   const { cartItems, updateQuantity: updateQuantityContext, removeFromCart, totalPrice } = cartContext;
   const totalItems = totalPrice;
+  const totals = calculateCheckoutTotals(cartItems, shipping, getDiscountAmount(totalItems));
 
   const onNavigateBack = () => navigate("/products");
 
   // GA4: controla se já disparamos o begin_checkout nesta visita.
   // Extensão de comportamento (analytics) sem alterar o fluxo principal (OCP).
   const beginCheckoutTrackedRef = useRef(false);
-  const initializedRef = useRef(false);
-  
-  // Carrega estoque e valida carrinho ao montar
-  useEffect(() => {
-    if (initializedRef.current || cartItems.length === 0) return;
-    initializedRef.current = true;
-
-    (async () => {
-      const ids = cartItems.filter((item) => item.kind !== "mycelium").map((c) => c.id);
-      const stockMap = await getStockByIds(ids);
-      const stockDict = Object.fromEntries(
-        ids.map((id) => [id, Math.max(0, stockMap[id]?.stock ?? 0)])
-      );
-      setStockById(stockDict);
-
-      // Valida e ajusta quantidades baseado no estoque
-      const fixed = cartItems
-        .map((i) => ({
-          ...i,
-          quantity: i.kind === "mycelium" ? i.quantity : Math.min(i.quantity, Math.max(0, stockDict[i.id] ?? 0)),
-        }))
-        .filter((i) => i.quantity > 0);
-
-      // Se houve ajustes, atualiza o contexto
-      if (
-        fixed.length !== cartItems.length ||
-        fixed.some((f, idx) => f.quantity !== cartItems[idx]?.quantity)
-      ) {
-        // Ajusta quantidades no contexto
-        fixed.forEach((item) => {
-          const current = cartItems.find((c) => c.id === item.id);
-          if (current && current.quantity !== item.quantity) {
-            const delta = item.quantity - current.quantity;
-            updateQuantityContext(item.id, delta);
-          }
-        });
-        // Remove itens que ficaram sem estoque
-        cartItems.forEach((item) => {
-          if (!fixed.find((f) => f.id === item.id)) {
-            removeFromCart(item.id);
-          }
-        });
-        alert(t.stockAdjusted);
-      }
-    })();
-  }, [cartItems, updateQuantityContext, removeFromCart, t.stockAdjusted]);
 
   const cpfCepInfo = useMemo(() => {
     const cpf = form.cpf.replace(/\D/g, "");
@@ -159,7 +113,7 @@ const CheckoutPage = () => {
 
     try {
       const itemsPayload = mapCartItems(cartItems);
-      const value = totalItems + shipping - getDiscountAmount(totalItems);
+      const value = calculateCheckoutTotals(cartItems, shipping, getDiscountAmount(totalItems)).total;
 
       analytics.beginCheckout({
         items: itemsPayload,
@@ -253,19 +207,13 @@ const CheckoutPage = () => {
   const updateQuantity = useCallback((id: string, delta: number) => {
     const currentItem = cartItems.find((i) => i.id === id);
     if (!currentItem) return;
-    const max = currentItem.kind === "mycelium" ? Infinity : stockById[id] ?? Infinity;
-
     const next = currentItem.quantity + delta;
-    if (next > max) {
-      alert(t.stockExceeded);
-      return;
-    }
     if (next <= 0) {
       removeFromCart(id);
       return;
     }
     updateQuantityContext(id, delta);
-  }, [stockById, cartItems, updateQuantityContext, removeFromCart, t.stockExceeded]);
+  }, [cartItems, updateQuantityContext, removeFromCart]);
 
   const removeItem = useCallback((id: string) => {
     removeFromCart(id);
@@ -322,9 +270,9 @@ const CheckoutPage = () => {
   return (
     <CheckoutForm
       cartItems={cartItems}
-      total={totalItems + shipping - getDiscountAmount(totalItems)}
+      total={totals.total}
       shipping={shipping}
-      discount={getDiscountAmount(totalItems)}
+      discount={totals.discount}
       coupon={inputValue}
       setCoupon={setInputValue}
       handleApplyCoupon={handleApplyCoupon}

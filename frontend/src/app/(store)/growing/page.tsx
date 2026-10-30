@@ -1,5 +1,5 @@
-import Cultivo from "@/components/cultivo/Cultivo";
+import Growing from "@/components/cultivo/Growing";
 
 export default function Page() {
-  return <Cultivo asPage />;
+  return <Growing asPage />;
 }

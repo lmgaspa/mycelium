@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
 import CardPaymentPage from '@/app/(store)/payment/card/client';
@@ -350,12 +350,12 @@ describe('CardPaymentPage', () => {
             });
         });
 
-        it('should handle out of stock errors', async () => {
+        it('should display other API error messages', async () => {
             const mockError = {
                 response: {
                     data: {
-                        code: 'OUT_OF_STOCK',
-                        message: 'Produto indisponível',
+                        code: 'ORDER_REJECTED',
+                        message: 'Não foi possível concluir o pedido',
                     },
                 },
             };
@@ -376,7 +376,7 @@ describe('CardPaymentPage', () => {
             await user.click(payButton);
 
             await waitFor(() => {
-                expect(screen.getByText(/produto indisponível/i)).toBeInTheDocument();
+                expect(screen.getByText(/não foi possível concluir o pedido/i)).toBeInTheDocument();
             });
         });
     });

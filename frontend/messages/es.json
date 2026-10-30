@@ -68,10 +68,10 @@
     "homeAria": "Mycelium — inicio"
   },
   "Home": {
-    "eyebrow": "MYCELIUM · SOLUCIONES PARA CULTIVO",
-    "hero": "Flores Mágicas para que tu cultivo florezca.",
-    "intro": "Conoce la línea de suelo biomineral Flores Mágicas de Mycelium, disponible en diferentes tamaños para tu cultivo.",
-    "discover": "Conoce Flores Mágicas",
+    "eyebrow": "MYCELIUM · SOLUCIONES PARA EL CULTIVO",
+    "hero": "Nutrición para cada etapa de tu cultivo.",
+    "intro": "Descubre la colección Mycelium: soluciones para las diferentes etapas del cultivo, desde el desarrollo de las raíces hasta la floración y la finalización.",
+    "discover": "CONOCE NUESTRA COLECCIÓN",
     "contact": "Contáctanos",
     "strip1": "Línea de suelo biomineral",
     "strip3": "Cuatro tamaños",
@@ -87,7 +87,7 @@
     "contactTitle": "¿Quieres saber más sobre Mycelium?",
     "contactBody": "Habla con nosotros sobre los productos y encuentra la opción ideal para tu cultivo.",
     "contactAction": "Contactar",
-    "heroImageAlt": "Cuatro envases de la línea Mycelium Flores Mágicas",
+    "heroImageAlt": "Productos de la colección Mycelium para diferentes etapas del cultivo",
     "highlightsAria": "Destacados de Mycelium",
     "productImageAlt": "Envases Mycelium Flores Mágicas",
     "biomineralBadge": "LÍNEA DE SUELO BIOMINERAL"
@@ -133,6 +133,11 @@
     "goTo": "Ver banner {name}",
     "imageAlt": "Productos Mycelium de la línea {name}",
     "lineLabel": "LÍNEA DE SUELO BIOMINERAL",
+    "soloLineLabel": "LÍNEA SUELO",
+    "phLineLabel": "CORRECTORES DE pH",
+    "phCorrectors": "Correctores de pH",
+    "phDescription": "Explora los correctores pH Up y pH Down para ajustar la solución de cultivo.",
+    "soloDescription": "Conoce el Suelo Biomineral de Mycelium.",
     "explore": "Explorar línea",
     "phaseDescription": "Conoce la línea para la etapa de {phase}.",
     "phases": {
@@ -140,7 +145,8 @@
       "growth": "crecimiento",
       "flowering": "floración",
       "finishing": "finalización",
-      "adjustment": "ajuste de pH"
+      "adjustment": "ajuste de pH",
+      "substrate": "sustrato"
     },
     "pause": "Pausar carrusel",
     "play": "Reproducir carrusel"
@@ -154,18 +160,22 @@
     "flores-magicas": "Flores Mágicas",
     "finalizador": "Finalizador",
     "ph-down": "Corrector de pH Down",
-    "ph-up": "Corrector de pH Up"
+    "ph-up": "Corrector de pH Up",
+    "solo": "Suelo Biomineral"
   },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUCTOS",
+    "lineEyebrow": "MYCELIUM · LÍNEA",
     "title": "Productos para cada etapa del cultivo.",
     "intro": "Conoce la línea Mycelium y la información que aparece en las etiquetas.",
+    "lineIntro": "Conoce los productos de esta línea Mycelium y elige la opción para tu cultivo.",
     "phase": {
       "root": "Raíz",
       "growth": "Crecimiento",
       "flowering": "Floración",
       "finishing": "Finalización",
-      "adjustment": "Ajuste de pH"
+      "adjustment": "Ajuste de pH",
+      "substrate": "Sustrato"
     },
     "details": "Ver detalles",
     "imageAlt": "Envase Mycelium {name}"
@@ -173,12 +183,29 @@
   "ProductDetail": {
     "back": "Todos los productos",
     "family": "Línea Mycelium",
+    "identificationTitle": "1. Identificación y Presentación",
+    "commercialName": "Nombre comercial",
+    "categoryLabel": "Categoría",
+    "highlightBenefit": "Beneficio agronómico",
+    "highlightValidation": "Validación de la fórmula",
+    "dataPending": "Datos pendientes de completar",
+    "category": { "fertilizer": "Fertilizante", "substrate": "Sustrato", "ph-corrector": "Corrector de pH" },
+    "productLine": "Línea del producto",
+    "productLines": { "soloBiomineral": "Línea Suelo Biomineral", "solo": "Línea Suelo", "corretor-ph": "Línea de Correctores de pH" },
+    "descriptions": { "livingSubstrate": "Sustrato vivo y equilibrado para plantas más fuertes y saludables." },
+    "phaseDescriptions": { "root": "Producto de la línea Suelo Biomineral para el desarrollo de las raíces.", "growth": "Producto de la línea Suelo Biomineral para la etapa de crecimiento.", "flowering": "Producto de la línea Suelo Biomineral para la etapa de floración.", "finishing": "Producto de la línea Suelo Biomineral para la etapa de finalización.", "adjustment": "Corrector para ajustar el pH de la solución de cultivo.", "substrate": "Sustrato de la línea Suelo Biomineral." },
+    "targetCrops": "Cultivos objetivo",
+    "environments": "Ambientes",
+    "usagePhase": "Etapa de uso",
+    "applicationMethod": "Aplicación principal",
+    "highlights": { "maturation": "Maduración y etapa final de floración", "structure": "Mayor estructura y calidad", "validatedFormula": "Fórmula validada, probada y conforme a la normativa" },
     "phase": {
       "root": "Raíz",
       "growth": "Crecimiento",
       "flowering": "Floración",
       "finishing": "Finalización",
-      "adjustment": "Ajuste de pH"
+      "adjustment": "Ajuste de pH",
+      "substrate": "Sustrato"
     },
     "formula": "Fórmula en la etiqueta",
     "volume": "Contenido del envase",
@@ -198,7 +225,6 @@
     "title": "Carrito de compras",
     "empty": "Tu carrito está vacío. Explora los productos Mycelium y encuentra el próximo producto para tu cultivo.",
     "explore": "Ver productos",
-    "priceOnRequest": "Precio a consultar",
     "totalVolume": "Volumen total de productos My Celium",
     "finishOrder": "Finalizar pedido",
     "continueShopping": "Seguir comprando",
@@ -272,6 +298,7 @@
     "increase": "Aumentar",
     "decrease": "Disminuir",
     "totalVolume": "Volumen total",
+    "totalPrice": "Precio total",
     "unitOf": "unidad de",
     "unitsOf": "unidades de",
     "reviewVolumes": "Revisar volúmenes",

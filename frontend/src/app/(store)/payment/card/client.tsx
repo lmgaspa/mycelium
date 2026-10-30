@@ -6,6 +6,7 @@ import { useNavigate } from "@/lib/router";
 
 import { tokenize, verifyBrandFromNumber, isScriptBlocked, type CardBrand } from "@/services/efiCard";
 import { cookieStorage } from "@/utils/cookieUtils";
+import { calculateCheckoutTotals } from "@/utils/checkoutTotals";
 import { analytics, mapCartItems } from "@/analytics";
 import { useCoupon } from "@/hooks/useCoupon";
 import { apiPost } from "@/api/http";
@@ -63,9 +64,10 @@ export default function CardPaymentPage() {
   );
 
   const shipping = Number(form?.shipping ?? 0);
-  const subtotal = cart.reduce((acc, i) => acc + i.price * i.quantity, 0);
+  const subtotal = calculateCheckoutTotals(cart, 0, 0).subtotal;
   const desconto = getDiscountAmount(subtotal);
-  const total = subtotal + shipping - desconto;
+  const totals = calculateCheckoutTotals(cart, shipping, desconto);
+  const total = totals.total;
   const finalCouponCode = isCouponValid && couponCode ? couponCode : null;
   const finalDiscount = finalCouponCode ? desconto : 0;
 
@@ -108,7 +110,9 @@ export default function CardPaymentPage() {
     (async () => {
       try {
         if (await isScriptBlocked()) console.warn("Efí fingerprint/script blocked!");
-      } catch { }
+      } catch {
+        // A verificação do script é apenas informativa.
+      }
     })();
   }, []);
 
@@ -127,7 +131,9 @@ export default function CardPaymentPage() {
             cvv: formatCvv(prev.cvv),
           }));
         }
-      } catch { }
+      } catch {
+        // A detecção automática é opcional; a seleção manual continua disponível.
+      }
     })();
   }, [validation.numberDigits, formatCardNumber, formatCvv]);
 
@@ -179,7 +185,9 @@ export default function CardPaymentPage() {
           installments: installmentsHook.installments,
           currency: "BRL",
         });
-      } catch { }
+      } catch {
+        // Uma falha de analytics não impede o pagamento.
+      }
 
       // Tokenize
       const tokenResp = await tokenize(PAYEE_CODE_ASSERTED, EFI_ENV, {
@@ -199,7 +207,7 @@ export default function CardPaymentPage() {
         paymentToken: tokenResp.payment_token,
         installments: installmentsHook.installments,
         cartItems: cart,
-        total: subtotal + shipping,
+        total: totals.totalBeforeDiscount,
         shipping,
         discount: finalDiscount,
         couponCode: finalCouponCode,
@@ -215,7 +223,8 @@ export default function CardPaymentPage() {
 
       if (data.success && data.orderId && !hasErrorStatus) {
         setPaymentSuccess(true); // Set flag before clearing cart to prevent redirect
-        cartContext?.clearCart?.() ?? cookieStorage.remove("cart");
+        if (cartContext) cartContext.clearCart();
+        else cookieStorage.remove("cart");
         if (couponCode) clearCoupon();
 
         sessionStorage.setItem(
@@ -255,15 +264,15 @@ export default function CardPaymentPage() {
         setErrorMsg(data.message || "Pagamento não foi aprovado. Tente novamente.");
         return;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Erro no pagamento:", err);
-      const resp = (err as any)?.response;
-      const data = resp?.data as { code?: string; message?: string } | undefined;
+      const response = typeof err === "object" && err !== null && "response" in err ? err.response : undefined;
+      const data = typeof response === "object" && response !== null && "data" in response
+        ? response.data as { code?: string; message?: string } | undefined
+        : undefined;
 
       if (data?.code === "PAYMENT_GATEWAY_ERROR") {
         setErrorMsg(data.message || "Erro ao comunicar com processador de cartão.");
-      } else if (data?.code === "OUT_OF_STOCK") {
-        setErrorMsg(data.message || "Alguns itens ficaram indisponíveis.");
       } else if (data?.message) {
         setErrorMsg(data.message);
       } else if (err instanceof Error) {
@@ -289,7 +298,7 @@ export default function CardPaymentPage() {
         hasCheckoutResponse={!!checkoutResponse}
       />
 
-      <OrderSummary subtotal={subtotal} shipping={shipping} discount={desconto} total={total} />
+      <OrderSummary subtotal={subtotal} shipping={shipping} discount={desconto} total={total} useMyceliumPrices={cart.some((item) => item.kind === "mycelium")} />
 
       <CouponDisplay discount={desconto} couponCode={couponCode} />
 

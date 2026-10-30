@@ -3,9 +3,10 @@
 // src/pages/PixPaymentPage.tsx - REFATORADO
 import { useEffect, useMemo, useState, useContext } from "react";
 import type { CartItem } from "@/context/CartTypes";
-import { formatPrice } from "@/utils/formatPrice";
+import { formatMyceliumPrice, formatPrice } from "@/utils/formatPrice";
 import { cookieStorage } from "@/utils/cookieUtils";
 import { useCoupon } from "@/hooks/useCoupon";
+import { calculateCheckoutTotals } from "@/utils/checkoutTotals";
 import { CartContext } from "@/context/CartContext";
 
 // Custom Hooks
@@ -34,10 +35,7 @@ export default function PixPaymentPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>(initialCart);
 
   // Cálculos
-  const totalProdutos = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [cartItems]
-  );
+  const totalProdutos = useMemo(() => calculateCheckoutTotals(cartItems, 0, 0).subtotal, [cartItems]);
   const desconto = useMemo(
     () => getDiscountAmount(totalProdutos),
     [totalProdutos, getDiscountAmount]
@@ -46,16 +44,16 @@ export default function PixPaymentPage() {
   // Custom Hooks
   const checkout = usePixCheckout({
     cartItems,
-    totalProdutos,
     desconto,
     couponCode,
     isCouponValid,
   });
 
-  const totalComFrete = useMemo(
-    () => totalProdutos + (checkout.frete ?? 0) - desconto,
-    [totalProdutos, checkout.frete, desconto]
+  const totals = useMemo(
+    () => calculateCheckoutTotals(cartItems, checkout.frete ?? 0, desconto),
+    [cartItems, checkout.frete, desconto]
   );
+  const totalComFrete = totals.total;
 
   const timer = usePixTimer({
     expiresAtMs: checkout.expiresAtMs,
@@ -123,8 +121,8 @@ export default function PixPaymentPage() {
             <div>
               <p className="font-medium">{item.title}</p>
               <p>Quantidade: {item.quantity}</p>
-              <p>Preço unitário: {formatPrice(item.price)}</p>
-              <p>Subtotal: {formatPrice(item.price * item.quantity)}</p>
+              <p>Preço unitário: {item.kind === "mycelium" ? formatMyceliumPrice(item.price) : formatPrice(item.price)}</p>
+              <p>Subtotal: {item.kind === "mycelium" ? formatMyceliumPrice(item.price * item.quantity) : formatPrice(item.price * item.quantity)}</p>
             </div>
           </div>
         ))}
@@ -132,10 +130,11 @@ export default function PixPaymentPage() {
 
       {/* 🔁 Usa o componente compartilhado de resumo */}
       <OrderSummary
-        subtotal={totalProdutos}
-        shipping={checkout.frete ?? 0}
-        discount={desconto}
+        subtotal={totals.subtotal}
+        shipping={totals.shipping}
+        discount={totals.discount}
         total={totalComFrete}
+        useMyceliumPrices={cartItems.some((item) => item.kind === "mycelium")}
       />
 
       {/* 🔁 Botão global reutilizável */}

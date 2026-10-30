@@ -12,16 +12,20 @@ import StorePageSection from "@/components/common/StorePageSection";
 import { storeOutlineButton } from "@/components/common/storePageStyles";
 import { cn } from "@/lib/utils";
 
-const order = ["flores-magicas", "raiz", "crescimento-parte-a", "crescimento-parte-b", "floracao-parte-a", "floracao-parte-b", "finalizador"] as const;
+const order = ["flores-magicas", "raiz", "crescimento-parte-a", "crescimento-parte-b", "floracao-parte-a", "floracao-parte-b", "finalizador", "solo", "ph-correctors"] as const;
 const slides = order.map((slug) => {
+  if (slug === "ph-correctors") return { slug, catalogImage: "/images/collection/collection-ph.webp", phase: "adjustment" as const, productLine: "corretor-ph" as const, href: "/collection/corretor-ph" };
   const product = products.find((item) => item.slug === slug);
-  if (!product?.catalogImage) throw new Error(`Missing collection image for ${slug}`);
-  return { slug, catalogImage: product.catalogImage, phase: product.phase };
+  if (!product?.catalogImage || !product.productLine) throw new Error(`Missing collection data for ${slug}`);
+  return { slug, catalogImage: product.catalogImage, phase: product.phase, productLine: product.productLine, href: `/products/${slug}` };
 });
 
 export default function Collection({ embedded = false }: { embedded?: boolean }) {
   const t = useCopy("Collection");
   const names = useCopy("ProductNames");
+  const slideName = (slug: (typeof order)[number]) => slug === "ph-correctors" ? t.phCorrectors : names[slug];
+  const lineLabels = { soloBiomineral: t.lineLabel, solo: t.soloLineLabel, "corretor-ph": t.phLineLabel };
+  const slideDescription = (item: (typeof slides)[number]) => item.productLine === "corretor-ph" ? t.phDescription : item.productLine === "solo" ? t.soloDescription : t.phaseDescription.replace("{phase}", t.phases[item.phase]);
   const [active, setActive] = useState(0);
   const [outgoing, setOutgoing] = useState<number | null>(null);
   const [textSlide, setTextSlide] = useState(0);
@@ -115,20 +119,20 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
           <div className="relative grid min-h-[clamp(460px,40vw,500px)] grid-cols-[40%_60%] overflow-hidden bg-[#251936] min-[1440px]:min-h-[515px] min-[901px]:max-[1100px]:min-h-[clamp(312px,33vw,330px)] min-[901px]:max-[1100px]:grid-cols-[47%_53%] max-[900.99px]:min-h-0 max-[900.99px]:grid-cols-1">
             <div className="absolute inset-0 bg-gradient-to-r from-[#1c0b29] via-[#251332] to-[#382245]" aria-hidden="true" />
             <div className="relative z-[1] flex min-w-0 flex-col items-start justify-center px-[clamp(30px,5vw,78px)] py-14 max-[1100px]:px-7 min-[901px]:max-[1100px]:py-4 max-[900.99px]:min-h-0 max-[900.99px]:justify-start max-[900.99px]:px-6 max-[900.99px]:py-4">
-              <span className="mb-1 text-[11px] font-black tracking-[.2em] text-brand-leaf">{t.lineLabel}</span>
+              <span className="mb-1 text-[11px] font-black tracking-[.2em] text-brand-leaf">{lineLabels[copySlide.productLine]}</span>
               <span className="mb-6 h-[2px] w-14 rounded-full bg-brand-leaf max-[900.99px]:mb-2" aria-hidden="true" />
               <div className="relative mb-5 w-full max-w-[420px] text-[clamp(42px,3.8vw,58px)] font-black leading-[.98] tracking-[-.055em] [overflow-wrap:anywhere] max-[600px]:text-[clamp(34px,9vw,42px)] max-[900.99px]:mb-2">
-                <h3 className={cn("m-0 transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{names[copySlide.slug]}</h3>
+                <h3 className={cn("m-0 transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{slideName(copySlide.slug)}</h3>
               </div>
               <div className="relative mb-4 w-full max-w-[320px] text-[clamp(16px,1.7vw,20px)] leading-[1.5] text-[#eee4f4]">
-                <p className={cn("m-0 transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{t.phaseDescription.replace("{phase}", t.phases[copySlide.phase])}</p>
+                <p className={cn("m-0 transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{slideDescription(copySlide)}</p>
               </div>
-              <Button asChild variant="outline" className={storeOutlineButton}><Link to={`/products/${copySlide.slug}`}>{t.explore} <ArrowRight className="size-4" aria-hidden="true" /></Link></Button>
+              <Button asChild variant="outline" className={storeOutlineButton}><Link to={copySlide.href}>{t.explore} <ArrowRight className="size-4" aria-hidden="true" /></Link></Button>
             </div>
             <div className="relative z-[1] flex min-h-[420px] min-w-0 items-center min-[901px]:max-[1100px]:min-h-[clamp(312px,33vw,330px)] min-[901px]:max-[1100px]:py-6 max-[900.99px]:min-h-0 max-[900.99px]:pb-4">
               <div className="relative mr-auto aspect-[3/2] w-[calc(100%_-_24px)] overflow-hidden rounded-[24px] [mask-image:radial-gradient(ellipse_95%_70%_at_58%_50%,black_42%,transparent_100%)] min-[1440px]:w-[calc(100%_-_32px)] max-[1100px]:rounded-[18px] max-[900.99px]:mx-auto max-[900.99px]:w-[calc(100%_-_48px)]">
                 {outgoing !== null && <Image src={slides[outgoing].catalogImage} alt="" aria-hidden="true" fill sizes="(max-width: 1100px) 100vw, (max-width: 1180px) 58vw, 684px" className="pointer-events-none animate-out fade-out object-contain duration-300 motion-reduce:hidden" />}
-                <Image key={slide.slug} src={slide.catalogImage} alt={t.imageAlt.replace("{name}", names[slide.slug])} fill sizes="(max-width: 1100px) 100vw, (max-width: 1180px) 58vw, 684px" priority={active === 0} className="animate-in fade-in object-contain duration-300 motion-reduce:animate-none" />
+                <Image key={slide.slug} src={slide.catalogImage} alt={t.imageAlt.replace("{name}", slideName(slide.slug))} fill sizes="(max-width: 1100px) 100vw, (max-width: 1180px) 58vw, 684px" priority={active === 0} className="animate-in fade-in object-contain duration-300 motion-reduce:animate-none" />
               </div>
             </div>
           </div>
@@ -137,7 +141,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
             <div className="flex min-w-0 items-baseline gap-[18px] max-[600px]:w-full max-[600px]:gap-3">
               <span className="whitespace-nowrap text-[12px] font-extrabold text-brand-leaf">{String(textSlide + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
               <div className="relative min-w-0 flex-1 text-[clamp(20px,2.2vw,28px)] font-extrabold tracking-[-.025em]">
-                <h2 className={cn("m-0 truncate transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{names[copySlide.slug]}</h2>
+                <h2 className={cn("m-0 truncate transition-opacity duration-150 ease-in-out motion-reduce:transition-none", !textVisible && "opacity-0")}>{slideName(copySlide.slug)}</h2>
               </div>
             </div>
             <div className="flex items-center gap-[2px] max-[600px]:justify-center" aria-label={t.carousel}>
@@ -148,7 +152,7 @@ export default function Collection({ embedded = false }: { embedded?: boolean })
                   variant="ghost"
                   size="icon-xs"
                   className={dot}
-                  aria-label={t.goTo.replace("{name}", names[slide.slug])}
+                  aria-label={t.goTo.replace("{name}", slideName(slide.slug))}
                   aria-current={index === active ? "true" : undefined}
                   onClick={() => selectSlide(index, true)}
                 >

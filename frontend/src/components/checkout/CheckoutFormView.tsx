@@ -4,6 +4,7 @@ import { analytics, mapCartItems } from "../../analytics";
 import CouponInput from "../cart/CouponInput";
 import { useCopy } from "@/i18n/useCopy";
 import { useLocale } from "next-intl";
+import { formatMyceliumPrice } from "@/utils/formatPrice";
 
 interface CheckoutFormViewProps {
   cartItems: CartItem[];
@@ -62,7 +63,6 @@ const CheckoutFormView: React.FC<CheckoutFormViewProps> = ({
   onNavigateBack,
 }) => {
   const t = useCopy("Checkout");
-  const cartCopy = useCopy("Cart");
   const productNames = useCopy("ProductNames");
   const locale = useLocale();
   const money = (amount: number) => new Intl.NumberFormat(locale, { style: "currency", currency: "BRL" }).format(amount);
@@ -280,7 +280,7 @@ const CheckoutFormView: React.FC<CheckoutFormViewProps> = ({
                   </button>
                 </div>
                 <span className="mt-2 block break-words text-right text-sm font-medium text-brand-plum">
-                  {item.kind === "mycelium" ? cartCopy.priceOnRequest : money(item.price * item.quantity)}
+                  {item.kind === "mycelium" ? formatMyceliumPrice(item.price * item.quantity) : money(item.price * item.quantity)}
                 </span>
               </div>
             </div>
@@ -347,7 +347,7 @@ const CheckoutFormView: React.FC<CheckoutFormViewProps> = ({
 
           <div className="flex justify-between border-t border-[#eee7f2] pt-4 font-extrabold text-brand-plum">
             <span>{t.total}</span>
-            <span>{money(total)}</span>
+            <span>{cartItems.some((item) => item.kind === "mycelium") ? formatMyceliumPrice(total) : money(total)}</span>
           </div>
 
           <p className="mt-4 text-center text-xs text-brand-muted">

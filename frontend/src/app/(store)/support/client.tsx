@@ -20,7 +20,7 @@ function SupportPage() {
           <p className="mb-[25px] max-w-[520px] leading-[1.7] text-brand-muted">{t.productBody}</p>
           <Button asChild className={storePrimaryButton}><Link href="/products/flores-magicas">{t.action}</Link></Button>
         </div>
-        <img src="/images/floresmagicas.webp" alt={t.imageAlt} className="h-[320px] w-[250px] justify-self-center rounded-[18px] object-contain max-[800px]:justify-self-start" />
+        <img src="/images/collectionproductsmycelium.webp" alt={t.imageAlt} className="h-[320px] w-[250px] justify-self-center rounded-[18px] object-contain max-[800px]:justify-self-start" />
       </StorePageSection>
     </div>
   );

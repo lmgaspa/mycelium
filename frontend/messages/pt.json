@@ -69,9 +69,9 @@
   },
   "Home": {
     "eyebrow": "MYCELIUM · SOLUÇÕES PARA CULTIVO",
-    "hero": "Flores Mágicas para o seu cultivo florescer.",
-    "intro": "Conheça a linha solo biomineral Flores Mágicas da Mycelium, disponível em diferentes apresentações para acompanhar o seu cultivo.",
-    "discover": "Conheça Flores Mágicas",
+    "hero": "Nutrição para cada fase do seu cultivo.",
+    "intro": "Conheça a coleção Mycelium: soluções para diferentes etapas do cultivo, do desenvolvimento das raízes à floração e finalização.",
+    "discover": "CONHEÇA NOSSA COLEÇÃO",
     "contact": "Fale conosco",
     "strip1": "Linha solo biomineral",
     "strip3": "Quatro apresentações",
@@ -87,7 +87,7 @@
     "contactTitle": "Quer saber mais sobre a Mycelium?",
     "contactBody": "Fale com a gente sobre nossos produtos e encontre a solução ideal para o seu cultivo.",
     "contactAction": "Entre em contato",
-    "heroImageAlt": "Quatro frascos da linha Mycelium Flores Mágicas",
+    "heroImageAlt": "Produtos da coleção Mycelium para diferentes etapas do cultivo",
     "highlightsAria": "Destaques Mycelium",
     "productImageAlt": "Embalagens Mycelium Flores Mágicas",
     "biomineralBadge": "LINHA SOLO BIOMINERAL"
@@ -133,6 +133,11 @@
     "goTo": "Ver banner {name}",
     "imageAlt": "Produtos Mycelium da linha {name}",
     "lineLabel": "LINHA SOLO BIOMINERAL",
+    "soloLineLabel": "LINHA SOLO",
+    "phLineLabel": "CORRETORES DE pH",
+    "phCorrectors": "Corretores de pH",
+    "phDescription": "Explore os corretores pH Up e pH Down para ajustar a solução de cultivo.",
+    "soloDescription": "Conheça o Solo Biomineral da Mycelium.",
     "explore": "Explorar linha",
     "phaseDescription": "Conheça a linha para a etapa de {phase}.",
     "phases": {
@@ -140,7 +145,8 @@
       "growth": "crescimento",
       "flowering": "floração",
       "finishing": "finalização",
-      "adjustment": "ajuste de pH"
+      "adjustment": "ajuste de pH",
+      "substrate": "substrato"
     },
     "pause": "Pausar carrossel",
     "play": "Reproduzir carrossel"
@@ -154,18 +160,22 @@
     "flores-magicas": "Flores Mágicas",
     "finalizador": "Finalizador",
     "ph-down": "Corretor de pH Down",
-    "ph-up": "Corretor de pH Up"
+    "ph-up": "Corretor de pH Up",
+    "solo": "Solo Biomineral"
   },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUTOS",
+    "lineEyebrow": "MYCELIUM · LINHA",
     "title": "Produtos para cada etapa do cultivo.",
     "intro": "Conheça a linha Mycelium. Explore as embalagens e informações que aparecem nos rótulos.",
+    "lineIntro": "Conheça os produtos desta linha Mycelium e escolha a opção para o seu cultivo.",
     "phase": {
       "root": "Raiz",
       "growth": "Crescimento",
       "flowering": "Floração",
       "finishing": "Finalização",
-      "adjustment": "Correção de pH"
+      "adjustment": "Correção de pH",
+      "substrate": "Substrato"
     },
     "details": "Ver detalhes",
     "imageAlt": "Embalagem Mycelium {name}"
@@ -173,12 +183,29 @@
   "ProductDetail": {
     "back": "Todos os produtos",
     "family": "Linha Mycelium",
+    "identificationTitle": "1. Identificação e Apresentação",
+    "commercialName": "Nome comercial",
+    "categoryLabel": "Categoria",
+    "highlightBenefit": "Benefício agronômico",
+    "highlightValidation": "Validação da fórmula",
+    "dataPending": "Dados a serem preenchidos",
+    "category": { "fertilizer": "Fertilizante", "substrate": "Substrato", "ph-corrector": "Corretor de pH" },
+    "productLine": "Linha do produto",
+    "productLines": { "soloBiomineral": "Linha Solo Biomineral", "solo": "Linha Solo", "corretor-ph": "Linha de Corretores de pH" },
+    "descriptions": { "livingSubstrate": "Substrato vivo e equilibrado para plantas mais fortes e saudáveis." },
+    "phaseDescriptions": { "root": "Produto da linha Solo Biomineral para a fase de desenvolvimento das raízes.", "growth": "Produto da linha Solo Biomineral para a fase de crescimento.", "flowering": "Produto da linha Solo Biomineral para a fase de floração.", "finishing": "Produto da linha Solo Biomineral para a fase de finalização.", "adjustment": "Corretor para ajuste do pH da solução de cultivo.", "substrate": "Substrato da linha Solo Biomineral." },
+    "targetCrops": "Culturas-alvo",
+    "environments": "Ambientes",
+    "usagePhase": "Fase de utilização",
+    "applicationMethod": "Aplicação principal",
+    "highlights": { "maturation": "Maturação e final da floração", "structure": "Mais estrutura e qualidade", "validatedFormula": "Fórmula validada, testada e regulamentada" },
     "phase": {
       "root": "Raiz",
       "growth": "Crescimento",
       "flowering": "Floração",
       "finishing": "Finalização",
-      "adjustment": "Correção de pH"
+      "adjustment": "Correção de pH",
+      "substrate": "Substrato"
     },
     "formula": "Fórmula no rótulo",
     "volume": "Conteúdo da embalagem",
@@ -198,7 +225,6 @@
     "title": "Carrinho de compras",
     "empty": "Seu carrinho está vazio. Explore os produtos Mycelium e encontre o próximo item para o seu cultivo.",
     "explore": "Ver produtos",
-    "priceOnRequest": "Preço sob consulta",
     "totalVolume": "Volume total dos produtos My Celium",
     "finishOrder": "Finalizar Pedido",
     "continueShopping": "Continuar comprando",
@@ -272,6 +298,7 @@
     "increase": "Aumentar",
     "decrease": "Diminuir",
     "totalVolume": "Volume total",
+    "totalPrice": "Preço total",
     "unitOf": "unidade de",
     "unitsOf": "unidades de",
     "reviewVolumes": "Revisar volumes",

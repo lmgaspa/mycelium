@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, type ReactNode } from "react";
-import { CartProvider } from "../../context/CartContext";
+import { CartProvider } from "../../context/CartProvider";
 import Navbar from "../../components/common/Navbar";
 import Footer from "../../components/common/Footer";
 import AnalyticsGate from "../../components/AnalyticsGate";

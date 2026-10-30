@@ -3,6 +3,7 @@ import type { CartItem } from '../../context/CartTypes';
 import ButtonCountCart from './ButtonCountCart';
 import { useCopy } from '@/i18n/useCopy';
 import { useLocale } from 'next-intl';
+import { formatMyceliumPrice } from '@/utils/formatPrice';
 
 interface CartTableProps {
   items: CartItem[];
@@ -53,7 +54,7 @@ const CartTable: React.FC<CartTableProps> = ({
                   <span className="text-text-primary">{itemTitle(item)}</span>
                 </td>
                 <td className="p-4 text-text-primary">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price)}
+                  {item.kind === 'mycelium' ? formatMyceliumPrice(item.price) : money(item.price)}
                 </td>
                 <td className="p-4">
                   <ButtonCountCart
@@ -64,7 +65,7 @@ const CartTable: React.FC<CartTableProps> = ({
                   />
                 </td>
                 <td className="p-4 text-text-primary">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price * item.quantity)}
+                  {item.kind === 'mycelium' ? formatMyceliumPrice(item.price * item.quantity) : money(item.price * item.quantity)}
                 </td>
                 <td className="p-4">
                   <button
@@ -97,7 +98,7 @@ const CartTable: React.FC<CartTableProps> = ({
               <div className="min-w-0">
                 <p className="break-words text-sm font-semibold text-brand-ink">{itemTitle(item)}</p>
                 <p className="text-primary font-semibold mt-1">
-                  {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price)}
+                  {item.kind === 'mycelium' ? formatMyceliumPrice(item.price) : money(item.price)}
                 </p>
               </div>
             </div>
@@ -115,7 +116,7 @@ const CartTable: React.FC<CartTableProps> = ({
             <div className="break-words text-right text-sm">
               {t.subtotal}:{' '}
               <span className="font-bold">
-                {item.kind === 'mycelium' ? t.priceOnRequest : money(item.price * item.quantity)}
+                {item.kind === 'mycelium' ? formatMyceliumPrice(item.price * item.quantity) : money(item.price * item.quantity)}
               </span>
             </div>
 

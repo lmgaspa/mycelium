@@ -3,7 +3,7 @@ import { useNavigate } from "@/lib/router";
 import type { CartItem } from "../context/CartTypes";
 import type { CheckoutFormData } from "../types/CheckoutTypes";
 import { cookieStorage } from "../utils/cookieUtils";
-import { calcularFreteComBaseEmCarrinho } from "../utils/freteUtils";
+import { calculateCheckoutTotals } from "../utils/checkoutTotals";
 import { apiPost } from "../api/http";
 import { analytics, mapCartItems } from "../analytics";
 
@@ -21,7 +21,6 @@ export interface PixCheckoutResponse {
 
 interface UsePixCheckoutParams {
   cartItems: CartItem[];
-  totalProdutos: number;
   desconto: number;
   couponCode: string | null;
   isCouponValid: boolean;
@@ -43,7 +42,6 @@ interface UsePixCheckoutResult {
  */
 export const usePixCheckout = ({
   cartItems,
-  totalProdutos,
   desconto,
   couponCode,
   isCouponValid,
@@ -67,17 +65,10 @@ export const usePixCheckout = ({
     };
   }, []);
 
-  // Calcular frete
+  // Usa o frete que o cliente confirmou no checkout.
   useEffect(() => {
     const form = cookieStorage.get<CheckoutFormData | null>("checkoutForm", null);
-    if (!form || cartItems.length === 0) return;
-    calcularFreteComBaseEmCarrinho({ cep: form.cep, cpf: form.cpf }, cartItems)
-      .then((v) => {
-        if (isMountedRef.current) setFrete(v);
-      })
-      .catch(() => {
-        if (isMountedRef.current) setFrete(0);
-      });
+    if (form && cartItems.length > 0) setFrete(Number(form.shipping ?? 0));
   }, [cartItems]);
 
   // Processar checkout
@@ -117,7 +108,7 @@ export const usePixCheckout = ({
           payment: "pix",
           shipping: frete,
           cartItems,
-          total: totalProdutos + (frete ?? 0), // Total original SEM desconto
+          total: calculateCheckoutTotals(cartItems, frete, finalDiscount).totalBeforeDiscount,
           discount: finalDiscount,
           couponCode: finalCouponCode,
         };
@@ -150,7 +141,7 @@ export const usePixCheckout = ({
         // GA4: preferência de pagamento (Pix)
         try {
           const itemsPayload = mapCartItems(cartItems);
-          const totalComFreteCalculado = totalProdutos + (frete ?? 0) - finalDiscount;
+          const totalComFreteCalculado = calculateCheckoutTotals(cartItems, frete, finalDiscount).total;
           const value = Number(totalComFreteCalculado);
           analytics.addPaymentInfo({
             items: itemsPayload,
@@ -177,7 +168,7 @@ export const usePixCheckout = ({
       }
     };
     run();
-  }, [frete, cartItems, totalProdutos, desconto, navigate, orderId, couponCode, isCouponValid]);
+  }, [frete, cartItems, desconto, navigate, orderId, couponCode, isCouponValid]);
 
   return {
     loading,

@@ -5,6 +5,7 @@ import { useNavigate } from "@/lib/router";
 import type { CartItem } from "@/context/CartTypes";
 import CheckoutFormView from "@/components/checkout/CheckoutFormView";
 import { useCopy } from "@/i18n/useCopy";
+import { cookieStorage } from "@/utils/cookieUtils";
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -79,21 +80,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = (props) => {
     }
 
     if (props.form.payment === "pix") {
-      navigate("/payment/pix", {
-        state: {
-          form: props.form,
-          cartItems: props.cartItems,
-          total: props.total,
-          shipping: props.shipping,
-          discount: props.discount,
-          coupon: props.coupon,
-        },
-      });
+      cookieStorage.set("checkoutForm", { ...props.form, shipping: props.shipping });
+      navigate("/payment/pix");
       return;
     }
 
     if (props.form.payment === "card") {
       // Sem coletar dados aqui; a próxima tela tokeniza via Efí
+      cookieStorage.set("checkoutForm", { ...props.form, shipping: props.shipping });
       navigate("/payment/card");
       return;
     }

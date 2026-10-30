@@ -4,7 +4,7 @@ import { useCopy } from "@/i18n/useCopy";
 import { Link } from "@/lib/router";
 import { ArrowRight, Droplets, Leaf, Sprout } from "lucide-react";
 import Collection from "@/components/collection/collection";
-import Cultivo from "@/components/cultivo/Cultivo";
+import Growing from "@/components/cultivo/Growing";
 import { storePageShell } from "@/components/common/storePageStyles";
 
 function HomePage() {
@@ -28,14 +28,14 @@ function HomePage() {
             <h1 id="hero-title" className="mt-0 mb-7 max-w-[700px] text-[clamp(42px,4.65vw,70px)] font-black leading-[1.04] tracking-[-.04em] max-[520px]:text-[clamp(37px,10vw,48px)]">{t.hero}</h1>
             <p className="mt-0 mb-8 max-w-[540px] text-[17px] leading-[1.7] text-[#f0e9f9] max-[520px]:text-[15px]">{t.intro}</p>
             <div className="flex flex-wrap items-center gap-6">
-              <Link className={buttonLight} to="/products/flores-magicas">{t.discover} <ArrowRight aria-hidden="true" /></Link>
+              <Link className={buttonLight} to="#colecao">{t.discover} <ArrowRight aria-hidden="true" /></Link>
               <Link className="text-[14px] font-extrabold text-white underline underline-offset-[5px]" to="/support">{t.contact}</Link>
             </div>
           </div>
           <div className="relative flex h-full min-h-[530px] items-center justify-center max-[800px]:min-h-[400px] max-[520px]:min-h-[350px]">
             <div className="absolute size-[420px] rotate-[-23deg] rounded-full border border-white/25 max-[520px]:size-[300px]" aria-hidden="true" />
             <div className="absolute h-[260px] w-[540px] rotate-[-23deg] rounded-full border border-white/25 max-[520px]:h-[180px] max-[520px]:w-[360px]" aria-hidden="true" />
-            <img src="/images/floresmagicas.webp" alt={t.heroImageAlt} className="relative z-[2] h-auto w-[min(540px,100%)] rounded-[24px] object-contain [filter:drop-shadow(0_30px_32px_rgba(20,9,36,.28))] max-[800px]:w-[min(100%,520px)] max-[520px]:w-full" />
+            <img src="/images/collectionproductsmycelium.webp" alt={t.heroImageAlt} className="relative z-[2] h-auto w-[min(540px,100%)] rounded-[24px] object-contain [filter:drop-shadow(0_30px_32px_rgba(20,9,36,.28))] max-[800px]:w-[min(100%,520px)] max-[520px]:w-full" />
           </div>
         </div>
       </section>
@@ -60,7 +60,7 @@ function HomePage() {
           <div className="grid min-h-[465px] grid-cols-2 overflow-hidden rounded-[22px] shadow-[0_20px_50px_rgba(43,15,72,.1)] max-[800px]:grid-cols-1">
             <div className="relative flex min-h-[465px] items-center justify-center bg-[#6b2528] after:absolute after:bottom-[34px] after:h-[12%] after:w-[60%] after:rounded-full after:bg-[rgba(27,66,36,.12)] after:blur-[18px] max-[520px]:min-h-[360px]">
               <span className="absolute top-[25px] left-[25px] z-[2] rounded-[50px] bg-white px-[14px] py-[9px] text-[11px] font-black tracking-[.08em] text-[#355c38]">{t.biomineralBadge}</span>
-              <img src="/images/floresmagicas.webp" alt={t.productImageAlt} loading="lazy" className="absolute inset-0 z-[1] h-full min-h-[465px] w-full object-cover max-[520px]:min-h-[360px]" />
+              <img src="/images/collectionproductsmycelium.webp" alt={t.productImageAlt} loading="lazy" className="absolute inset-0 z-[1] h-full min-h-[465px] w-full object-cover max-[520px]:min-h-[360px]" />
             </div>
             <div className="flex flex-col items-start justify-center bg-brand-plum p-[clamp(32px,5vw,70px)] text-white max-[520px]:px-[25px] max-[520px]:py-[36px]">
               <span className={`${kicker} text-[#d5f5a7]`}>MYCELIUM · FLORES MÁGICAS</span>
@@ -73,7 +73,7 @@ function HomePage() {
         </div>
       </section>
 
-      <Cultivo />
+      <Growing />
 
       <section className="bg-white px-0 pt-0 pb-[75px]" aria-labelledby="contact-title">
         <div className={`${shell} flex min-h-[210px] items-center justify-between gap-8 rounded-[20px] bg-[linear-gradient(115deg,#7640d5,#9354ed)] px-[44px] py-[35px] text-white shadow-[0_12px_28px_rgba(60,24,118,.17)] max-[520px]:flex-col max-[520px]:items-start max-[520px]:px-6 max-[520px]:py-[30px]`}>

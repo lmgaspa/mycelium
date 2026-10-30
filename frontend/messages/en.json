@@ -69,9 +69,9 @@
   },
   "Home": {
     "eyebrow": "MYCELIUM · CULTIVATION SOLUTIONS",
-    "hero": "Flores Mágicas for a blooming grow.",
-    "intro": "Discover Mycelium's Flores Mágicas biomineral soil line, available in different sizes for your growing routine.",
-    "discover": "Explore Flores Mágicas",
+    "hero": "Nutrition for every stage of your grow.",
+    "intro": "Discover the Mycelium collection: solutions for different growing stages, from root development to flowering and finishing.",
+    "discover": "EXPLORE OUR COLLECTION",
     "contact": "Contact us",
     "strip1": "Biomineral soil line",
     "strip3": "Four sizes",
@@ -87,7 +87,7 @@
     "contactTitle": "Want to know more about Mycelium?",
     "contactBody": "Talk to us about our products and find the right option for your grow.",
     "contactAction": "Get in touch",
-    "heroImageAlt": "Four bottles from the Mycelium Flores Mágicas line",
+    "heroImageAlt": "Mycelium collection products for different growing stages",
     "highlightsAria": "Mycelium highlights",
     "productImageAlt": "Mycelium Flores Mágicas bottles",
     "biomineralBadge": "BIOMINERAL SOIL LINE"
@@ -133,6 +133,11 @@
     "goTo": "View {name} banner",
     "imageAlt": "Mycelium {name} products",
     "lineLabel": "BIOMINERAL SOIL LINE",
+    "soloLineLabel": "SOIL LINE",
+    "phLineLabel": "pH CORRECTORS",
+    "phCorrectors": "pH Correctors",
+    "phDescription": "Explore pH Up and pH Down correctors for adjusting the growing solution.",
+    "soloDescription": "Discover Mycelium Biomineral Soil.",
     "explore": "Explore line",
     "phaseDescription": "Explore the line for the {phase} stage.",
     "phases": {
@@ -140,7 +145,8 @@
       "growth": "growth",
       "flowering": "flowering",
       "finishing": "finishing",
-      "adjustment": "pH adjustment"
+      "adjustment": "pH adjustment",
+      "substrate": "substrate"
     },
     "pause": "Pause carousel",
     "play": "Play carousel"
@@ -154,18 +160,22 @@
     "flores-magicas": "Magic Flowers",
     "finalizador": "Finisher",
     "ph-down": "pH Down Corrector",
-    "ph-up": "pH Up Corrector"
+    "ph-up": "pH Up Corrector",
+    "solo": "Biomineral Soil"
   },
   "Products": {
     "eyebrow": "MYCELIUM · PRODUCTS",
+    "lineEyebrow": "MYCELIUM · LINE",
     "title": "Products for every growing stage.",
     "intro": "Explore the Mycelium line and the information shown on each product label.",
+    "lineIntro": "Explore the products in this Mycelium line and choose the right option for your grow.",
     "phase": {
       "root": "Root",
       "growth": "Growth",
       "flowering": "Flowering",
       "finishing": "Finishing",
-      "adjustment": "pH adjustment"
+      "adjustment": "pH adjustment",
+      "substrate": "Substrate"
     },
     "details": "View details",
     "imageAlt": "Mycelium {name} bottle"
@@ -173,12 +183,29 @@
   "ProductDetail": {
     "back": "All products",
     "family": "Mycelium line",
+    "identificationTitle": "1. Identification and Presentation",
+    "commercialName": "Product name",
+    "categoryLabel": "Category",
+    "highlightBenefit": "Agronomic benefit",
+    "highlightValidation": "Formula validation",
+    "dataPending": "Details to be provided",
+    "category": { "fertilizer": "Fertilizer", "substrate": "Substrate", "ph-corrector": "pH corrector" },
+    "productLine": "Product line",
+    "productLines": { "soloBiomineral": "Biomineral Soil Line", "solo": "Soil Line", "corretor-ph": "pH Correctors Line" },
+    "descriptions": { "livingSubstrate": "Living, balanced substrate for stronger and healthier plants." },
+    "phaseDescriptions": { "root": "Biomineral Soil Line product for root development.", "growth": "Biomineral Soil Line product for the growth stage.", "flowering": "Biomineral Soil Line product for the flowering stage.", "finishing": "Biomineral Soil Line product for the finishing stage.", "adjustment": "Corrector for adjusting the pH of the growing solution.", "substrate": "Biomineral soil substrate." },
+    "targetCrops": "Target crops",
+    "environments": "Environments",
+    "usagePhase": "Use stage",
+    "applicationMethod": "Main application",
+    "highlights": { "maturation": "Maturation and final flowering stage", "structure": "Better structure and quality", "validatedFormula": "Validated, tested and regulatory-compliant formula" },
     "phase": {
       "root": "Root",
       "growth": "Growth",
       "flowering": "Flowering",
       "finishing": "Finishing",
-      "adjustment": "pH adjustment"
+      "adjustment": "pH adjustment",
+      "substrate": "Substrate"
     },
     "formula": "Formula on label",
     "volume": "Package size",
@@ -198,7 +225,6 @@
     "title": "Shopping cart",
     "empty": "Your cart is empty. Explore Mycelium products and find the next item for your grow.",
     "explore": "View products",
-    "priceOnRequest": "Price on request",
     "totalVolume": "Total My Celium product volume",
     "finishOrder": "Proceed to Checkout",
     "continueShopping": "Continue shopping",
@@ -272,6 +298,7 @@
     "increase": "Increase",
     "decrease": "Decrease",
     "totalVolume": "Total volume",
+    "totalPrice": "Total price",
     "unitOf": "unit of",
     "unitsOf": "units of",
     "reviewVolumes": "Review sizes",

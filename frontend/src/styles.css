@@ -29,6 +29,15 @@ body {
   --color-brand-ink: #26163a;
   --color-brand-muted: #685d72;
 
+  /* Shared store surfaces and accents */
+  --color-store-surface: #faf8fc;
+  --color-store-border: #e8e1ef;
+  --color-store-border-hover: #b797dd;
+  --color-store-badge: #eee6f7;
+  --color-store-badge-text: #64369c;
+  --color-store-divider: #eee8f2;
+  --color-store-link: #5b298e;
+
   --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

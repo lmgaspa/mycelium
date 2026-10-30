@@ -1,25 +1,23 @@
 "use client";
 
-import { useState, useEffect, useContext, useRef } from "react";
+import { useContext } from "react";
 import { useNavigate } from "@/lib/router";
 import CartTable from "@/components/cart/CartTable";
 import CouponInput from "@/components/cart/CouponInput";
 import CartSummary from "@/components/cart/CartSummary";
-import { getStockByIds } from "@/api/stock";
 import { useCoupon } from "@/hooks/useCoupon";
 import { CartContext } from "@/context/CartContext";
-import type { CartItem } from "@/context/CartTypes";
 import Link from "next/link";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/i18n/useCopy";
 import { useLocale } from "next-intl";
+import { formatMyceliumPrice } from "@/utils/formatPrice";
 
 const CartPage = () => {
   const t = useCopy("Cart");
   const locale = useLocale();
   const cartContext = useContext(CartContext);
-  const [stockById, setStockById] = useState<Record<string, number>>({});
   const navigate = useNavigate();
   const { 
     applyCoupon, 
@@ -43,65 +41,11 @@ const CartPage = () => {
     return total + (Number.isFinite(sizeMl) && sizeMl > 0 ? sizeMl * item.quantity : 0);
   }, 0);
 
-  const initializedRef = useRef(false);
-
-  // Carrega estoque e valida carrinho ao montar
-  useEffect(() => {
-    if (initializedRef.current || cartItems.length === 0) return;
-    initializedRef.current = true;
-
-    (async () => {
-      const ids = cartItems.filter((i) => i.kind !== "mycelium").map((i) => i.id);
-      const stockMap = await getStockByIds(ids);
-      const stockDict = Object.fromEntries(
-        ids.map((id) => [id, Math.max(0, stockMap[id]?.stock ?? 0)])
-      );
-      setStockById(stockDict);
-
-      // Valida e ajusta quantidades baseado no estoque
-      const fixed = cartItems
-        .map((i) => {
-          if (i.kind === "mycelium") return i;
-          const s = stockDict[i.id] ?? 0;
-          const qty = Math.min(i.quantity, Math.max(0, s));
-          return { ...i, quantity: qty };
-        })
-        .filter((i) => i.quantity > 0);
-
-      // Se houve ajustes, atualiza o contexto
-      if (
-        fixed.length !== cartItems.length ||
-        fixed.some((f, idx) => f.quantity !== cartItems[idx]?.quantity)
-      ) {
-        // Ajusta quantidades no contexto
-        fixed.forEach((item) => {
-          const current = cartItems.find((c) => c.id === item.id);
-          if (current && current.quantity !== item.quantity) {
-            const delta = item.quantity - current.quantity;
-            updateQuantityContext(item.id, delta);
-          }
-        });
-        // Remove itens que ficaram sem estoque
-        cartItems.forEach((item) => {
-          if (!fixed.find((f) => f.id === item.id)) {
-            removeFromCart(item.id);
-          }
-        });
-        alert(t.stockAdjusted);
-      }
-    })();
-  }, [cartItems, updateQuantityContext, removeFromCart, t.stockAdjusted]);
-
   const updateQuantity = (itemId: string, amount: number) => {
-    const max = cartItems.find((item) => item.id === itemId)?.kind === "mycelium" ? Infinity : stockById[itemId] ?? Infinity;
     const currentItem = cartItems.find((i) => i.id === itemId);
     if (!currentItem) return;
 
     const next = currentItem.quantity + amount;
-    if (amount > 0 && next > max) {
-      alert(t.stockExceeded);
-      return;
-    }
     if (next <= 0) {
       removeFromCart(itemId);
       return;
@@ -171,7 +115,7 @@ const CartPage = () => {
               )}
             </div>}
             <div className="w-full lg:ml-auto lg:w-1/2">
-              {hasMyceliumProducts ? <Button type="button" onClick={handleCheckout} className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 font-bold text-white hover:bg-[#57258e]">{t.finishOrder}</Button> : <CartSummary subtotal={subtotal} discount={getDiscountAmount(subtotal)} onCheckout={handleCheckout} />}
+              {hasMyceliumProducts ? <div className="grid gap-3"><p className="m-0 text-right font-bold text-brand-plum">{t.total}: {formatMyceliumPrice(subtotal)}</p><Button type="button" onClick={handleCheckout} className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum px-6 font-bold text-white hover:bg-[#57258e]">{t.finishOrder}</Button></div> : <CartSummary subtotal={subtotal} discount={getDiscountAmount(subtotal)} onCheckout={handleCheckout} />}
             </div>
           </div>
 

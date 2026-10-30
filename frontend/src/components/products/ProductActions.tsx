@@ -9,7 +9,8 @@ import { useProductName } from "@/i18n/useProductName";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { CartContext } from "@/context/CartContext";
-import type { Product } from "@/data/products";
+import { getProductPrice, type Product } from "@/data/products";
+import { formatMyceliumPrice } from "@/utils/formatPrice";
 
 type ProductActionsProps = {
   product: Product;
@@ -32,6 +33,8 @@ export default function ProductActions({ product, className, compact = false }: 
   const formatMl = (amount: number) => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(amount);
   const totalMl = product.sizesMl.reduce((sum, sizeMl) => sum + sizeMl * (quantities[sizeMl] ?? 0), 0);
   const addedTotalMl = product.sizesMl.reduce((sum, sizeMl) => sum + sizeMl * (addedQuantities[sizeMl] ?? 0), 0);
+  const totalPrice = product.sizesMl.reduce((sum, sizeMl) => sum + getProductPrice(product, sizeMl) * (quantities[sizeMl] ?? 0), 0);
+  const addedTotalPrice = product.sizesMl.reduce((sum, sizeMl) => sum + getProductPrice(product, sizeMl) * (addedQuantities[sizeMl] ?? 0), 0);
   const changeQuantity = (sizeMl: number, delta: number) => {
     setQuantities((current) => ({ ...current, [sizeMl]: Math.max(0, (current[sizeMl] ?? 0) + delta) }));
   };
@@ -42,7 +45,7 @@ export default function ProductActions({ product, className, compact = false }: 
       const quantity = quantities[sizeMl] ?? 0;
       const previousQuantity = reviewingAdded ? (addedQuantities[sizeMl] ?? 0) : 0;
       const difference = quantity - previousQuantity;
-      if (difference > 0) cart.addToCart({ id: `mycelium:${product.slug}:${sizeMl}`, title: `${productName} · ${formatSize(sizeMl)}`, imageUrl: product.image, price: 0, quantity: difference, kind: "mycelium" });
+      if (difference > 0) cart.addToCart({ id: `mycelium:${product.slug}:${sizeMl}`, title: `${productName} · ${formatSize(sizeMl)}`, imageUrl: product.image, price: getProductPrice(product, sizeMl), quantity: difference, kind: "mycelium" });
       if (difference < 0) cart.updateQuantity(`mycelium:${product.slug}:${sizeMl}`, difference);
     }
     setAddedQuantities({ ...quantities });
@@ -70,7 +73,7 @@ export default function ProductActions({ product, className, compact = false }: 
               <div className="grid max-h-[50svh] gap-2 overflow-y-auto py-2" aria-label={t.chooseSize}>
                 {product.sizesMl.map((sizeMl) => (
                   <div key={sizeMl} className="flex min-h-14 items-center justify-between gap-2 rounded-xl border border-[#e8ddf3] bg-[#faf8fc] px-3 py-2 transition-colors duration-150 hover:border-brand-plum hover:bg-[#f3ebfa] sm:px-4">
-                    <button type="button" onClick={() => changeQuantity(sizeMl, 1)} aria-label={`${t.quantityFor} ${formatSize(sizeMl)}`} className="-ml-2 min-h-10 cursor-pointer rounded-lg px-2 text-left text-sm font-bold text-brand-plum hover:bg-[#f1e9f9] hover:text-brand-plum focus-visible:outline-[3px] focus-visible:outline-brand-purple">{formatSize(sizeMl)}</button>
+                    <button type="button" onClick={() => changeQuantity(sizeMl, 1)} aria-label={`${t.quantityFor} ${formatSize(sizeMl)}`} className="-ml-2 min-h-10 cursor-pointer rounded-lg px-2 text-left text-sm font-bold text-brand-plum hover:bg-[#f1e9f9] hover:text-brand-plum focus-visible:outline-[3px] focus-visible:outline-brand-purple">{formatSize(sizeMl)} <span className="block text-xs font-medium text-brand-muted">{formatMyceliumPrice(getProductPrice(product, sizeMl))}</span></button>
                     <div className="flex items-center gap-2" role="group" aria-label={`${t.quantityFor} ${formatSize(sizeMl)}`}>
                       <Button type="button" variant="outline" size="icon" disabled={(quantities[sizeMl] ?? 0) === 0} onClick={() => changeQuantity(sizeMl, -1)} aria-label={`${t.decrease} ${formatSize(sizeMl)}`} className="size-9 cursor-pointer rounded-full border-[#d9c6e7] text-brand-plum hover:border-brand-plum hover:bg-[#f1e9f9] hover:text-brand-plum disabled:cursor-not-allowed"><Minus aria-hidden="true" /></Button>
                       <span className="min-w-7 text-center font-bold tabular-nums" aria-live="polite">{quantities[sizeMl] ?? 0}</span>
@@ -80,6 +83,7 @@ export default function ProductActions({ product, className, compact = false }: 
                 ))}
               </div>
               <p className="m-0 rounded-xl bg-[#f1e9f9] px-4 py-3 text-sm font-bold text-brand-plum" aria-live="polite">{t.totalVolume}: {formatMl(totalMl)} ml</p>
+              <p className="m-0 text-sm font-bold text-brand-plum" aria-live="polite">{t.totalPrice}: {formatMyceliumPrice(totalPrice)}</p>
               <Button type="button" onClick={addProduct} disabled={totalMl === 0} className="min-h-11 w-full cursor-pointer rounded-full bg-brand-plum font-bold text-white hover:bg-brand-purple"><ShoppingBag aria-hidden="true" />{reviewingAdded ? t.updateCart : t.add}</Button>
             </>
           ) : (
@@ -88,6 +92,7 @@ export default function ProductActions({ product, className, compact = false }: 
               <p className="m-0 text-sm text-brand-muted">{t.addedDescription.replace("{product}", productName)}</p>
               <ul className="m-0 grid gap-1 pl-5 text-sm text-brand-ink">{product.sizesMl.filter((sizeMl) => (addedQuantities[sizeMl] ?? 0) > 0).map((sizeMl) => <li key={sizeMl}>{addedQuantities[sizeMl]} {addedQuantities[sizeMl] === 1 ? t.unitOf : t.unitsOf} {formatSize(sizeMl)}</li>)}</ul>
               <p className="m-0 rounded-xl bg-[#f1e9f9] px-4 py-3 text-sm font-bold text-brand-plum">{t.totalVolume}: {formatMl(addedTotalMl)} ml</p>
+              <p className="m-0 text-sm font-bold text-brand-plum">{t.totalPrice}: {formatMyceliumPrice(addedTotalPrice)}</p>
               <div className="mt-3 grid gap-2">
                 <Button type="button" variant="outline" onClick={reviewVolumes} className="min-h-11 cursor-pointer rounded-full border-[#a9c88c] bg-[#eff7e7] font-bold text-[#28513a] transition-colors hover:border-[#5c8a53] hover:bg-[#d6eac5]! hover:text-[#28513a]!">{t.reviewVolumes}</Button>
                 <Button type="button" variant="outline" onClick={closeDialog} className="min-h-11 cursor-pointer rounded-full border-brand-plum/30 bg-white font-bold text-brand-plum transition-colors hover:border-brand-plum hover:bg-[#ddc8f3]! hover:text-brand-plum!">{t.keepShopping}</Button>
