@@ -291,6 +291,9 @@
     "increase": "Increase quantity"
   },
   "ProductActions": {
+    "illustratedPrice": "Illustrated package price · {size}",
+    "perMl": "per mL",
+    "selectVolume": "Select a size",
     "add": "Add to cart",
     "addShort": "Add",
     "chooseSize": "Choose sizes and quantities",

@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WideStorePageSection from "@/components/common/WideStorePageSection";
 import ProductActions from "@/components/products/ProductActions";
+import ProductVolumeSelector, { getDefaultProductSize } from "@/components/products/ProductVolumeSelector";
 import ProductPresentation from "@/components/products/ProductPresentation";
 import type { Product } from "@/data/products";
 
@@ -16,6 +17,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const t = useCopy("ProductDetail");
   const productName = useProductName(product.slug, product.name);
   const [selectedImage, setSelectedImage] = useState<"catalog" | "product">(product.catalogImage ? "catalog" : "product");
+  const [selectedSizeMl, setSelectedSizeMl] = useState(() => getDefaultProductSize(product));
   const hasDistinctCatalogImage = Boolean(product.catalogImage && product.catalogImage !== product.image);
   const galleryImages: ("catalog" | "product")[] = hasDistinctCatalogImage ? ["catalog", "product"] : [product.catalogImage ? "catalog" : "product"];
   const showCatalog = Boolean(product.catalogImage) && selectedImage === "catalog";
@@ -36,15 +38,16 @@ export default function ProductDetail({ product }: { product: Product }) {
                   onClick={() => setSelectedImage(kind)}
                   className={`relative size-[72px] cursor-pointer overflow-hidden rounded-[12px] border-2 bg-transparent p-0 transition-colors focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand-purple max-[420px]:size-[56px] ${selectedImage === kind ? "border-brand-purple" : "border-store-border hover:border-store-border-hover"}`}
                 >
-                  <Image src={kind === "catalog" ? product.catalogImage! : product.image} alt="" fill sizes="72px" className={kind === "product" ? "object-contain mix-blend-multiply" : "object-contain"} />
+                  <Image src={kind === "catalog" ? product.catalogImage! : product.image} alt="" fill loading={selectedImage === kind ? "eager" : "lazy"} sizes="72px" className={kind === "product" ? "object-contain mix-blend-multiply" : "object-contain"} />
                 </button>
               ))}
             </div>
             <div className="relative aspect-[3/2] min-w-0 flex-1 overflow-hidden rounded-[26px] border border-store-border bg-transparent">
-              <Image src={showCatalog ? product.catalogImage! : product.image} alt={t.imageAlt.replace("{name}", productName)} fill priority sizes="(max-width: 760px) 100vw, 50vw" className={showCatalog ? "object-contain" : "object-contain mix-blend-multiply"} />
+              <Image src={showCatalog ? product.catalogImage! : product.image} alt={t.imageAlt.replace("{name}", productName)} fill loading="eager" sizes="(max-width: 760px) 100vw, 50vw" className={showCatalog ? "object-contain" : "object-contain mix-blend-multiply"} />
             </div>
           </div>
-          <ProductActions product={product} className="mt-6" />
+          <div className="mt-6"><ProductVolumeSelector product={product} mode="selection" selectedSizeMl={selectedSizeMl} onSelect={setSelectedSizeMl} /></div>
+          <ProductActions product={product} selectedSizeMl={selectedSizeMl} className="mt-3" />
         </div>
         <ProductPresentation product={product} productName={productName} />
       </div>

@@ -291,6 +291,9 @@
     "increase": "Aumentar quantidade"
   },
   "ProductActions": {
+    "illustratedPrice": "Preço da embalagem ilustrada · {size}",
+    "perMl": "por mL",
+    "selectVolume": "Selecione o volume",
     "add": "Adicionar ao carrinho",
     "addShort": "Adicionar",
     "chooseSize": "Escolha os volumes e quantidades",

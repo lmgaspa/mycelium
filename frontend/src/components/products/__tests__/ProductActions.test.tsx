@@ -50,3 +50,17 @@ it("adds multiple package sizes and updates the volume as quantities change", ()
   expect(push).toHaveBeenCalledWith("/cart");
   fetch.mockRestore();
 });
+
+it("opens the modal with the size selected on the product page", () => {
+  render(
+    <NextIntlClientProvider locale="pt" messages={pt}>
+      <CartContext.Provider value={{ cartItems: [], totalPrice: 0, addToCart: vi.fn(), removeFromCart: vi.fn(), clearCart: vi.fn(), updateQuantity: vi.fn() }}>
+        <ProductActions product={products[0]} selectedSizeMl={500} />
+      </CartContext.Provider>
+    </NextIntlClientProvider>,
+  );
+
+  fireEvent.click(screen.getByRole("button", { name: "Adicionar ao carrinho" }));
+  expect(within(screen.getByRole("dialog")).getByRole("group", { name: "Quantidade de 500 ml" })).toHaveTextContent("1");
+  expect(screen.getByText("Volume total: 500 ml")).toBeInTheDocument();
+});

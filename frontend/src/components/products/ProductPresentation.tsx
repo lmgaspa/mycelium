@@ -33,22 +33,21 @@ export default function ProductPresentation({ product, productName }: { product:
 
   return (
     <section aria-labelledby="product-presentation-title" className="min-w-0 text-brand-ink">
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(220px,.8fr)]">
-        <div className="min-w-0">
-          <p className="mb-2 text-xs font-black uppercase tracking-[.14em] text-brand-plum">{productLine}</p>
-          <h1 id="product-presentation-title" className="mt-0 mb-3 text-[clamp(32px,4vw,52px)] font-black leading-[1.08] tracking-[-.035em] text-brand-plum">{productName}</h1>
-          <p className="mb-3 text-lg font-bold text-brand-ink">{category} · {phase}</p>
-          <p className="m-0 max-w-[680px] leading-relaxed text-brand-muted">{description}</p>
-        </div>
-        <ul className="m-0 grid gap-4 rounded-2xl bg-brand-plum/5 p-5">
-          {highlights.map(({ image, title, value }) => (
-            <li key={image} className="flex min-w-0 items-center gap-3">
-              <Image src={image} alt="" width={48} height={48} aria-hidden="true" className="size-12 shrink-0 object-contain" />
-              <span className="min-w-0 text-sm leading-snug"><strong className="block text-brand-ink">{title}</strong><span className="text-brand-muted">{value}</span></span>
-            </li>
-          ))}
-        </ul>
+      <div className="min-w-0 text-center md:text-left">
+        <p className="mb-2 text-xs font-black uppercase tracking-[.14em] text-brand-plum">{productLine}</p>
+        <h1 id="product-presentation-title" className="mt-0 mb-3 text-[clamp(32px,4vw,52px)] font-black leading-[1.08] tracking-[-.035em] text-brand-plum">{productName}</h1>
+        <p className="mb-3 text-lg font-bold text-brand-ink">{category} · {phase}</p>
+        <p className="m-0 max-w-[680px] leading-relaxed text-brand-muted">{description}</p>
       </div>
+
+      <ul className="mt-6 m-0 hidden gap-4 rounded-2xl bg-brand-plum/5 p-5 lg:grid lg:grid-cols-3">
+        {highlights.map(({ image, title, value }) => (
+          <li key={image} className="flex min-w-0 flex-col items-center gap-3 text-center lg:flex-row lg:text-left">
+            <Image src={image} alt="" width={48} height={48} aria-hidden="true" className="size-12 shrink-0 object-contain" />
+            <span className="min-w-0 text-sm leading-snug"><strong className="block text-brand-ink">{title}</strong><span className="text-brand-muted">{value}</span></span>
+          </li>
+        ))}
+      </ul>
 
       <div className="mt-8 overflow-hidden rounded-xl border border-brand-plum/15">
         <h2 className="m-0 bg-brand-plum px-5 py-3 text-base font-extrabold uppercase tracking-wide text-white">{t.identificationTitle}</h2>
